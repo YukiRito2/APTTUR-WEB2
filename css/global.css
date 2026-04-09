@@ -1,0 +1,183 @@
+/* ══════════════════════════════════════════════════════
+   GLOBAL STYLES
+   ══════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-sans);
+  color: var(--gris-texto);
+  background: var(--blanco);
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--gris-fondo);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--verde);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--verde-dark);
+}
+
+/* ── Container ──────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--px-mobile);
+  padding-right: var(--px-mobile);
+}
+
+/* ── Typography ─────────────────────────────────────── */
+.section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--verde);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--negro);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.section-title .accent {
+  color: var(--verde);
+}
+
+.section-line {
+  width: 48px;
+  height: 4px;
+  background: var(--verde);
+  border-radius: var(--radius-full);
+  margin: 0 auto 20px;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--gris-texto);
+  max-width: 640px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+
+/* ── Buttons ────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: var(--verde);
+  color: var(--blanco);
+  padding: 12px 24px;
+  font-size: 0.9375rem;
+}
+.btn-primary:hover {
+  background: var(--verde-dark);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+}
+
+.btn-primary svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-fast);
+}
+.btn-primary:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Utility ────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Body lock for modals/menus ─────────────────────── */
+body.menu-open,
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════
+   PAGE HERO — Inner page banners
+   ══════════════════════════════════════════════════════ */
+.page-hero {
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: var(--navbar-h-mobile);
+  overflow: hidden;
+}
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.75));
+}
+.page-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.page-hero-content h1 {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--blanco);
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.page-hero-content p {
+  color: rgba(255,255,255,0.85);
+  font-size: clamp(0.9375rem, 2vw, 1.125rem);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.6;
+}

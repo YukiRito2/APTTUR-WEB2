@@ -1,0 +1,73 @@
+/* ══════════════════════════════════════════════════════
+   SERVICIOS PAGE
+   ══════════════════════════════════════════════════════ */
+
+.section-servicios {
+  position: relative;
+  background: var(--gris-fondo);
+  padding: 64px 0;
+  overflow: hidden;
+}
+
+.servicios-grid {
+  display: grid;
+  gap: 24px;
+}
+
+/* ── Service Card ───────────────────────────────────── */
+.servicio-card {
+  background: var(--blanco);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  border: 1px solid rgba(229,231,235,0.8);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+.servicio-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-8px);
+  border-color: rgba(0,168,90,0.2);
+}
+
+.servicio-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(0,168,90,0.08);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: background var(--transition-normal);
+}
+.servicio-card:hover .servicio-icon {
+  background: rgba(0,168,90,0.15);
+}
+.servicio-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--verde);
+}
+
+.servicio-card h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 10px;
+  transition: color var(--transition-fast);
+}
+.servicio-card:hover h3 {
+  color: var(--verde);
+}
+
+.servicio-card p {
+  font-size: 0.9375rem;
+  color: var(--gris-texto);
+  line-height: 1.7;
+}
+
+/* ── CTA ────────────────────────────────────────────── */
+.section-cta {
+  text-align: center;
+  margin-top: 48px;
+}

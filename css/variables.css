@@ -1,0 +1,46 @@
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS / CSS CUSTOM PROPERTIES
+   ══════════════════════════════════════════════════════ */
+
+:root {
+  /* Colores corporativos */
+  --verde: #00A85A;
+  --verde-dark: #008A49;
+  --negro: #000000;
+  --gris-texto: #4F4D4D;
+  --gris-fondo: #E5E7EB;
+  --blanco: #FFFFFF;
+  --gris-meta: #878787;
+  --rojo-error: #EF4444;
+
+  /* Tipografía */
+  --font-sans: 'Helvetica Neue Medium', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Espaciado */
+  --max-width: 1280px;
+  --px-mobile: 16px;
+  --px-tablet: 24px;
+  --px-desktop: 32px;
+
+  /* Transiciones */
+  --transition-fast: 200ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease-out;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 50px rgba(0,0,0,0.12);
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Navbar height */
+  --navbar-h-mobile: 64px;
+  --navbar-h-desktop: 80px;
+}

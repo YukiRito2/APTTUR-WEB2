@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asociados — APTTUR</title>
+  <meta name="description" content="Conoce a las empresas asociadas a APTTUR, la Asociación Peruana de Transporte Turístico." />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/decorations.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/asociados.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- ══════ NAVBAR ══════ -->
+  <header id="main-header"></header>
+
+  <main>
+
+    <!-- ══════════════════════════════════════════════
+         ASOCIADOS SECTION
+    ══════════════════════════════════════════════ -->
+    <section class="section-asociados" aria-labelledby="asociados-title">
+      <!-- Watermark Pattern -->
+      <div class="decoration-container" aria-hidden="true">
+        <div class="wm-ring-tr-1"></div>
+        <div class="wm-ring-tr-2 decoration-md-only"></div>
+        <div class="wm-ring-tr-3 decoration-lg-only"></div>
+        <div class="wm-ring-bl-1"></div>
+        <div class="wm-ring-bl-2 decoration-md-only"></div>
+        <div class="wm-ring-bl-3 decoration-lg-only"></div>
+        <div class="wm-ring-center-1 decoration-md-only"></div>
+        <div class="wm-ring-center-2 decoration-lg-only"></div>
+        <div class="wm-ring-a decoration-md-only"></div>
+        <div class="wm-ring-b decoration-md-only"></div>
+        <div class="wm-glow-1"></div>
+        <div class="wm-glow-2 decoration-md-only"></div>
+        <div class="wm-glow-3 decoration-md-only"></div>
+        <div class="wm-square-1 decoration-md-only"></div>
+        <div class="wm-square-2 decoration-md-only"></div>
+        <svg class="wm-dots-grid decoration-md-only" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots-asociados" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#00A85A"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots-asociados)"/></svg>
+        <div class="wm-blob-1"></div>
+        <div class="wm-blob-2 decoration-md-only"></div>
+      </div>
+
+      <!-- A) Header -->
+      <div class="container">
+        <div class="asociados-header fade-in-up">
+          <p class="asociados-label">RED NACIONAL</p>
+          <h2 class="asociados-title" id="asociados-title">Nuestros <span>Asociados</span></h2>
+          <p class="asociados-desc">50 empresas de transporte turístico comprometidas con la calidad, seguridad y formalización del sector a nivel nacional.</p>
+          <div class="asociados-line"></div>
+        </div>
+      </div>
+
+      <!-- B) Marquee rows (rendered by JS) -->
+      <div id="marquee-root" class="marquee-container fade-in-up" data-delay="1"></div>
+
+      <!-- C) Counter -->
+      <div class="container">
+        <div class="asociados-counter fade-in-up" data-delay="2">
+          <p><span class="counter-number">50</span> empresas forman parte de la familia APTTUR</p>
+          <p class="counter-hint">Pasa el cursor sobre las tarjetas para ver sus nombres</p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ══════ FOOTER ══════ -->
+  <footer id="main-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/marquee.js"></script>
+</body>
+</html>

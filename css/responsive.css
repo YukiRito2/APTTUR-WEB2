@@ -1,0 +1,319 @@
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — Mobile‑first Media Queries
+   Breakpoints: sm 640 · md 768 · lg 1024 · xl 1280
+   ══════════════════════════════════════════════════════ */
+
+/* ═══ SM: ≥ 640px ═════════════════════════════════════ */
+@media (min-width: 640px) {
+
+  /* Container */
+  .container {
+    padding-left: var(--px-tablet);
+    padding-right: var(--px-tablet);
+  }
+
+  /* Home — impact bar 2 cols */
+  .impact-bar,
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+
+  /* Noticias page grid — 2 cols */
+  .noticias-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Servicios — 2 cols */
+  .servicios-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Asociados cards */
+  .empresa-card {
+    width: 160px;
+    height: 90px;
+  }
+
+  /* Quiénes Somos — inst grid 3 cols */
+  .inst-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Footer bottom — row */
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  /* Home news — side card images taller */
+  .home-card-side-img { height: 176px; }
+}
+
+/* ═══ MD: ≥ 768px ═════════════════════════════════════ */
+@media (min-width: 768px) {
+
+  /* ── Navbar ──────────────────────────────────────── */
+  .navbar {
+    height: var(--navbar-h-desktop);
+    padding: 0 var(--px-tablet);
+  }
+  .navbar-logo img { height: 64px; }
+  .navbar-links {
+    display: flex;
+    gap: 4px;
+  }
+  .navbar-cta { display: block; }
+  .hamburger-btn { display: none; }
+  .mobile-menu { display: none !important; }
+
+  /* ── Page Hero ──────────────────────────────────── */
+  .page-hero {
+    min-height: 280px;
+    margin-top: var(--navbar-h-desktop);
+  }
+  .page-hero-content {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  /* ── Hero Slider ────────────────────────────────── */
+  .hero {
+    height: 75vh;
+    margin-top: var(--navbar-h-desktop);
+  }
+  .hero-content { padding: 0 var(--px-tablet); }
+  .hero-arrow { width: 48px; height: 48px; }
+  .hero-arrow svg { width: 24px; height: 24px; }
+  .hero-arrow-prev { left: 24px; }
+  .hero-arrow-next { right: 24px; }
+
+  /* ── Home: News Featured ────────────────────────── */
+  .section-news-featured { padding: 80px 0; }
+  .home-news-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 56px;
+  }
+  .home-news-bento { grid-template-columns: 3fr 2fr; }
+  .home-card-main { min-height: 520px; }
+
+  /* ── Home: Mission ──────────────────────────────── */
+  .section-mission { padding: 80px 0; }
+  .mission-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .mission-text .section-title { font-size: 2.25rem; }
+
+  /* ── Home: Instituciones / Alianzas ─────────────── */
+  .section-instituciones { padding: 64px 0; }
+  .instituciones-grid,
+  .alianzas-grid { gap: 80px; }
+  .inst-card .inst-logo,
+  .alianza-card .alianza-logo {
+    width: 160px;
+    height: 160px;
+  }
+  .inst-card .inst-logo img { max-height: 112px; }
+
+  /* ── Home: Impact / Stats numbers ───────────────── */
+  .impact-number { font-size: 1.875rem; }
+  .impact-label { font-size: 0.875rem; }
+
+  /* ── Footer ─────────────────────────────────────── */
+  .site-footer { padding-top: 80px; }
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 var(--px-tablet) 48px;
+  }
+  .footer-bottom { padding: 24px var(--px-tablet); }
+
+  /* ── Quiénes Somos: About ───────────────────────── */
+  .section-about { padding: 80px 0 64px; }
+  .about-header { margin-bottom: 64px; }
+  .about-title { font-size: 2.25rem; }
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  .about-text h3 { font-size: 1.875rem; }
+  .institutions-card { padding: 32px; }
+  .stats-bar-grid { grid-template-columns: repeat(4, 1fr); }
+  .stats-bar { padding: 40px; }
+  .stat-bar-number { font-size: 1.875rem; }
+  .stat-bar-label { font-size: 14px; }
+
+  /* ── Quiénes Somos: Testimonials ────────────────── */
+  .section-testimonials { padding: 80px 0; }
+  .testimonials-header { margin-bottom: 56px; }
+  .testimonials-title { font-size: 2.25rem; }
+  .testimonial-slide {
+    flex-direction: row;
+    align-items: center;
+    padding: 40px;
+    gap: 40px;
+  }
+  .testimonial-content { text-align: left; }
+  .testimonial-quote {
+    display: block;
+    position: absolute;
+    top: -8px;
+    left: -4px;
+  }
+  .testimonial-text,
+  .testimonial-name,
+  .testimonial-role { padding-left: 32px; }
+
+  /* ── Asociados ──────────────────────────────────── */
+  .section-asociados { padding: 80px 0; }
+  .empresa-card { width: 180px; height: 100px; }
+  .marquee-row::before,
+  .marquee-row::after { width: 80px; }
+
+  /* ── Servicios ──────────────────────────────────── */
+  .section-servicios { padding: 80px 0; }
+  .servicio-card { padding: 32px; }
+
+  /* ── Noticias Page ──────────────────────────────── */
+  .section-noticias {
+    padding: 80px 0;
+    margin-top: var(--navbar-h-desktop);
+  }
+  .noticias-header .noticias-title { font-size: 2rem; }
+  .featured-news-body { padding: 32px; }
+  .noticias-grid { margin-bottom: 64px; }
+
+  /* ── Contacto ───────────────────────────────────── */
+  .section-contacto { padding: 80px 0; }
+  .contact-grid {
+    grid-template-columns: 2fr 3fr;
+    gap: 40px;
+  }
+  .form-card { padding: 32px; }
+
+  /* ── News Modal — horizontal layout ─────────────── */
+  .news-modal-container {
+    flex-direction: row;
+    max-width: 1024px;
+  }
+  .news-modal-image {
+    width: 55%;
+    max-height: none;
+    min-height: 400px;
+    flex-shrink: 0;
+  }
+  .news-modal-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 90vh;
+    object-fit: cover;
+  }
+  .news-modal-text {
+    width: 45%;
+    padding: 32px;
+  }
+  .news-modal-text h2 { font-size: 1.375rem; }
+}
+
+/* ═══ LG: ≥ 1024px ════════════════════════════════════ */
+@media (min-width: 1024px) {
+
+  /* Container */
+  .container {
+    padding-left: var(--px-desktop);
+    padding-right: var(--px-desktop);
+  }
+
+  /* ── Navbar ──────────────────────────────────────── */
+  .navbar { padding: 0 var(--px-desktop); }
+  .navbar-links { gap: 8px; }
+  .navbar-links a { padding: 8px 16px; }
+
+  /* ── Page Hero ──────────────────────────────────── */
+  .page-hero { min-height: 320px; }
+
+  /* ── Hero Slider ────────────────────────────────── */
+  .hero { height: 85vh; }
+  .hero-content { padding: 0 var(--px-desktop); }
+  .hero-arrow { width: 52px; height: 52px; }
+
+  /* ── Home: News Featured ────────────────────────── */
+  .section-news-featured { padding: 96px 0; }
+  .home-card-main { min-height: 580px; }
+  .home-card-main-content { padding: 32px; }
+  .home-card-main-content h3 { font-size: 1.625rem; }
+  .home-card-side-body { padding: 20px 24px 24px; }
+  .impact-bar {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 32px;
+  }
+
+  /* ── Home: Mission ──────────────────────────────── */
+  .mission-text .section-title { font-size: 3rem; }
+
+  /* ── Home: Instituciones / Alianzas ─────────────── */
+  .instituciones-grid,
+  .alianzas-grid { gap: 64px; }
+  .inst-card { width: 160px; }
+  .inst-card .inst-logo {
+    width: 160px;
+    height: 160px;
+  }
+  .alianza-card .alianza-logo {
+    width: 160px;
+    height: 160px;
+  }
+
+  /* ── Quiénes Somos: About ───────────────────────── */
+  .section-about { padding: 96px 0 64px; }
+  .about-title { font-size: 3rem; }
+  .about-grid { gap: 64px; }
+  .highlight-box { padding: 24px; }
+  .alianza-name { font-size: 16px; }
+
+  /* ── Footer ─────────────────────────────────────── */
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 var(--px-desktop) 48px;
+  }
+  .footer-bottom { padding: 24px var(--px-desktop); }
+
+  /* ── Servicios — 3 cols ─────────────────────────── */
+  .servicios-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .servicio-card { padding: 32px; }
+
+  /* ── Noticias Page ──────────────────────────────── */
+  .section-noticias { padding: 96px 0; }
+  .noticias-header .noticias-title { font-size: 2.25rem; }
+  .featured-news { grid-template-columns: 3fr 2fr; }
+  .featured-news-img { aspect-ratio: auto; }
+  .featured-news-body { padding: 40px; }
+  .featured-news-body h2 { font-size: 1.65rem; }
+  .noticias-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* ── Contacto — 5 cols ──────────────────────────── */
+  .contact-grid {
+    grid-template-columns: 2fr 3fr;
+    gap: 48px;
+  }
+
+  /* ── News Modal ─────────────────────────────────── */
+  .news-modal-container { max-width: 1100px; }
+  .news-modal-image { width: 60%; }
+  .news-modal-text { width: 40%; }
+
+  /* ── Marquee fade edges wider ───────────────────── */
+  .marquee-row::before,
+  .marquee-row::after { width: 128px; }
+
+  /* ── Asociados cards larger ─────────────────────── */
+  .empresa-card { width: 260px; }
+}
+
+/* ═══ XL: ≥ 1280px ════════════════════════════════════ */
+@media (min-width: 1280px) {
+
+  /* Noticias page grid — 4 cols */
+  .noticias-grid { grid-template-columns: repeat(4, 1fr); }
+  .noticias-header .noticias-title { font-size: 3rem; }
+  .featured-news-body h2 { font-size: 1.875rem; }
+
+  /* Instituciones / Alianzas */
+  .instituciones-grid,
+  .alianzas-grid { gap: 80px; }
+  .inst-card .inst-logo img { max-height: 144px; }
+}

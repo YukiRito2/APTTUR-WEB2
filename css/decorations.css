@@ -1,0 +1,408 @@
+/* ══════════════════════════════════════════════════════
+   DECORATIONS — WatermarkPattern · SoftBlobs · WaveDivider
+   Purely decorative, non-interactive elements behind content.
+   ══════════════════════════════════════════════════════ */
+
+/* ── Shared container ───────────────────────────────── */
+.decoration-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content above decorations */
+.decoration-container ~ .container,
+.decoration-container ~ * .container,
+.decoration-container ~ .marquee-container,
+.decoration-container ~ .testimonials-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Visibility helpers */
+.decoration-md-only { display: none; }
+.decoration-lg-only { display: none; }
+
+/* ══════════════════════════════════════════════════════
+   1. WATERMARK PATTERN  (white backgrounds)
+   ══════════════════════════════════════════════════════ */
+
+/* --- 1.1 Top-right concentric rings --- */
+.wm-ring-tr-1 {
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 220px; height: 220px;
+  border: 3px solid rgba(0,168,90, 0.10);
+  border-radius: 50%;
+}
+.wm-ring-tr-2 {
+  position: absolute;
+  top: -128px; right: -128px;
+  width: 650px; height: 650px;
+  border: 3px solid rgba(0,168,90, 0.07);
+  border-radius: 50%;
+}
+.wm-ring-tr-3 {
+  position: absolute;
+  top: -176px; right: -176px;
+  width: 800px; height: 800px;
+  border: 2px solid rgba(0,168,90, 0.04);
+  border-radius: 50%;
+}
+
+/* --- 1.2 Bottom-left concentric rings --- */
+.wm-ring-bl-1 {
+  position: absolute;
+  bottom: -48px; left: -48px;
+  width: 240px; height: 240px;
+  border: 3px solid rgba(0,168,90, 0.09);
+  border-radius: 50%;
+}
+.wm-ring-bl-2 {
+  position: absolute;
+  bottom: -176px; left: -176px;
+  width: 750px; height: 750px;
+  border: 3px solid rgba(0,168,90, 0.06);
+  border-radius: 50%;
+}
+.wm-ring-bl-3 {
+  position: absolute;
+  bottom: -240px; left: -240px;
+  width: 900px; height: 900px;
+  border: 2px solid rgba(0,168,90, 0.03);
+  border-radius: 50%;
+}
+
+/* --- 1.3 Center floating rings --- */
+.wm-ring-center-1 {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px; height: 350px;
+  border: 3px solid rgba(0,168,90, 0.05);
+  border-radius: 50%;
+}
+.wm-ring-center-2 {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  border: 2px solid rgba(0,168,90, 0.03);
+  border-radius: 50%;
+}
+
+/* --- 1.4 Medium loose rings --- */
+.wm-ring-a {
+  position: absolute;
+  top: 8%; left: 40%;
+  width: 200px; height: 200px;
+  border: 3px solid rgba(0,168,90, 0.08);
+  border-radius: 50%;
+}
+.wm-ring-b {
+  position: absolute;
+  bottom: 12%; right: 30%;
+  width: 180px; height: 180px;
+  border: 2.5px solid rgba(0,168,90, 0.06);
+  border-radius: 50%;
+}
+
+/* --- 1.5 Filled circles with blur (glow) --- */
+.wm-glow-1 {
+  position: absolute;
+  top: -20px; right: 10%;
+  width: 60px; height: 60px;
+  background: rgba(0,168,90, 0.05);
+  border-radius: 50%;
+  filter: blur(24px);
+}
+.wm-glow-2 {
+  position: absolute;
+  bottom: 5%; left: 10%;
+  width: 160px; height: 160px;
+  background: rgba(0,168,90, 0.04);
+  border-radius: 50%;
+  filter: blur(24px);
+}
+.wm-glow-3 {
+  position: absolute;
+  top: 40%; right: 5%;
+  width: 100px; height: 100px;
+  background: rgba(0,168,90, 0.06);
+  border-radius: 50%;
+  filter: blur(16px);
+}
+
+/* --- 1.6 Rotated squares --- */
+.wm-square-1 {
+  position: absolute;
+  top: 15%; left: 20%;
+  width: 180px; height: 180px;
+  border: 2px solid rgba(0,168,90, 0.05);
+  transform: rotate(45deg);
+  border-radius: 12px;
+}
+.wm-square-2 {
+  position: absolute;
+  bottom: 20%; right: 10%;
+  width: 120px; height: 120px;
+  border: 2px solid rgba(0,168,90, 0.04);
+  transform: rotate(12deg);
+  border-radius: 8px;
+}
+
+/* --- 1.7 Dot grid (SVG pattern) --- */
+.wm-dots-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.035;
+}
+
+/* --- 1.8 Large blurred blobs --- */
+.wm-blob-1 {
+  position: absolute;
+  top: 5%; right: 10%;
+  width: 150px; height: 150px;
+  background: rgba(0,168,90, 0.04);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+.wm-blob-2 {
+  position: absolute;
+  bottom: 8%; left: 35%;
+  width: 300px; height: 300px;
+  background: rgba(0,168,90, 0.03);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+
+/* ══════════════════════════════════════════════════════
+   2. SOFT BLOBS  (gray #E5E7EB backgrounds)
+   ══════════════════════════════════════════════════════ */
+
+/* --- 2.1 Large blurred blobs --- */
+.sb-blob-a {
+  position: absolute;
+  top: -64px; right: 0;
+  width: 220px; height: 220px;
+  background: rgba(0,168,90, 0.07);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+.sb-blob-b {
+  position: absolute;
+  bottom: -40px; left: -3%;
+  width: 200px; height: 200px;
+  background: rgba(0,168,90, 0.06);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+.sb-blob-c {
+  position: absolute;
+  top: 30%; left: 50%;
+  transform: translateX(-50%);
+  width: 350px; height: 350px;
+  background: rgba(0,168,90, 0.03);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+
+/* --- 2.2 Top-right concentric rings --- */
+.sb-ring-tr-1 {
+  position: absolute;
+  top: -24px; right: -24px;
+  width: 140px; height: 140px;
+  border: 3px solid rgba(0,168,90, 0.12);
+  border-radius: 50%;
+}
+.sb-ring-tr-2 {
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 380px; height: 380px;
+  border: 3px solid rgba(0,168,90, 0.09);
+  border-radius: 50%;
+}
+.sb-ring-tr-3 {
+  position: absolute;
+  top: -112px; right: -112px;
+  width: 480px; height: 480px;
+  border: 2px solid rgba(0,168,90, 0.05);
+  border-radius: 50%;
+}
+
+/* --- 2.3 Bottom-left concentric rings --- */
+.sb-ring-bl-1 {
+  position: absolute;
+  bottom: -20px; left: -20px;
+  width: 120px; height: 120px;
+  border: 3px solid rgba(0,168,90, 0.10);
+  border-radius: 50%;
+}
+.sb-ring-bl-2 {
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 360px; height: 360px;
+  border: 3px solid rgba(0,168,90, 0.07);
+  border-radius: 50%;
+}
+.sb-ring-bl-3 {
+  position: absolute;
+  bottom: -120px; left: -120px;
+  width: 470px; height: 470px;
+  border: 2px solid rgba(0,168,90, 0.04);
+  border-radius: 50%;
+}
+
+/* --- 2.4 Loose center rings --- */
+.sb-ring-a {
+  position: absolute;
+  top: 20%; left: 30%;
+  width: 200px; height: 200px;
+  border: 3px solid rgba(0,168,90, 0.09);
+  border-radius: 50%;
+}
+.sb-ring-b {
+  position: absolute;
+  bottom: 25%; right: 20%;
+  width: 160px; height: 160px;
+  border: 2.5px solid rgba(0,168,90, 0.07);
+  border-radius: 50%;
+}
+
+/* --- 2.5 Small filled circles with blur --- */
+.sb-glow-1 {
+  position: absolute;
+  top: 15%; right: 20%;
+  width: 40px; height: 40px;
+  background: rgba(0,168,90, 0.09);
+  border-radius: 50%;
+  filter: blur(12px);
+}
+.sb-glow-2 {
+  position: absolute;
+  bottom: 18%; left: 25%;
+  width: 60px; height: 60px;
+  background: rgba(0,168,90, 0.07);
+  border-radius: 50%;
+  filter: blur(12px);
+}
+.sb-glow-3 {
+  position: absolute;
+  top: 55%; left: 12%;
+  width: 50px; height: 50px;
+  background: rgba(0,168,90, 0.10);
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+/* --- 2.6 "+" cross signs --- */
+.sb-cross {
+  position: absolute;
+}
+.sb-cross-h,
+.sb-cross-v {
+  position: absolute;
+  border-radius: 9999px;
+}
+/* Cruz 1 */
+.sb-cross-1       { top: 25%; right: 20%; }
+.sb-cross-1 .sb-cross-h { width: 28px; height: 2px; background: rgba(0,168,90, 0.13); }
+.sb-cross-1 .sb-cross-v { width: 2px; height: 28px; background: rgba(0,168,90, 0.13); transform: translateX(12px) translateY(-12px); }
+/* Cruz 2 */
+.sb-cross-2       { bottom: 30%; left: 15%; }
+.sb-cross-2 .sb-cross-h { width: 24px; height: 2px; background: rgba(0,168,90, 0.10); }
+.sb-cross-2 .sb-cross-v { width: 2px; height: 24px; background: rgba(0,168,90, 0.10); transform: translateX(11px) translateY(-11px); }
+/* Cruz 3 */
+.sb-cross-3       { top: 65%; right: 40%; }
+.sb-cross-3 .sb-cross-h { width: 20px; height: 2px; background: rgba(0,168,90, 0.09); }
+.sb-cross-3 .sb-cross-v { width: 2px; height: 20px; background: rgba(0,168,90, 0.09); transform: translateX(9px) translateY(-9px); }
+
+/* --- 2.7 Individual dots --- */
+.sb-dot {
+  position: absolute;
+  border-radius: 50%;
+}
+.sb-dot-1 { top: 12%; left: 50%;  width: 12px; height: 12px; background: rgba(0,168,90, 0.18); }
+.sb-dot-2 { top: 42%; right: 8%;  width: 16px; height: 16px; background: rgba(0,168,90, 0.12); }
+.sb-dot-3 { bottom: 20%; left: 42%; width: 12px; height: 12px; background: rgba(0,168,90, 0.10); }
+.sb-dot-4 { top: 75%; left: 65%;  width: 10px; height: 10px; background: rgba(0,168,90, 0.14); }
+.sb-dot-5 { bottom: 40%; right: 15%; width: 8px; height: 8px; background: rgba(0,168,90, 0.20); }
+.sb-dot-6 { top: 35%; left: 8%;  width: 14px; height: 14px; background: rgba(0,168,90, 0.09); }
+
+/* ══════════════════════════════════════════════════════
+   3. WAVE DIVIDER
+   ══════════════════════════════════════════════════════ */
+.wave-divider {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-divider svg {
+  width: 100%;
+  height: 60px;
+}
+.wave-divider.flip {
+  transform: rotate(180deg);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (default)
+   ══════════════════════════════════════════════════════ */
+
+/* WatermarkPattern: mobile-only subset */
+.wm-blob-1 { width: 150px; height: 150px; right: 10%; }
+.wm-glow-1 { top: -20px; right: 10%; width: 60px; height: 60px; }
+.wm-ring-tr-1 { top: -10px; right: -10px; width: 220px; height: 220px; border-width: 3px; }
+.wm-ring-bl-1 { bottom: -48px; left: -48px; width: 240px; height: 240px; border-width: 3px; }
+
+/* SoftBlobs: mobile-only subset */
+.sb-blob-a { top: -64px; width: 220px; height: 220px; }
+.sb-blob-b { bottom: -40px; left: -3%; width: 200px; height: 200px; }
+.sb-ring-tr-1 { top: -24px; right: -24px; width: 140px; height: 140px; border-width: 3px; }
+.sb-ring-bl-1 { bottom: -20px; left: -20px; width: 120px; height: 120px; border-width: 3px; }
+.sb-glow-1 { right: 20%; width: 40px; height: 40px; }
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TABLET (≥768px)
+   ══════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .decoration-md-only { display: block; }
+
+  .wave-divider svg { height: 80px; }
+
+  /* WatermarkPattern: tablet sizes */
+  .wm-ring-tr-1 { top: -20px; right: -20px; width: 500px; height: 500px; border-width: 4px; }
+  .wm-ring-bl-1 { bottom: -112px; left: -112px; width: 550px; height: 550px; border-width: 4px; }
+  .wm-glow-1 { top: -40px; right: 15%; width: 120px; height: 120px; }
+  .wm-blob-1 { right: 25%; width: 350px; height: 350px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — DESKTOP (≥1024px)
+   ══════════════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .decoration-lg-only { display: block; }
+
+  .wave-divider svg { height: 110px; }
+
+  /* SoftBlobs: desktop sizes */
+  .sb-blob-a { top: -96px; width: 500px; height: 500px; }
+  .sb-blob-b { bottom: -80px; left: -5%; width: 550px; height: 550px; }
+  .sb-ring-tr-1 { top: -48px; right: -48px; width: 280px; height: 280px; border-width: 4px; }
+  .sb-ring-bl-1 { bottom: -40px; left: -40px; width: 250px; height: 250px; border-width: 4px; }
+  .sb-glow-1 { right: 30%; width: 80px; height: 80px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   A11Y — Reduced motion
+   ══════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .decoration-container * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

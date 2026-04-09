@@ -1,0 +1,359 @@
+/* ══════════════════════════════════════════════════════
+   QUIÉNES SOMOS PAGE
+   ══════════════════════════════════════════════════════ */
+
+/* ── Section About ──────────────────────────────────── */
+.section-about {
+  position: relative;
+  background: var(--blanco);
+  padding: 64px 0 48px;
+  overflow: hidden;
+}
+
+/* Watermark handled by decorations.css */
+
+/* ── A.1 Header ─────────────────────────────────────── */
+.about-header {
+  text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+.about-label {
+  color: var(--verde);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.about-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 16px;
+}
+.about-title span {
+  color: var(--verde);
+}
+.about-line {
+  width: 80px;
+  height: 4px;
+  background: var(--verde);
+  border-radius: var(--radius-full);
+  margin: 0 auto;
+}
+
+/* ── A.2 Two Columns ────────────────────────────────── */
+.about-grid {
+  display: grid;
+  gap: 40px;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Left Column (Text) ─────────────────────────────── */
+.about-text h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 24px;
+  line-height: 1.25;
+}
+.about-text p {
+  font-size: 1rem;
+  color: var(--gris-texto);
+  line-height: 1.625;
+  max-width: 65ch;
+}
+.about-text p + p {
+  margin-top: 20px;
+}
+.about-text p strong {
+  color: var(--negro);
+}
+
+.highlight-box {
+  background: var(--gris-fondo);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  border-left: 4px solid var(--verde);
+  margin-top: 20px;
+}
+.highlight-box h4 {
+  font-weight: 700;
+  color: var(--negro);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.highlight-box p {
+  margin-bottom: 0;
+}
+
+/* ── Right Column (Institutions Card) ───────────────── */
+.institutions-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0,168,90,0.1), rgba(0,168,90,0.05), var(--gris-fondo));
+  border: 1px solid rgba(0,168,90,0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Decorative circles */
+.inst-deco {
+  position: absolute;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+}
+.inst-deco-tr {
+  top: -16px;
+  right: -16px;
+  width: 96px;
+  height: 96px;
+  background: rgba(0,168,90,0.1);
+  filter: blur(24px);
+}
+.inst-deco-bl {
+  bottom: -24px;
+  left: -24px;
+  width: 128px;
+  height: 128px;
+  background: rgba(0,168,90,0.05);
+  filter: blur(48px);
+}
+
+.inst-section-title {
+  position: relative;
+  font-weight: 700;
+  color: var(--negro);
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+.inst-section-alianzas {
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+/* Institution items grid */
+.inst-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  position: relative;
+}
+.alianza-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  position: relative;
+}
+
+.inst-item {
+  background: var(--blanco);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: box-shadow var(--transition-normal);
+}
+.inst-item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.inst-logo-wrap {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inst-logo-wrap img {
+  max-height: 56px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.inst-item h5 {
+  font-weight: 700;
+  color: var(--negro);
+  font-size: 16px;
+}
+.inst-item p {
+  font-size: 12px;
+  color: var(--gris-texto);
+  line-height: 1.4;
+}
+
+/* Alianza items */
+.alianza-logo-wrap {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alianza-logo-wrap img {
+  max-height: 80px;
+  max-width: 100%;
+  object-fit: contain;
+}
+.alianza-name {
+  display: block;
+  font-weight: 700;
+  color: var(--negro);
+  font-size: 14px;
+}
+.alianza-item p {
+  margin-top: 4px;
+}
+
+/* ── A.3 Stats Bar ──────────────────────────────────── */
+.stats-bar {
+  background: var(--negro);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.stats-bar-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.stat-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--verde);
+  stroke: var(--verde);
+  margin: 0 auto 12px;
+}
+
+.stat-bar-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blanco);
+  margin-bottom: 4px;
+}
+.stat-bar-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ── Testimonials Section ───────────────────────────── */
+.section-testimonials {
+  position: relative;
+  background: var(--gris-fondo);
+  padding: 64px 0;
+  overflow: hidden;
+}
+
+.testimonials-container {
+  max-width: 1024px;
+}
+
+/* B.1 Header */
+.testimonials-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.testimonials-label {
+  color: var(--verde);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.testimonials-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 16px;
+}
+.testimonials-title span {
+  color: var(--verde);
+}
+.testimonials-line {
+  width: 80px;
+  height: 4px;
+  background: var(--verde);
+  border-radius: var(--radius-full);
+  margin: 0 auto;
+}
+
+/* B.2 Testimonial Slide */
+.testimonial-slide {
+  background: var(--blanco);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.testimonial-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1px solid var(--gris-fondo);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.testimonial-content {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.testimonial-quote {
+  display: none;
+}
+.testimonial-quote svg {
+  width: 28px;
+  height: 28px;
+  fill: rgba(0,168,90,0.25);
+  transform: rotate(180deg);
+}
+
+.testimonial-text {
+  font-size: 1.125rem;
+  line-height: 1.625;
+  color: var(--gris-texto);
+  margin-bottom: 20px;
+}
+
+.testimonial-name {
+  font-weight: 700;
+  color: var(--negro);
+  font-size: 16px;
+}
+.testimonial-role {
+  font-style: italic;
+  font-size: 14px;
+  color: var(--gris-meta);
+}
+
+/* Swiper overrides */
+.testimonial-swiper {
+  padding-bottom: 8px;
+}
