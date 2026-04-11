@@ -135,7 +135,6 @@
 
 /* ── Mobile Menu ────────────────────────────────────── */
 .mobile-menu {
-  display: none;
   position: absolute;
   top: 100%;
   left: 0;
@@ -146,13 +145,39 @@
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity var(--transition-normal), max-height var(--transition-normal);
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 350ms ease, max-height 400ms ease, transform 350ms ease, visibility 0ms 400ms;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 .mobile-menu.open {
-  display: block;
   opacity: 1;
   max-height: 500px;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 350ms ease, max-height 400ms ease, transform 350ms ease, visibility 0ms 0ms;
 }
+
+/* Staggered link entrance */
+.mobile-menu a,
+.mobile-menu .btn-cta-mobile {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 250ms ease, transform 250ms ease, background 200ms ease, color 200ms ease;
+}
+.mobile-menu.open a,
+.mobile-menu.open .btn-cta-mobile {
+  opacity: 1;
+  transform: translateX(0);
+}
+.mobile-menu.open a:nth-child(1) { transition-delay: 50ms; }
+.mobile-menu.open a:nth-child(2) { transition-delay: 100ms; }
+.mobile-menu.open a:nth-child(3) { transition-delay: 150ms; }
+.mobile-menu.open a:nth-child(4) { transition-delay: 200ms; }
+.mobile-menu.open a:nth-child(5) { transition-delay: 250ms; }
+.mobile-menu.open a:nth-child(6) { transition-delay: 300ms; }
+.mobile-menu.open a:nth-child(7) { transition-delay: 350ms; }
+.mobile-menu.open .btn-cta-mobile { transition-delay: 400ms; }
 
 .mobile-menu a {
   display: block;
@@ -162,7 +187,6 @@
   font-weight: 500;
   color: var(--gris-texto);
   border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
 }
 .mobile-menu a:hover,
 .mobile-menu a.active {
