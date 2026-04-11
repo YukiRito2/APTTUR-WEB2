@@ -1,0 +1,208 @@
+/* ══════════════════════════════════════════════════════
+   MARCO LEGAL PAGE
+   ══════════════════════════════════════════════════════ */
+
+.section-leyes {
+  position: relative;
+  background: var(--gris-fondo);
+  padding: 64px 0;
+  overflow: hidden;
+}
+
+/* ── Filtros ────────────────────────────────────────── */
+.leyes-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.leyes-filtro {
+  padding: 8px 20px;
+  border: 2px solid rgba(0,168,90,0.2);
+  border-radius: var(--radius-full);
+  background: var(--blanco);
+  color: var(--gris-texto);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.leyes-filtro:hover {
+  border-color: var(--verde);
+  color: var(--verde);
+}
+
+.leyes-filtro.active {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--blanco);
+}
+
+/* ── Grid ───────────────────────────────────────────── */
+.leyes-grid {
+  display: grid;
+  gap: 20px;
+}
+
+/* ── Card ───────────────────────────────────────────── */
+.ley-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--blanco);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid rgba(229,231,235,0.8);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.ley-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: rgba(0,168,90,0.2);
+}
+
+.ley-card.hidden {
+  display: none;
+}
+
+/* ── Icon ───────────────────────────────────────────── */
+.ley-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  background: rgba(0,168,90,0.08);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-normal);
+}
+
+.ley-card:hover .ley-icon {
+  background: rgba(0,168,90,0.15);
+}
+
+.ley-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--verde);
+}
+
+/* ── Body ───────────────────────────────────────────── */
+.ley-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ley-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.ley-body p {
+  font-size: 0.875rem;
+  color: var(--gris-texto);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Tag ────────────────────────────────────────────── */
+.ley-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 6px;
+}
+
+.ley-tag--transporte {
+  background: rgba(0,168,90,0.1);
+  color: var(--verde-dark);
+}
+
+.ley-tag--turismo {
+  background: rgba(59,130,246,0.1);
+  color: #2563EB;
+}
+
+.ley-tag--seguridad {
+  background: rgba(245,158,11,0.1);
+  color: #D97706;
+}
+
+.ley-tag--tributario {
+  background: rgba(139,92,246,0.1);
+  color: #7C3AED;
+}
+
+/* ── PDF Button ─────────────────────────────────────── */
+.ley-pdf {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(220,38,38,0.06);
+  transition: all var(--transition-normal);
+}
+
+.ley-pdf:hover {
+  background: rgba(220,38,38,0.14);
+  transform: scale(1.08);
+}
+
+.ley-pdf svg {
+  width: 32px;
+  height: 32px;
+  fill: #DC2626;
+}
+
+.ley-pdf span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #DC2626;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Info box ───────────────────────────────────────── */
+.leyes-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 20px 24px;
+  background: var(--blanco);
+  border-left: 4px solid var(--verde);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.leyes-info svg {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  stroke: var(--verde);
+  margin-top: 1px;
+}
+
+.leyes-info p {
+  font-size: 0.875rem;
+  color: var(--gris-texto);
+  line-height: 1.6;
+  margin: 0;
+}

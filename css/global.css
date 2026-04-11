@@ -181,3 +181,59 @@ body.modal-open {
   margin: 0 auto;
   line-height: 1.6;
 }
+
+/* ══════════════════════════════════════════════════════
+   FLOATING LEGAL BUTTON
+   ══════════════════════════════════════════════════════ */
+@keyframes fab-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(0,168,90,0.25); }
+  50%      { transform: scale(1.08); box-shadow: 0 8px 32px rgba(0,168,90,0.45); }
+}
+
+.fab-leyes {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, var(--verde), var(--verde-dark));
+  color: var(--blanco);
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  animation: fab-breathe 3s ease-in-out infinite;
+  transition: background var(--transition-normal);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.fab-leyes:hover {
+  animation-play-state: paused;
+  transform: scale(1.1) !important;
+  box-shadow: 0 10px 40px rgba(0,168,90,0.5) !important;
+  background: linear-gradient(135deg, var(--verde-dark), #006B38);
+}
+
+.fab-leyes svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.fab-leyes-label {
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Hide label on very small screens, keep icon */
+@media (max-width: 400px) {
+  .fab-leyes {
+    padding: 14px;
+    border-radius: 50%;
+  }
+  .fab-leyes-label { display: none; }
+}

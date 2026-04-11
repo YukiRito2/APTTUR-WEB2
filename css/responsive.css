@@ -22,6 +22,9 @@
   /* Servicios — 2 cols */
   .servicios-grid { grid-template-columns: repeat(2, 1fr); }
 
+  /* Leyes — card layout horizontal on small */
+  .ley-card { flex-wrap: wrap; }
+
   /* Asociados cards */
   .empresa-card {
     width: 160px;
@@ -165,6 +168,10 @@
   .section-servicios { padding: 80px 0; }
   .servicio-card { padding: 32px; }
 
+  /* ── Marco Legal ─────────────────────────────────── */
+  .section-leyes { padding: 80px 0; }
+  .leyes-grid { grid-template-columns: repeat(2, 1fr); }
+
   /* ── Noticias Page ──────────────────────────────── */
   .section-noticias {
     padding: 80px 0;
@@ -275,6 +282,12 @@
     gap: 28px;
   }
   .servicio-card { padding: 32px; }
+
+  /* ── Marco Legal — 2 cols stacked ───────────────── */
+  .leyes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 
   /* ── Noticias Page ──────────────────────────────── */
   .section-noticias { padding: 96px 0; }

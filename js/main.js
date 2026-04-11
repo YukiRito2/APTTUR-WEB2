@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   injectNavbar();
   injectFooter();
+  injectFabLeyes();
   initNavbarScroll();
   initMobileMenu();
   initScrollToTop();
@@ -71,6 +72,7 @@ function injectNavbar() {
     { href: 'quienes-somos.html', label: 'Quiénes Somos' },
     { href: 'asociados.html', label: 'Asociados' },
     { href: 'servicios.html', label: 'Servicios' },
+    { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'noticias.html', label: 'Noticias' },
     { href: 'contactenos.html', label: 'Contáctenos' },
   ];
@@ -136,6 +138,7 @@ function injectFooter() {
           <li><a href="quienes-somos.html"><span class="bullet"></span>Quiénes Somos</a></li>
           <li><a href="asociados.html"><span class="bullet"></span>Asociados</a></li>
           <li><a href="servicios.html"><span class="bullet"></span>Servicios</a></li>
+          <li><a href="leyes.html"><span class="bullet"></span>Marco Legal</a></li>
           <li><a href="noticias.html"><span class="bullet"></span>Noticias</a></li>
           <li><a href="contactenos.html"><span class="bullet"></span>Contáctenos</a></li>
         </ul>
@@ -236,6 +239,27 @@ function initScrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }, 100);
+}
+
+/* ══════════════════════════════════════════════════════
+   FLOATING LEGAL BUTTON
+   ══════════════════════════════════════════════════════ */
+function injectFabLeyes() {
+  // Don't show on the leyes page itself
+  if (getCurrentPage() === 'leyes.html') return;
+
+  const fab = document.createElement('a');
+  fab.href = 'leyes.html';
+  fab.className = 'fab-leyes';
+  fab.setAttribute('aria-label', 'Marco Legal — Leyes que nos avalan');
+  fab.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <polyline points="9 12 11 14 15 10"/>
+    </svg>
+    <span class="fab-leyes-label">Marco Legal</span>
+  `;
+  document.body.appendChild(fab);
 }
 
 /* ══════════════════════════════════════════════════════
