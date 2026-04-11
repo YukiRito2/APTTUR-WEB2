@@ -41,8 +41,12 @@
     text-align: left;
   }
 
-  /* Home news — side card images taller */
-  .home-card-side-img { height: 176px; }
+  /* Home news — carousel cards on SM */
+  .section-news-featured { padding: 56px 0; }
+  .home-news-header { gap: 14px; margin-bottom: 32px; }
+  .avance-card { flex: 0 0 300px; max-width: none; }
+  .avance-img { height: 180px; }
+  .avances-track { gap: 20px; }
 }
 
 /* ═══ MD: ≥ 768px ═════════════════════════════════════ */
@@ -91,8 +95,9 @@
     justify-content: space-between;
     margin-bottom: 56px;
   }
-  .home-news-bento { grid-template-columns: 3fr 2fr; }
-  .home-card-main { min-height: 520px; }
+  .avance-card { flex: 0 0 340px; }
+  .avance-img { height: 210px; }
+  .avances-track { gap: 24px; }
 
   /* ── Home: Mission ──────────────────────────────── */
   .section-mission { padding: 80px 0; }
@@ -237,10 +242,9 @@
 
   /* ── Home: News Featured ────────────────────────── */
   .section-news-featured { padding: 96px 0; }
-  .home-card-main { min-height: 580px; }
-  .home-card-main-content { padding: 32px; }
-  .home-card-main-content h3 { font-size: 1.625rem; }
-  .home-card-side-body { padding: 20px 24px 24px; }
+  .avance-card { flex: 0 0 380px; }
+  .avance-img { height: 240px; }
+  .avances-carousel { margin: 0 -32px; padding: 0 32px; }
   .impact-bar {
     grid-template-columns: repeat(4, 1fr);
     padding: 32px;

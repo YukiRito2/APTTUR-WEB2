@@ -73,7 +73,7 @@ function injectNavbar() {
     { href: 'asociados.html', label: 'Asociados' },
     { href: 'servicios.html', label: 'Servicios' },
     { href: 'leyes.html', label: 'Marco Legal' },
-    { href: 'noticias.html', label: 'Noticias' },
+    { href: 'avances.html', label: 'Avances' },
     { href: 'contactenos.html', label: 'Contáctenos' },
   ];
 
@@ -139,7 +139,7 @@ function injectFooter() {
           <li><a href="asociados.html"><span class="bullet"></span>Asociados</a></li>
           <li><a href="servicios.html"><span class="bullet"></span>Servicios</a></li>
           <li><a href="leyes.html"><span class="bullet"></span>Marco Legal</a></li>
-          <li><a href="noticias.html"><span class="bullet"></span>Noticias</a></li>
+          <li><a href="avances.html"><span class="bullet"></span>Avances</a></li>
           <li><a href="contactenos.html"><span class="bullet"></span>Contáctenos</a></li>
         </ul>
       </div>
@@ -225,6 +225,16 @@ function initMobileMenu() {
       document.body.classList.remove('menu-open');
     });
   });
+
+  // Close on click outside menu
+  document.addEventListener('click', (e) => {
+    if (!menu.classList.contains('open')) return;
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    }
+  });
 }
 
 /* ══════════════════════════════════════════════════════
@@ -263,7 +273,7 @@ function injectFabLeyes() {
 }
 
 /* ══════════════════════════════════════════════════════
-   HOME NEWS REDIRECT — click news cards → noticias.html?id=X
+   HOME NEWS REDIRECT — click news cards → avances.html?id=X
    ══════════════════════════════════════════════════════ */
 function initHomeNewsRedirect() {
   const bento = document.querySelector('.home-news-bento');
@@ -274,7 +284,7 @@ function initHomeNewsRedirect() {
     if (!card) return;
     e.preventDefault();
     const id = card.dataset.newsId;
-    window.location.href = 'noticias.html?id=' + encodeURIComponent(id);
+    window.location.href = 'avances.html?id=' + encodeURIComponent(id);
   });
 
   bento.addEventListener('keydown', (e) => {
@@ -283,6 +293,6 @@ function initHomeNewsRedirect() {
     if (!card) return;
     e.preventDefault();
     const id = card.dataset.newsId;
-    window.location.href = 'noticias.html?id=' + encodeURIComponent(id);
+    window.location.href = 'avances.html?id=' + encodeURIComponent(id);
   });
 }
