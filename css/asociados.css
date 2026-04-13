@@ -183,6 +183,18 @@
   opacity: 1;
 }
 
+/* Search highlight state */
+.empresa-card.search-dim {
+  opacity: 0.2;
+  filter: grayscale(1);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.empresa-card.search-match {
+  border-color: var(--verde);
+  box-shadow: 0 0 0 2px rgba(0, 168, 90, 0.15);
+  z-index: 3;
+}
+
 /* ── Counter info ───────────────────────────────────── */
 .asociados-counter {
   text-align: center;
@@ -202,6 +214,152 @@
   font-size: 0.8125rem;
   color: var(--gris-meta);
   margin-top: 6px;
+}
+
+/* ── Search (desktop only) ──────────────────────────── */
+.asociados-search {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .asociados-header {
+    position: relative;
+  }
+  .asociados-search {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    z-index: 10;
+  }
+}
+.asociados-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.asociados-search-icon {
+  position: absolute;
+  left: 12px;
+  width: 14px;
+  height: 14px;
+  color: var(--gris-texto);
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.asociados-search-box:focus-within .asociados-search-icon {
+  opacity: 0.8;
+  color: var(--verde);
+}
+.asociados-search-input {
+  width: 100%;
+  padding: 8px 30px 8px 34px;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  color: var(--negro);
+  background: var(--gris-fondo);
+  border: 1px solid transparent;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.asociados-search-input::placeholder {
+  color: var(--gris-texto);
+  opacity: 0.55;
+}
+.asociados-search-input:focus {
+  background: var(--blanco);
+  border-color: rgba(0, 168, 90, 0.3);
+  box-shadow: 0 0 0 3px rgba(0, 168, 90, 0.08);
+}
+.asociados-search-clear {
+  position: absolute;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.asociados-search-clear.visible {
+  opacity: 0.45;
+  pointer-events: auto;
+}
+.asociados-search-clear:hover { opacity: 0.8; }
+.asociados-search-clear svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--gris-texto);
+}
+
+/* Results dropdown */
+.asociados-search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+  border: 1px solid var(--gris-fondo);
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+}
+.asociados-search-results.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.asociados-search-results li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 0.8125rem;
+  color: var(--negro);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.asociados-search-results li:hover,
+.asociados-search-results li.active {
+  background: rgba(0, 168, 90, 0.06);
+}
+.asociados-search-results li img {
+  width: 32px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.asociados-search-results li mark {
+  background: none;
+  color: var(--verde);
+  font-weight: 600;
+}
+.asociados-search-results .search-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--gris-texto);
+  font-size: 0.8125rem;
+  cursor: default;
+}
+.asociados-search-results .search-empty:hover {
+  background: transparent;
 }
 
 /* ── CTA Section ────────────────────────────────────── */

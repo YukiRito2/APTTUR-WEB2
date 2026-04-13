@@ -190,4 +190,192 @@ document.addEventListener('DOMContentLoaded', function () {
   if (root.classList.contains('fade-in-up')) {
     setTimeout(function () { root.classList.add('is-visible'); }, 100);
   }
+
+  /* ── Desktop search with prediction ────────────────
+     Only active on LG+ (the HTML/CSS is hidden otherwise) */
+  (function initSearch() {
+    var input   = document.getElementById('asociados-search-input');
+    var clear   = document.getElementById('asociados-search-clear');
+    var results = document.getElementById('asociados-search-results');
+    if (!input || !results) return;
+
+    var activeIdx = -1;
+
+    function normalize(s) {
+      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    function highlightText(name, query) {
+      var norm = normalize(name);
+      var idx  = norm.indexOf(normalize(query));
+      if (idx === -1) return escAttr(name);
+      var before = escAttr(name.slice(0, idx));
+      var match  = escAttr(name.slice(idx, idx + query.length));
+      var after  = escAttr(name.slice(idx + query.length));
+      return before + '<mark>' + match + '</mark>' + after;
+    }
+
+    function renderResults(query) {
+      activeIdx = -1;
+      if (!query.trim()) {
+        results.innerHTML = '';
+        results.classList.remove('open');
+        unhighlightAll();
+        return;
+      }
+
+      var q = normalize(query.trim());
+      var matches = companies.filter(function(c) {
+        return normalize(c.nombre).indexOf(q) !== -1;
+      });
+
+      if (matches.length === 0) {
+        results.innerHTML = '<li class="search-empty">No se encontró ninguna empresa</li>';
+        results.classList.add('open');
+        unhighlightAll();
+        return;
+      }
+
+      var html = '';
+      matches.forEach(function(c, i) {
+        html += '<li data-id="' + c.id + '" data-index="' + i + '">';
+        html += '<img src="images/empresas/' + c.logo + '" alt="" />';
+        html += '<span>' + highlightText(c.nombre, query.trim()) + '</span>';
+        html += '</li>';
+      });
+      results.innerHTML = html;
+      results.classList.add('open');
+
+      highlightCards(matches);
+    }
+
+    /* Highlight matching cards in marquee — only pause the row with a match, others keep moving */
+    function highlightCards(matches) {
+      var ids = {};
+      matches.forEach(function(c) { ids[c.nombre] = true; });
+
+      var tracks = root.querySelectorAll('.marquee-track');
+      tracks.forEach(function(track) {
+        var rowCards = track.querySelectorAll('.empresa-card');
+        var firstMatchInRow = null;
+        var hasMatch = false;
+
+        rowCards.forEach(function(card) {
+          var name = card.querySelector('.empresa-name');
+          if (name && ids[name.textContent]) {
+            card.classList.add('search-match');
+            card.classList.remove('search-dim');
+            hasMatch = true;
+            if (!firstMatchInRow) firstMatchInRow = card;
+          } else {
+            card.classList.remove('search-match');
+            card.classList.add('search-dim');
+          }
+        });
+
+        if (hasMatch && firstMatchInRow) {
+          /* Stop this row and slide to the match */
+          track.style.animation = 'none';
+          track.style.transition = 'transform 0.6s cubic-bezier(.4,0,.2,1)';
+          var rowEl = track.parentElement;
+          var rowWidth = rowEl.offsetWidth;
+          var cardLeft = firstMatchInRow.offsetLeft;
+          var cardWidth = firstMatchInRow.offsetWidth;
+          var offset = -(cardLeft - (rowWidth / 2) + (cardWidth / 2));
+          track.style.transform = 'translateX(' + offset + 'px)';
+        } else {
+          /* No match in this row — keep animation running, just dim cards */
+          track.style.animation = '';
+          track.style.transition = '';
+          track.style.transform = '';
+        }
+      });
+    }
+
+    function unhighlightAll() {
+      var allCards = root.querySelectorAll('.empresa-card');
+      allCards.forEach(function(card) {
+        card.classList.remove('search-match', 'search-dim');
+      });
+      /* Restore CSS marquee animation on every track */
+      var tracks = root.querySelectorAll('.marquee-track');
+      tracks.forEach(function(track) {
+        track.style.transition = '';
+        track.style.transform = '';
+        track.style.animation = '';
+      });
+    }
+
+    function selectResult(li) {
+      if (!li || li.classList.contains('search-empty')) return;
+      var id = parseInt(li.dataset.id, 10);
+      var empresa = companies.find(function(c) { return c.id === id; });
+      if (empresa && empresa.url) {
+        window.open(empresa.url, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    /* Input + clear */
+    input.addEventListener('input', function() {
+      renderResults(this.value);
+      clear.classList.toggle('visible', this.value.length > 0);
+    });
+
+    clear.addEventListener('click', function() {
+      input.value = '';
+      clear.classList.remove('visible');
+      renderResults('');
+      input.focus();
+    });
+
+    /* Keyboard navigation */
+    input.addEventListener('keydown', function(e) {
+      var items = results.querySelectorAll('li:not(.search-empty)');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeIdx = Math.min(activeIdx + 1, items.length - 1);
+        updateActive(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeIdx = Math.max(activeIdx - 1, 0);
+        updateActive(items);
+      } else if (e.key === 'Enter' && activeIdx >= 0) {
+        e.preventDefault();
+        selectResult(items[activeIdx]);
+      } else if (e.key === 'Escape') {
+        input.value = '';
+        clear.classList.remove('visible');
+        renderResults('');
+        input.blur();
+      }
+    });
+
+    function updateActive(items) {
+      items.forEach(function(li, i) {
+        li.classList.toggle('active', i === activeIdx);
+        if (i === activeIdx) li.scrollIntoView({ block: 'nearest' });
+      });
+    }
+
+    /* Click on result */
+    results.addEventListener('click', function(e) {
+      var li = e.target.closest('li');
+      if (li) selectResult(li);
+    });
+
+    /* Close dropdown on outside click */
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#asociados-search')) {
+        results.classList.remove('open');
+        unhighlightAll();
+      }
+    });
+
+    /* Re-open on focus if there's a query */
+    input.addEventListener('focus', function() {
+      if (this.value.trim()) renderResults(this.value);
+    });
+  })();
 });
