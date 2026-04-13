@@ -47,6 +47,10 @@
   .avance-card { flex: 0 0 300px; max-width: none; }
   .avance-img { height: 180px; }
   .avances-track { gap: 20px; }
+
+  /* Ticker */
+  .news-ticker { height: 42px; }
+  .news-ticker-item { font-size: 0.875rem; }
 }
 
 /* ═══ MD: ≥ 768px ═════════════════════════════════════ */
@@ -99,6 +103,11 @@
   .avance-img { height: 210px; }
   .avances-track { gap: 24px; }
 
+  /* Ticker & countdown */
+  .news-ticker { margin-bottom: 28px; }
+  .avances-countdown { width: 36px; height: 36px; }
+  .countdown-num { font-size: 0.75rem; }
+
   /* ── Home: Mission ──────────────────────────────── */
   .section-mission { padding: 80px 0; }
   .mission-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
@@ -118,6 +127,8 @@
   /* ── Home: Impact / Stats numbers ───────────────── */
   .impact-number { font-size: 1.875rem; }
   .impact-label { font-size: 0.875rem; }
+  .impact-icon-ring { width: 72px; height: 72px; }
+  .impact-mini-bar { max-width: 140px; }
 
   /* ── Footer ─────────────────────────────────────── */
   .site-footer { padding-top: 80px; }
@@ -247,8 +258,12 @@
   .avances-carousel { margin: 0 -32px; padding: 0 32px; }
   .impact-bar {
     grid-template-columns: repeat(4, 1fr);
-    padding: 32px;
+    padding: 36px 32px;
   }
+  .impact-icon-ring { width: 80px; height: 80px; }
+  .impact-icon-ring .impact-icon { width: 44px; height: 44px; }
+  .impact-icon svg { width: 22px; height: 22px; }
+  .impact-mini-bar { max-width: 160px; }
 
   /* ── Home: Mission ──────────────────────────────── */
   .mission-text .section-title { font-size: 3rem; }

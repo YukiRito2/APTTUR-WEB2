@@ -119,14 +119,24 @@
         <!-- PART A: Split header -->
         <div class="home-news-header fade-in-up">
           <div class="home-news-header-left">
-            <p class="home-news-label">Nuestros Avances</p>
+            <p class="home-news-label"><span class="live-dot" aria-hidden="true"></span>Nuestros Avances</p>
             <h2 class="home-news-title" id="news-title">Resultados que demuestran nuestro <span>compromiso</span></h2>
           </div>
           <a href="avances.html" class="home-news-all">Ver todos los avances <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         </div>
 
+        <!-- Headlines ticker -->
+        <div class="news-ticker fade-in-up" aria-label="Últimas noticias">
+          <span class="news-ticker-label">Últimas noticias</span>
+          <div class="news-ticker-track">
+            <div class="news-ticker-content" id="tickerContent"></div>
+          </div>
+        </div>
+
         <!-- PART B: Auto-scrolling carousel -->
         <div class="avances-carousel fade-in-up">
+          <!-- Active card spotlight overlay -->
+          <div class="carousel-spotlight" aria-hidden="true"></div>
           <div class="avances-track">
             <!-- Card 1 -->
             <article class="avance-card" data-news-id="1">
@@ -221,48 +231,94 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
 
-          <!-- Progress bar -->
-          <div class="avances-progress">
-            <div class="avances-progress-bar"></div>
+          <!-- Progress bar + dots + countdown ring -->
+          <div class="avances-controls">
+            <div class="avances-dots" id="avancesDots"></div>
+            <div class="avances-progress">
+              <div class="avances-progress-bar"></div>
+            </div>
+            <div class="avances-countdown" aria-hidden="true">
+              <svg class="countdown-ring" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.5" class="countdown-track"/>
+                <circle cx="18" cy="18" r="15.5" class="countdown-fill"/>
+              </svg>
+              <span class="countdown-num">4</span>
+            </div>
           </div>
         </div>
 
-        <!-- PART C: Impact Stats Bar -->
+        <!-- PART C: Impact Stats Bar — Animated -->
         <div class="impact-bar fade-in-up" data-delay="2">
-          <div class="impact-item">
-            <div class="impact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <!-- Animated shine sweep -->
+          <div class="impact-shine" aria-hidden="true"></div>
+          <!-- Floating particles container -->
+          <div class="impact-particles" aria-hidden="true"></div>
+
+          <div class="impact-item" style="--i:0">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.40"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
             </div>
-            <div>
+            <div class="impact-data">
               <span class="impact-number counter-value" data-end="12">0</span>
               <span class="impact-label">Normas impulsadas</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:40%"></div></div>
             </div>
           </div>
-          <div class="impact-item">
-            <div class="impact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+
+          <div class="impact-item" style="--i:1">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.85"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
             </div>
-            <div>
+            <div class="impact-data">
               <span class="impact-number counter-value" data-end="200" data-suffix="+">0</span>
               <span class="impact-label">Empresas representadas</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:85%"></div></div>
             </div>
           </div>
-          <div class="impact-item">
-            <div class="impact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+
+          <div class="impact-item" style="--i:2">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.25"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
             </div>
-            <div>
+            <div class="impact-data">
               <span class="impact-number counter-value" data-end="5">0</span>
               <span class="impact-label">Convenios firmados</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:25%"></div></div>
             </div>
           </div>
-          <div class="impact-item">
-            <div class="impact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+
+          <div class="impact-item" style="--i:3">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.70"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
             </div>
-            <div>
+            <div class="impact-data">
               <span class="impact-number counter-value" data-end="30" data-suffix="+">0</span>
               <span class="impact-label">Años defendiendo</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:70%"></div></div>
             </div>
           </div>
         </div>
