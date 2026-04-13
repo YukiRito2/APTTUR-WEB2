@@ -106,64 +106,43 @@
 /* ── Empresa Card ───────────────────────────────────── */
 .empresa-card {
   position: relative;
-  width: 130px;
-  height: 80px;
+  width: 160px;
+  height: 100px;
   background: var(--blanco);
   border: 1px solid var(--gris-fondo);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 10px;
   flex-shrink: 0;
   transition: all var(--transition-normal);
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .empresa-card:hover {
   border-color: rgba(0,168,90,0.3);
   box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
 }
 
-/* Logo variant */
-.empresa-card img {
-  max-height: 56px;
+/* Logo image */
+.empresa-logo-img {
+  max-height: 72px;
   max-width: 100%;
   object-fit: contain;
-  filter: grayscale(100%);
-  opacity: 0.6;
-  transition: all var(--transition-normal);
+  filter: none !important;
+  opacity: 1 !important;
+  transition: transform var(--transition-normal);
 }
-.empresa-card:hover img {
-  filter: grayscale(0%);
-  opacity: 1;
+.empresa-card:hover .empresa-logo-img {
+  transform: scale(1.05);
 }
 
-/* Avatar/placeholder variant */
-.empresa-card {
-  flex-direction: column;
-  gap: 6px;
-}
-.empresa-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--blanco);
-  flex-shrink: 0;
-}
+/* Name hidden by default, shown on hover via tooltip */
 .empresa-name {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--gris-texto);
-  line-height: 1.2;
-  max-width: 72px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: none;
 }
 
 /* External link icon */

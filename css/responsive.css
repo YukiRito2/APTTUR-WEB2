@@ -27,8 +27,8 @@
 
   /* Asociados cards */
   .empresa-card {
-    width: 160px;
-    height: 90px;
+    width: 180px;
+    height: 110px;
   }
 
   /* Quiénes Somos — inst grid 3 cols */
@@ -148,10 +148,8 @@
   }
   .about-text h3 { font-size: 1.875rem; }
   .institutions-card { padding: 32px; }
-  .stats-bar-grid { grid-template-columns: repeat(4, 1fr); }
-  .stats-bar { padding: 40px; }
-  .stat-bar-number { font-size: 1.875rem; }
-  .stat-bar-label { font-size: 14px; }
+  /* Stats bar now uses impact-bar grid (inherits 2→4 col from impact-bar) */
+  .stats-bar.impact-bar { padding: 40px; }
 
   /* ── Quiénes Somos: Testimonials ────────────────── */
   .section-testimonials { padding: 80px 0; }
@@ -176,7 +174,8 @@
 
   /* ── Asociados ──────────────────────────────────── */
   .section-asociados { padding: 80px 0; }
-  .empresa-card { width: 180px; height: 100px; }
+  .empresa-card { width: 200px; height: 120px; }
+  .empresa-logo-img { max-height: 84px; }
   .marquee-row::before,
   .marquee-row::after { width: 80px; }
 
@@ -333,7 +332,8 @@
   .marquee-row::after { width: 128px; }
 
   /* ── Asociados cards larger ─────────────────────── */
-  .empresa-card { width: 260px; }
+  .empresa-card { width: 300px; height: 160px; padding: 14px; }
+  .empresa-logo-img { max-height: 120px; }
 }
 
 /* ═══ XL: ≥ 1280px ════════════════════════════════════ */
@@ -348,4 +348,8 @@
   .instituciones-grid,
   .alianzas-grid { gap: 80px; }
   .inst-card .inst-logo img { max-height: 144px; }
+
+  /* Asociados XL */
+  .empresa-card { width: 320px; height: 170px; }
+  .empresa-logo-img { max-height: 130px; }
 }

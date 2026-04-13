@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════
-   MARQUEE.JS — Renders 50 company cards in 3 marquee rows
+   MARQUEE.JS — Renders company logo cards in 3 marquee rows
    ══════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,44 +11,71 @@ document.addEventListener('DOMContentLoaded', function () {
       return window.matchMedia('(max-width: 640px)').matches;
     }
 
-  /* ── Brand colours for avatars ───────────────────── */
-  var BRAND_COLORS = [
-    '#00A85A','#008A49','#0D9488','#0891B2','#2563EB',
-    '#4F46E5','#7C3AED','#9333EA','#C026D3','#DB2777',
-    '#E11D48','#DC2626','#EA580C','#D97706','#CA8A04',
-    '#65A30D','#16A34A','#059669','#0284C7','#6366F1'
+  /* ── Real companies with logos and links ─────────── */
+  var companies = [
+    { id:1,  nombre:'Dos Más Dos',            logo:'DOSMASDOS.png',        url:'https://www.dosmasdostours.com' },
+    { id:2,  nombre:'AKI Tours',              logo:'LOGOAKI.jpg',          url:'https://www.akitours.com' },
+    { id:3,  nombre:'Alicar',                 logo:'logoalicar.png',       url:'https://www.alicartours.com' },
+    { id:4,  nombre:'Alpamayo',               logo:'logoalpamayo.jpg',     url:'https://www.alpamayotours.com' },
+    { id:5,  nombre:'Aranda',                 logo:'logoaranda.png',       url:'https://www.arandatours.com' },
+    { id:6,  nombre:'Avalos Tours',           logo:'LOGOAVALOS.png',       url:'https://www.avalostours.com' },
+    { id:7,  nombre:'AYV Transportes',        logo:'logoAYV.jpg',          url:'https://www.ayvtransportes.com' },
+    { id:8,  nombre:'Black Tours',            logo:'logoblack.jpg',        url:'https://www.blacktoursperu.com' },
+    { id:9,  nombre:'Brazin',                 logo:'logobrazin.png',       url:'https://www.brazintours.com' },
+    { id:10, nombre:'Buganvilla',             logo:'logoBuganvilla.jpg',   url:'https://www.buganvillatours.com' },
+    { id:11, nombre:'ByM Tours',              logo:'LogoByM.jpg',          url:'https://www.bymtours.com' },
+    { id:12, nombre:'Chaski Tours',           logo:'logochaski.png',       url:'https://www.chaskitours.com' },
+    { id:13, nombre:'Chavín Tours',           logo:'logochavin.jpg',       url:'https://www.chavintours.com' },
+    { id:14, nombre:'Connecting',             logo:'logoconnecting.jpg',   url:'https://www.connectingperu.com' },
+    { id:15, nombre:'Crown Tours',            logo:'logocrown.jpg',        url:'https://www.crowntoursperu.com' },
+    { id:16, nombre:'DC Tours',               logo:'logodc.jpg',           url:'https://www.dctoursperu.com' },
+    { id:17, nombre:'Destinos',               logo:'logodestinos.png',     url:'https://www.destinosperu.com' },
+    { id:18, nombre:'DRC Tours',              logo:'logodrc.jpg',          url:'https://www.drctours.com' },
+    { id:19, nombre:'Edu Tours',              logo:'logoedu.png',          url:'https://www.edutoursperu.com' },
+    { id:20, nombre:'Elegance',               logo:'LOGOELEGANCE.jpg',     url:'https://www.elegancetours.com' },
+    { id:21, nombre:'Eminiari',               logo:'logoeminiari.jpg',     url:'https://www.eminiari.com' },
+    { id:22, nombre:'Giin Tours',             logo:'logogiin.png',         url:'https://www.giintours.com' },
+    { id:23, nombre:'Inka Tours',             logo:'logoinka.png',         url:'https://www.inkatoursperu.com' },
+    { id:24, nombre:'J&M Tours',              logo:'LogoJ&M.jpg',         url:'https://www.jmtoursperu.com' },
+    { id:25, nombre:'Jamuy Tours',            logo:'logojamuy.jpg',        url:'https://www.jamuytours.com' },
+    { id:26, nombre:'Jhony Tours',            logo:'logojhony.png',        url:'https://www.jhonytours.com' },
+    { id:27, nombre:'Joggys Tours',           logo:'Logojoggys.jpg',       url:'https://www.joggystours.com' },
+    { id:28, nombre:'Koni Tours',             logo:'logokoni.jpg',         url:'https://www.konitours.com' },
+    { id:29, nombre:'Kusa Tours',             logo:'LOGOKUSA.jpg',         url:'https://www.kusatours.com' },
+    { id:30, nombre:'Levita Tours',           logo:'logolevita.png',       url:'https://www.levitatours.com' },
+    { id:31, nombre:'Lore Tours',             logo:'logolore.jpg',         url:'https://www.loretours.com' },
+    { id:32, nombre:'Manchego Tours',         logo:'LogoManchego.png',     url:'https://www.manchegotours.com' },
+    { id:33, nombre:'Maximino Tours',         logo:'logomaximino.jpg',     url:'https://www.maximinotours.com' },
+    { id:34, nombre:'MB Tours',               logo:'LOGOMB.jpg',           url:'https://www.mbtoursperu.com' },
+    { id:35, nombre:'Monteverde',             logo:'logomonteverde.jpg',   url:'https://www.monteverdetours.com' },
+    { id:36, nombre:'MovilBus',               logo:'logoMovilBus.png',     url:'https://www.movilbus.com' },
+    { id:37, nombre:'Peru V Tours',           logo:'logoperuv.jpg',        url:'https://www.peruvtours.com' },
+    { id:38, nombre:'Rubens Tours',           logo:'logorubens.jpg',       url:'https://www.rubenstours.com' },
+    { id:39, nombre:'Schnell Tours',          logo:'logoschnell.jpg',      url:'https://www.schnelltours.com' },
+    { id:40, nombre:'Soluciones',             logo:'logosoluciones.png',   url:'https://www.solucionestours.com' },
+    { id:41, nombre:'Soncollay',              logo:'logosoncollay.jpg',    url:'https://www.soncollay.com' },
+    { id:42, nombre:'Taruka Tours',           logo:'LogoTarukaTours.png',  url:'https://www.tarukatours.com' },
+    { id:43, nombre:'Transitur',              logo:'LOGOTRANSITUR.jpg',    url:'https://www.transitur.com' },
+    { id:44, nombre:'Trans Martins',          logo:'logotransmartins.png', url:'https://www.transmartins.com' },
+    { id:45, nombre:'Travel Bus',             logo:'logotravelbus.jpg',    url:'https://www.travelbusperu.com' },
+    { id:46, nombre:'Tumi Tours',             logo:'logotumi.jpg',         url:'https://www.tumitours.com' },
+    { id:47, nombre:'Valenz Tours',           logo:'logovalenz.jpg',       url:'https://www.valenztours.com' },
+    { id:48, nombre:'Xpert Tours',            logo:'Logoxpert.jpg',        url:'https://www.xperttours.com' },
+    { id:49, nombre:'Yacar Tours',            logo:'logoyacar.jpg',        url:'https://www.yacartours.com' },
+    { id:50, nombre:'PST Tours',              logo:'PSTLOGO.png',          url:'https://www.psttours.com' }
   ];
-
-  /* ── Generate 50 companies ───────────────────────── */
-  var companies = [];
-  for (var i = 1; i <= 50; i++) {
-    companies.push({ id: i, nombre: 'Empresa Asociada ' + i, logo: '', url: '' });
-  }
-
-  function getInitials(name) {
-    var parts = name.split(' ');
-    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-    return name.substring(0, 2).toUpperCase();
-  }
-
-  function getBrandColor(id) {
-    return BRAND_COLORS[(id - 1) % BRAND_COLORS.length];
-  }
 
   function escAttr(s) {
     return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   }
 
   function createCard(empresa) {
-    var color = getBrandColor(empresa.id);
-    var initials = getInitials(empresa.nombre);
-
-    var html = '<div class="empresa-card">';
-    html += '<div class="empresa-avatar" style="background-color:' + color + ';">' + initials + '</div>';
+    var html = '<a class="empresa-card" href="' + escAttr(empresa.url) + '" target="_blank" rel="noopener noreferrer">';
+    html += '<img class="empresa-logo-img" src="images/empresas/' + empresa.logo + '" alt="' + escAttr(empresa.nombre) + '" loading="lazy" />';
     html += '<span class="empresa-name">' + escAttr(empresa.nombre) + '</span>';
     html += '<span class="empresa-tooltip">' + escAttr(empresa.nombre) + '</span>';
     html += '<span class="empresa-ext-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>';
-    html += '</div>';
+    html += '</a>';
     return html;
   }
 

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/decorations.css" />
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/home.css" />
   <link rel="stylesheet" href="css/quienes-somos.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 
@@ -142,28 +143,78 @@
 
         </div>
 
-        <!-- A.3 Stats Bar -->
-        <div class="stats-bar">
-          <div class="stats-bar-grid">
-            <div class="stat-bar-item fade-in-up">
-              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              <p class="stat-bar-number counter-value" data-end="200" data-suffix="+">0</p>
-              <p class="stat-bar-label">Empresas Asociadas</p>
+        <!-- A.3 Stats Bar — Animated (impact-bar style) -->
+        <div class="stats-bar impact-bar fade-in-up" data-delay="2">
+          <!-- Animated shine sweep -->
+          <div class="impact-shine" aria-hidden="true"></div>
+          <!-- Floating particles container -->
+          <div class="impact-particles" aria-hidden="true"></div>
+
+          <div class="impact-item" style="--i:0">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.85"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
             </div>
-            <div class="stat-bar-item fade-in-up" data-delay="1">
-              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-              <p class="stat-bar-number counter-value" data-end="30" data-suffix="+">0</p>
-              <p class="stat-bar-label">Años de Trayectoria</p>
+            <div class="impact-data">
+              <span class="impact-number counter-value" data-end="200" data-suffix="+">0</span>
+              <span class="impact-label">Empresas Asociadas</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:85%"></div></div>
             </div>
-            <div class="stat-bar-item fade-in-up" data-delay="2">
-              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="22" height="18" rx="2" ry="2"/><line x1="1" y1="9" x2="23" y2="9"/><line x1="1" y1="15" x2="23" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
-              <p class="stat-bar-number counter-value" data-end="15" data-suffix="+">0</p>
-              <p class="stat-bar-label">Regiones del Perú</p>
+          </div>
+
+          <div class="impact-item" style="--i:1">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.70"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              </div>
             </div>
-            <div class="stat-bar-item fade-in-up" data-delay="3">
-              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 17a4 4 0 0 0 8 0c0-2-2-3.5-4-5.5C13 13.5 11 15 11 17z"/><path d="M5 17a4 4 0 0 0 8 0c0-2-2-3.5-4-5.5C7 13.5 5 15 5 17z"/><path d="M7 7h10"/><path d="M12 2v5"/></svg>
-              <p class="stat-bar-number counter-value" data-end="50" data-suffix="+">0</p>
-              <p class="stat-bar-label">Convenios Activos</p>
+            <div class="impact-data">
+              <span class="impact-number counter-value" data-end="30" data-suffix="+">0</span>
+              <span class="impact-label">Años de Trayectoria</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:70%"></div></div>
+            </div>
+          </div>
+
+          <div class="impact-item" style="--i:2">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.50"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="22" height="18" rx="2" ry="2"/><line x1="1" y1="9" x2="23" y2="9"/><line x1="1" y1="15" x2="23" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+              </div>
+            </div>
+            <div class="impact-data">
+              <span class="impact-number counter-value" data-end="15" data-suffix="+">0</span>
+              <span class="impact-label">Regiones del Perú</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:50%"></div></div>
+            </div>
+          </div>
+
+          <div class="impact-item" style="--i:3">
+            <div class="impact-icon-ring">
+              <svg class="impact-ring-svg" viewBox="0 0 90 90" aria-hidden="true">
+                <circle cx="45" cy="45" r="38" class="impact-ring-track"/>
+                <circle cx="45" cy="45" r="38" class="impact-ring-progress" style="--ring-pct:0.60"/>
+              </svg>
+              <div class="impact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 17a4 4 0 0 0 8 0c0-2-2-3.5-4-5.5C13 13.5 11 15 11 17z"/><path d="M5 17a4 4 0 0 0 8 0c0-2-2-3.5-4-5.5C7 13.5 5 15 5 17z"/><path d="M7 7h10"/><path d="M12 2v5"/></svg>
+              </div>
+            </div>
+            <div class="impact-data">
+              <span class="impact-number counter-value" data-end="50" data-suffix="+">0</span>
+              <span class="impact-label">Convenios Activos</span>
+              <div class="impact-mini-bar"><div class="impact-mini-fill" style="--bar-w:60%"></div></div>
             </div>
           </div>
         </div>
