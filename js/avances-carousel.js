@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function moveTo(x, smooth) {
     currentX = Math.max(0, Math.min(x, getMaxScroll()));
     track.style.transition = smooth !== false
-      ? 'transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)'
+      ? 'transform 400ms cubic-bezier(0.22,0.68,0.35,1)'
       : 'none';
     track.style.transform = 'translateX(' + (-currentX) + 'px)';
     updateProgress();
@@ -180,15 +180,22 @@ document.addEventListener('DOMContentLoaded', () => {
   carousel.addEventListener('mouseenter', stopAuto);
   carousel.addEventListener('mouseleave', startAuto);
 
-  /* ── Touch / drag ───────────────────────────── */
-  var isDragging  = false;
-  var startPos    = 0;
-  var startScroll = 0;
+  /* ── Touch / drag with momentum ─────────────── */
+  var isDragging   = false;
+  var startPos     = 0;
+  var startScroll  = 0;
+  var lastMoveX    = 0;
+  var lastMoveTime = 0;
+  var velocity     = 0;
 
   function onDragStart(e) {
     isDragging = true;
-    startPos = (e.type === 'touchstart') ? e.touches[0].clientX : e.clientX;
-    startScroll = currentX;
+    var x = (e.type === 'touchstart') ? e.touches[0].clientX : e.clientX;
+    startPos    = x;
+    lastMoveX   = x;
+    lastMoveTime = Date.now();
+    velocity     = 0;
+    startScroll  = currentX;
     track.classList.add('is-dragging');
     stopAuto();
   }
@@ -196,6 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function onDragMove(e) {
     if (!isDragging) return;
     var x = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
+    var now = Date.now();
+    var dt  = now - lastMoveTime;
+    if (dt > 0) {
+      velocity = (x - lastMoveX) / dt; // px/ms (positive = swipe right)
+    }
+    lastMoveX    = x;
+    lastMoveTime = now;
     var diff = startPos - x;
     moveTo(startScroll + diff, false);
   }
@@ -204,9 +218,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isDragging) return;
     isDragging = false;
     track.classList.remove('is-dragging');
-    var step = getCardWidth();
-    var snapped = Math.round(currentX / step) * step;
-    moveTo(snapped);
+
+    var step       = getCardWidth();
+    var swipeDist  = Math.abs(currentX - startScroll);
+    var SWIPE_THRESHOLD   = step * 0.15;   // 15% of card width
+    var VELOCITY_THRESHOLD = 0.3;          // px/ms
+
+    var targetX;
+    // Fast flick or sufficient drag distance → advance one card in swipe direction
+    if (Math.abs(velocity) > VELOCITY_THRESHOLD || swipeDist > SWIPE_THRESHOLD) {
+      if (velocity < 0 || (velocity === 0 && currentX > startScroll)) {
+        // Swiped left → next card
+        targetX = (Math.floor(startScroll / step) + 1) * step;
+      } else {
+        // Swiped right → previous card
+        targetX = (Math.ceil(startScroll / step) - 1) * step;
+      }
+    } else {
+      // Small drag → snap back to nearest
+      targetX = Math.round(currentX / step) * step;
+    }
+
+    targetX = Math.max(0, Math.min(targetX, getMaxScroll()));
+    moveTo(targetX);
     startAuto();
   }
 
@@ -232,18 +266,33 @@ document.addEventListener('DOMContentLoaded', () => {
     var ticker = document.getElementById('tickerContent');
     if (!ticker) return;
 
-    var headlines = [];
-    cards.forEach(function(card) {
-      var h3 = card.querySelector('.avance-body h3');
-      var badge = card.querySelector('.avance-badge');
-      if (h3) {
-        headlines.push({
-          text: h3.textContent,
-          badge: badge ? badge.textContent : '',
-          id: card.dataset.newsId
-        });
-      }
-    });
+    /* All news headlines for the ticker */
+    var headlines = [
+      { id:'1',  text:'Presentación del PDTL en la Municipalidad Metropolitana de Lima' },
+      { id:'2',  text:'Reunión con ATU' },
+      { id:'3',  text:'Reunión con la Policía Nacional del Perú' },
+      { id:'4',  text:'Desayuno de trabajo APTTUR' },
+      { id:'5',  text:'Reunión con la Municipalidad Metropolitana de Lima' },
+      { id:'6',  text:'Reunión con área de fiscalización de la MML' },
+      { id:'7',  text:'Mesa de trabajo del Comité Consultivo de Turismo' },
+      { id:'8',  text:'Mesa de trabajo en Municipalidad de Miraflores' },
+      { id:'9',  text:'Reunión con la Municipalidad de San Isidro' },
+      { id:'10', text:'Reunión con la Municipalidad de Pueblo Libre' },
+      { id:'11', text:'Visita de reconocimiento al nuevo Aeropuerto Jorge Chávez' },
+      { id:'12', text:'Ayuda Social de APTTUR' },
+      { id:'13', text:'Asamblea Ordinaria - Diciembre 2024' },
+      { id:'14', text:'Reunión con la ministra Elizabeth Galdo en MINCETUR' },
+      { id:'15', text:'Mesa de trabajo Municipalidad Metropolitana de Lima' },
+      { id:'16', text:'Mesa de trabajo Municipalidad de Miraflores' },
+      { id:'17', text:'Asamblea Ordinaria - Diciembre 2023' },
+      { id:'18', text:'Reunión Municipalidad de la Victoria' },
+      { id:'19', text:'Reunión con la Comisión de Turismo del Congreso' },
+      { id:'20', text:'APTTUR en el Comité Consultivo de Turismo de la MML' },
+      { id:'21', text:'Reunión ATU - Mayo 2023' },
+      { id:'22', text:'Feria APAVIT' },
+      { id:'23', text:'Campeonato de fulbito APTTUR' },
+      { id:'24', text:'Almuerzo de Confraternidad asociados APTTUR' }
+    ];
 
     if (!headlines.length) return;
 
@@ -251,18 +300,55 @@ document.addEventListener('DOMContentLoaded', () => {
     var html = '';
     for (var r = 0; r < 2; r++) {
       headlines.forEach(function(h) {
-        html += '<span class="news-ticker-item" data-id="' + (h.id || '') + '">'
+        html += '<span class="news-ticker-item" data-id="' + h.id + '">'
               + h.text + '</span>';
       });
     }
     ticker.innerHTML = html;
 
-    // Adjust speed based on content width
+    // Smooth infinite scroll with requestAnimationFrame
+    var tickerOffset = 0;
+    var tickerPaused = false;
+    var halfWidth = 0;
+    var lastTime = 0;
+
+    function measureHalf() {
+      halfWidth = ticker.scrollWidth / 2;
+    }
+
+    function tickerLoop(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      var dt = timestamp - lastTime;
+      lastTime = timestamp;
+
+      if (!tickerPaused && halfWidth > 0) {
+        var isMobile = window.matchMedia('(max-width: 639px)').matches;
+        var pxPerSec = isMobile ? 55 : 40;
+        tickerOffset += pxPerSec * (dt / 1000);
+
+        // When we've scrolled one full copy, reset seamlessly
+        if (tickerOffset >= halfWidth) {
+          tickerOffset -= halfWidth;
+        }
+
+        ticker.style.transform = 'translateX(' + (-tickerOffset) + 'px)';
+      }
+
+      requestAnimationFrame(tickerLoop);
+    }
+
+    // Pause on hover
+    ticker.addEventListener('mouseenter', function() { tickerPaused = true; });
+    ticker.addEventListener('mouseleave', function() { tickerPaused = false; });
+
+    // Start
     requestAnimationFrame(function() {
-      var w = ticker.scrollWidth / 2;
-      var speed = Math.max(20, w / 60); // ~60px/sec
-      ticker.style.setProperty('--ticker-duration', speed + 's');
+      measureHalf();
+      requestAnimationFrame(tickerLoop);
     });
+
+    // Recalculate on resize
+    window.addEventListener('resize', measureHalf);
 
     // Click on ticker item → go to card
     ticker.addEventListener('click', function(e) {
