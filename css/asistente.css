@@ -1,0 +1,214 @@
+/* ══════════════════════════════════════════════════════
+   ASISTENTE DE AYUDA — Floating Guide Assistant (SVG)
+   ══════════════════════════════════════════════════════ */
+
+/* ── Variables ──────────────────────────────────────── */
+:root {
+  --asistente-bg: linear-gradient(135deg, #00c664 0%, var(--verde) 50%, var(--verde-dark) 100%);
+  --asistente-color: var(--blanco);
+  --asistente-size: 66px;
+  --asistente-bubble-bg: var(--blanco);
+  --asistente-bubble-color: var(--gris-texto);
+  --asistente-bubble-hover-bg: var(--verde);
+  --asistente-bubble-hover-color: var(--blanco);
+  --asistente-shadow: 0 6px 24px rgba(0, 168, 90, 0.25), 0 2px 8px rgba(0,0,0,0.10);
+  --asistente-bottom: 90px;
+  --asistente-right: 24px;
+}
+
+/* ── Contenedor principal ───────────────────────────── */
+.asistente {
+  position: fixed;
+  bottom: var(--asistente-bottom);
+  right: var(--asistente-right);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  animation: asistente-enter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+/* ── Avatar circular ────────────────────────────────── */
+.asistente-avatar {
+  width: var(--asistente-size);
+  height: var(--asistente-size);
+  border-radius: 50%;
+  background: var(--asistente-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--asistente-shadow);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+  flex-shrink: 0;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  position: relative;
+  overflow: visible;
+}
+
+/* Pulso suave detrás del avatar */
+.asistente-avatar::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--verde);
+  opacity: 0;
+  z-index: -1;
+  animation: asistente-pulse 3s ease-in-out 1.5s infinite;
+}
+
+/* Indicador "clic" debajo del avatar */
+.asistente-avatar::after {
+  content: 'Toca para más tips ▸';
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  font-size: 0.6rem;
+  color: var(--verde);
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.asistente:hover .asistente-avatar::after {
+  opacity: 1;
+}
+
+.asistente-avatar svg {
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+}
+
+/* ── Globo de texto ─────────────────────────────────── */
+.asistente-bubble {
+  background: var(--asistente-bubble-bg);
+  color: var(--asistente-bubble-color);
+  padding: 12px 16px;
+  border-radius: 16px 16px 4px 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 260px;
+  min-height: 42px;
+  text-align: left;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  position: relative;
+  margin-bottom: 10px;
+  margin-right: 4px;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s, opacity 0.25s ease;
+  opacity: 0;
+  animation: asistente-bubble-fade 0.5s ease-out 0.8s forwards;
+}
+
+/* Estado de cambio de frase */
+.asistente-bubble--switching {
+  opacity: 0 !important;
+  transform: translateY(6px) scale(0.95);
+}
+
+.asistente-bubble strong {
+  color: var(--verde);
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+/* ── Hover: salto + inclinación + cambio de color ──── */
+.asistente:hover .asistente-avatar {
+  transform: translateY(-6px) rotate(-5deg);
+  box-shadow: 0 10px 32px rgba(0, 168, 90, 0.35), 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.asistente:hover .asistente-avatar::before {
+  animation: none;
+  opacity: 0;
+}
+
+.asistente:hover .asistente-bubble {
+  background: var(--asistente-bubble-hover-bg);
+  color: var(--asistente-bubble-hover-color);
+  border-color: var(--verde-dark);
+  transform: translateY(-2px);
+}
+
+.asistente:hover .asistente-bubble strong {
+  color: var(--blanco);
+}
+
+/* ── Keyframes ──────────────────────────────────────── */
+
+@keyframes asistente-enter {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes asistente-bubble-fade {
+  from { opacity: 0; transform: translateY(8px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes asistente-pulse {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50%      { opacity: 0.25; transform: scale(1.3); }
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 639px) {
+  :root {
+    --asistente-size: 48px;
+    --asistente-bottom: 68px;
+    --asistente-right: 16px;
+  }
+
+  .asistente-bubble {
+    max-width: 185px;
+    font-size: 0.7rem;
+    padding: 8px 11px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .asistente-avatar svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .asistente-avatar::after {
+    font-size: 0.5rem;
+    bottom: -16px;
+  }
+}
+
+/* ── Partículas de colores ───────────────────────────── */
+.asistente-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  animation: asistente-particle-float 2.2s ease-out forwards;
+}
+
+@keyframes asistente-particle-float {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--px, 0), var(--py, -60px)) scale(0);
+  }
+}

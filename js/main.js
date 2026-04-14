@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   injectNavbar();
   injectFooter();
   injectFabLeyes();
+  injectAsistente();
   initNavbarScroll();
   initMobileMenu();
   initScrollToTop();
@@ -295,4 +296,161 @@ function initHomeNewsRedirect() {
     const id = card.dataset.newsId;
     window.location.href = 'avances.html?id=' + encodeURIComponent(id);
   });
+}
+
+/* ══════════════════════════════════════════════════════
+   FLOATING HELP ASSISTANT — SVG Tour Guide + Tips Legales
+   ══════════════════════════════════════════════════════ */
+function injectAsistente() {
+  /* ── Frases que el bot va relatando ────────────────── */
+  const frases = [
+    /* Saludo inicial */
+    '👋 <strong>¡Hola, conductor!</strong> Soy tu guía legal de APTTUR. ¿Sabías que tienes derechos en cada intervención policial?',
+
+    /* 1. Derecho a grabar */
+    '📹 <strong>¡Puedes grabar!</strong> No existe ley en Perú que prohíba filmar a un funcionario público en la vía. El Tribunal Constitucional lo respalda.',
+    '🎥 <strong>Tip:</strong> Graba sin obstruir al policía y di: "Oficial, por mi seguridad y la suya, estoy grabando la intervención".',
+    '📋 Tu grabación sirve como <strong>prueba legal</strong> ante abuso de autoridad o pedido de coima (Código Procesal Penal).',
+
+    /* 2. Solo Policía de Tránsito sanciona */
+    '🚦 <strong>Ojo:</strong> Solo la Policía de Tránsito o Carreteras puede pedirte licencia, SOAT y tarjeta de propiedad para multarte.',
+    '👮 Un policía "de a pie" solo puede detenerte por <strong>delito flagrante</strong> o para identificación (DNI). Si pide documentos de tránsito, solicita un efectivo de tránsito.',
+
+    /* 3. Las 3 causas únicas de intervención */
+    '🛑 La policía <strong>NO</strong> puede pararte "solo para ver si todo está en orden". Solo por: infracción flagrante, operativo policial o fiscalización.',
+    '🔶 En un operativo deben usar <strong>conos y señalética</strong>. Tienes derecho a preguntar el nombre del operativo.',
+
+    /* 4. No estás obligado a bajar */
+    '🚗 <strong>No tienes que bajar del auto</strong> a menos que existan indicios de ebriedad o delito. Entrega documentos desde tu asiento.',
+    '💡 <strong>Tip nocturno:</strong> Manos visibles sobre el volante + luz interior encendida = menos tensión y más seguridad para ambos.',
+
+    /* 5. Registro del vehículo */
+    '🔍 Para revisar tu maletera necesitan: <strong>tu consentimiento</strong> o <strong>causa probable</strong> (olor a drogas, armas a la vista, orden judicial).',
+    '🗣️ Si piden abrir sin motivo, pregunta: "¿Existe algún indicio de delito para el registro?" y deja constancia en tu grabación.',
+
+    /* 6. Defensoría del Pueblo */
+    '📞 <strong>Línea 1818 (Opción 3)</strong> — Denuncia abusos policiales al Ministerio del Interior. Mencionarlo cambia el tono del efectivo.',
+    '🛡️ La <strong>Defensoría del Pueblo</strong> es tu aliada. Si la intervención es arbitraria, reporta y cita a Inspectoría.',
+
+    /* Resumen de documentos */
+    '📄 <strong>Recuerda:</strong> Después de verificar tus documentos, el policía DEBE devolverlos de inmediato. No pueden retener tu licencia como presión.',
+
+    /* Cierre */
+    '✅ <strong>Conoce tus derechos, conduce tranquilo.</strong> APTTUR te respalda. ¡Buen viaje! 🚌'
+  ];
+
+  let indice = 0;
+  const saludoInicial = frases[0];
+
+  const el = document.createElement('div');
+  el.className = 'asistente';
+  el.setAttribute('aria-label', 'Asistente legal APTTUR');
+  el.innerHTML = `
+    <div class="asistente-bubble">${saludoInicial}</div>
+    <div class="asistente-avatar" title="Clic para siguiente tip">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Head -->
+        <circle cx="32" cy="26" r="14" fill="#FFD6A0"/>
+        <!-- Eyes -->
+        <ellipse cx="27" cy="23" rx="2.2" ry="2.5" fill="#333"/>
+        <ellipse cx="37" cy="23" rx="2.2" ry="2.5" fill="#333"/>
+        <!-- Eye shine -->
+        <circle cx="27.8" cy="22.2" r="0.8" fill="#fff"/>
+        <circle cx="37.8" cy="22.2" r="0.8" fill="#fff"/>
+        <!-- Eyebrows -->
+        <path d="M24 19.5 Q27 17.5 30 19" stroke="#8B6914" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M34 19 Q37 17.5 40 19.5" stroke="#8B6914" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <!-- Big smile -->
+        <path d="M25.5 29 Q32 36 38.5 29" stroke="#333" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <!-- Cheeks -->
+        <circle cx="22.5" cy="28" r="2.5" fill="#FFB5B5" opacity="0.45"/>
+        <circle cx="41.5" cy="28" r="2.5" fill="#FFB5B5" opacity="0.45"/>
+        <!-- Hat brim -->
+        <ellipse cx="32" cy="16" rx="17" ry="4.5" fill="#FFFFFF"/>
+        <!-- Hat top -->
+        <rect x="21" y="5" width="22" height="12" rx="4" fill="#FFFFFF"/>
+        <!-- Hat band -->
+        <rect x="21" y="13" width="22" height="3.5" fill="#1B3A5C"/>
+        <!-- Insignia "A" -->
+        <text x="32" y="12.5" text-anchor="middle" font-size="8" font-weight="bold" fill="#1B3A5C" font-family="sans-serif">A</text>
+        <!-- Body / Uniform -->
+        <path d="M19 40 Q19 33 32 33 Q45 33 45 40 L47 56 H17 Z" fill="#1B3A5C"/>
+        <!-- Collar -->
+        <path d="M27 33 L32 40 L37 33" fill="#FFFFFF"/>
+        <!-- Badge -->
+        <circle cx="26" cy="43" r="2.5" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/>
+        <text x="26" y="44.5" text-anchor="middle" font-size="3" font-weight="bold" fill="#8B6914" font-family="sans-serif">★</text>
+        <!-- Arms with hands waving -->
+        <rect x="13" y="37" width="6" height="15" rx="3" fill="#FFD6A0"/>
+        <rect x="45" y="34" width="6" height="15" rx="3" fill="#FFD6A0" transform="rotate(-15 48 34)"/>
+        <!-- Waving hand lines -->
+        <path d="M53 30 L56 28" stroke="#FFD700" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+        <path d="M54 33 L57 32" stroke="#FFD700" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+    </div>
+  `;
+  document.body.appendChild(el);
+
+  const bubble = el.querySelector('.asistente-bubble');
+  const avatar = el.querySelector('.asistente-avatar');
+
+  /* ── Cambiar frase al hacer clic en el avatar ──── */
+  avatar.addEventListener('click', () => {
+    indice = (indice + 1) % frases.length;
+
+    /* Animación de salida + entrada */
+    bubble.classList.add('asistente-bubble--switching');
+    setTimeout(() => {
+      bubble.innerHTML = frases[indice];
+      bubble.classList.remove('asistente-bubble--switching');
+    }, 250);
+  });
+
+  /* ── Auto-rotar frases cada 10s ────────────────── */
+  let autoTimer = setInterval(() => {
+    indice = (indice + 1) % frases.length;
+    bubble.classList.add('asistente-bubble--switching');
+    setTimeout(() => {
+      bubble.innerHTML = frases[indice];
+      bubble.classList.remove('asistente-bubble--switching');
+    }, 250);
+  }, 10000);
+
+  /* Pausar auto-rotación al pasar el mouse */
+  el.addEventListener('mouseenter', () => clearInterval(autoTimer));
+  el.addEventListener('mouseleave', () => {
+    autoTimer = setInterval(() => {
+      indice = (indice + 1) % frases.length;
+      bubble.classList.add('asistente-bubble--switching');
+      setTimeout(() => {
+        bubble.innerHTML = frases[indice];
+        bubble.classList.remove('asistente-bubble--switching');
+      }, 250);
+    }, 10000);
+  });
+
+  /* ── Partículas de colores ───────────────────────── */
+  const particleColors = ['#FFD700','#FF6B8A','#00C9A7','#845EF7','#FF9F43','#54A0FF','#FF6348','#2ED573'];
+
+  function spawnParticles(count) {
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'asistente-particle';
+      const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 50 + Math.random() * 90;
+      const px = Math.cos(angle) * dist;
+      const py = Math.sin(angle) * dist;
+      const size = 6 + Math.random() * 7;
+      p.style.cssText = `background:${color};width:${size}px;height:${size}px;left:50%;top:50%;--px:${px.toFixed(0)}px;--py:${py.toFixed(0)}px;animation-delay:${(Math.random()*0.35).toFixed(2)}s;`;
+      avatar.appendChild(p);
+      p.addEventListener('animationend', () => p.remove());
+    }
+  }
+
+  /* Partículas al hacer clic */
+  avatar.addEventListener('click', () => spawnParticles(30));
+
+  /* Lluvia constante de partículas cada 500ms */
+  setInterval(() => spawnParticles(8), 500);
 }

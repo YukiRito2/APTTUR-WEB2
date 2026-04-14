@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { id:13, nombre:'Chavín Tours',           logo:'logochavin.jpg',       url:'https://www.chavintours.com' },
     { id:14, nombre:'Connecting',             logo:'logoconnecting.jpg',   url:'https://www.connectingtours.com/' },
     { id:15, nombre:'Crown Tours',            logo:'logocrown.jpg',        url:'https://www.crowntours.com/' },
-    { id:16, nombre:'DC Tours',               logo:'logodc.jpg',           url:'https://dctourstravel.com/' },
+    { id:16, nombre:'DC Tours',               logo:'logodc.jpg',           url:'https://transporteturisticoperu.com/' },
     { id:17, nombre:'Destinos',               logo:'logodestinos.png',     url:'https://www.transportedestinos.com/' },
     { id:18, nombre:'DRC Tours',              logo:'logodrc.jpg',          url:'https://drc-tours.com/' },
     { id:19, nombre:'Edu Tours',              logo:'logoedu.png',          url:'https://www.edutoursperu.com' },
