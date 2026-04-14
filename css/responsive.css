@@ -185,15 +185,31 @@
   .servicio-featured {
     flex-direction: row;
     align-items: center;
-    padding: 40px 36px;
+    padding: 48px 44px;
+    gap: 36px;
+  }
+  .servicio-featured-icon {
+    width: 96px;
+    height: 96px;
+  }
+  .servicio-featured-icon svg {
+    width: 44px;
+    height: 44px;
+  }
+  .servicio-featured-content h3 {
+    font-size: 1.75rem;
   }
   .servicios-cta-banner {
     flex-direction: row;
     text-align: left;
-    padding: 40px 36px;
+    padding: 48px 44px;
+    gap: 40px;
   }
   .cta-banner-content { flex: 1; }
-  .cta-banner-content p { margin: 0; }
+  .cta-banner-content h3 { font-size: 2rem; }
+  .cta-banner-content p { margin: 0 0 20px; }
+  .cta-benefits { flex-direction: row; gap: 20px; }
+  .cta-banner-action { align-items: flex-start; }
 
   /* ── Marco Legal ─────────────────────────────────── */
   .section-leyes { padding: 80px 0; }
@@ -314,10 +330,26 @@
     gap: 28px;
   }
   .servicio-card { padding: 32px; }
-  .servicio-featured-content h3 { font-size: 1.625rem; }
-  .servicio-featured-stats { gap: 20px; }
-  .stat-item { padding: 16px 24px; }
-  .stat-item strong { font-size: 1.75rem; }
+  .servicio-featured {
+    padding: 56px 52px;
+    gap: 44px;
+  }
+  .servicio-featured-icon {
+    width: 110px;
+    height: 110px;
+    border-radius: var(--radius-xl);
+  }
+  .servicio-featured-icon svg {
+    width: 52px;
+    height: 52px;
+  }
+  .servicio-featured-content h3 { font-size: 2rem; }
+  .servicio-featured-content p { font-size: 1.0625rem; }
+  .servicio-featured-stats { gap: 24px; }
+  .stat-item { padding: 28px 24px 22px; }
+  .stat-counter { font-size: 3.5rem; }
+  .stat-prefix { font-size: 2.25rem; }
+  .stat-item span { font-size: 0.8125rem; }
 
   /* ── Marco Legal — 2 cols stacked ───────────────── */
   .leyes-grid {

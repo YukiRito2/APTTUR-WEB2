@@ -86,15 +86,15 @@
             <p>Representación gremial ante entidades gubernamentales como el MTC, ATU, MINCETUR, municipalidades y el Congreso de la República. Tu voz es nuestra voz ante las autoridades.</p>
             <div class="servicio-featured-stats">
               <div class="stat-item">
-                <strong>+10</strong>
+                <strong class="stat-counter"><span class="stat-prefix">+</span><span data-end="10" data-suffix="">0</span></strong>
                 <span>Entidades aliadas</span>
               </div>
               <div class="stat-item">
-                <strong>+50</strong>
+                <strong class="stat-counter"><span class="stat-prefix">+</span><span data-end="50" data-suffix="">0</span></strong>
                 <span>Empresas respaldadas</span>
               </div>
               <div class="stat-item">
-                <strong>100%</strong>
+                <strong class="stat-counter"><span data-end="100" data-suffix="%">0</span></strong>
                 <span>Compromiso gremial</span>
               </div>
             </div>
@@ -171,15 +171,42 @@
 
         <!-- CTA Banner -->
         <div class="servicios-cta-banner fade-in-up" data-delay="6">
-          <div class="cta-banner-content">
-            <div class="cta-banner-emoji">&#128640;</div>
-            <h3>¿Listo para impulsar tu empresa?</h3>
-            <p>Únete a APTTUR hoy y accede a todos estos beneficios. Más de 50 empresas ya confían en nosotros.</p>
+          <div class="cta-banner-shapes">
+            <div class="cta-shape cta-shape--1"></div>
+            <div class="cta-shape cta-shape--2"></div>
+            <div class="cta-shape cta-shape--3"></div>
           </div>
-          <a href="contactenos.html" class="btn btn-primary btn-cta-banner">
-            ¡Quiero asociarme!
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <div class="cta-banner-content">
+            <span class="cta-badge">&#128640; Únete hoy</span>
+            <h3>¿Listo para impulsar <br>tu empresa?</h3>
+            <p>Accede a respaldo legal, red de contactos y visibilidad para tu empresa de transporte turístico.</p>
+            <ul class="cta-benefits">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Respaldo institucional
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Red de +50 empresas
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Asesoría legal gratuita
+              </li>
+            </ul>
+          </div>
+          <div class="cta-banner-action">
+            <a href="contactenos.html" class="btn btn-primary btn-cta-banner">
+              <span>¡Quiero asociarme!</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <div class="cta-trust">
+              <div class="cta-trust-avatars">
+                <span>🏢</span><span>🚌</span><span>🚐</span>
+              </div>
+              <p>+50 empresas ya confían en nosotros</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -192,5 +219,6 @@
   <!-- Scripts -->
   <script src="js/main.js"></script>
   <script src="js/animations.js"></script>
+  <script src="js/counter.js"></script>
 </body>
 </html>
