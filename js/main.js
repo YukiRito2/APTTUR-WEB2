@@ -453,4 +453,78 @@ function injectAsistente() {
 
   /* Lluvia constante de partículas cada 500ms */
   setInterval(() => spawnParticles(8), 500);
+
+  /* ── Desktop: roaming assistant with tilt ────────── */
+  function isDesktop() {
+    return window.matchMedia('(min-width: 768px)').matches;
+  }
+
+  if (isDesktop()) {
+    // Positions around the screen (corner-ish areas)
+    const positions = [
+      { bottom: '90px',  right: '24px',  left: 'auto', top: 'auto', rotate: '0deg' },        // bottom-right (default)
+      { bottom: 'auto',  right: '32px',  left: 'auto', top: '120px', rotate: '-8deg' },       // top-right
+      { bottom: '90px',  right: 'auto',  left: '24px', top: 'auto', rotate: '8deg' },         // bottom-left
+      { bottom: 'auto',  right: 'auto',  left: '32px', top: '120px', rotate: '-6deg' },       // top-left
+      { bottom: '50%',   right: '24px',  left: 'auto', top: 'auto', rotate: '-10deg' },       // mid-right
+      { bottom: '50%',   right: 'auto',  left: '24px', top: 'auto', rotate: '10deg' },        // mid-left
+      { bottom: '160px', right: '80px',  left: 'auto', top: 'auto', rotate: '-5deg' },        // lower-right offset
+      { bottom: 'auto',  right: '100px', left: 'auto', top: '140px', rotate: '6deg' },        // upper-right offset
+    ];
+
+    let posIdx = 0;
+
+    function applyPosition(pos) {
+      el.style.transition = 'all 1.4s cubic-bezier(0.22, 1, 0.36, 1)';
+      el.style.bottom = pos.bottom;
+      el.style.right  = pos.right;
+      el.style.left   = pos.left;
+      el.style.top    = pos.top;
+      el.style.transform = 'rotate(' + pos.rotate + ')';
+
+      // Flip bubble alignment when on the left side
+      if (pos.left !== 'auto') {
+        el.style.alignItems = 'flex-start';
+        bubble.style.borderRadius = '16px 16px 16px 4px';
+      } else {
+        el.style.alignItems = 'flex-end';
+        bubble.style.borderRadius = '16px 16px 4px 16px';
+      }
+    }
+
+    function roamNext() {
+      if (!isDesktop()) return;
+      posIdx = (posIdx + 1) % positions.length;
+      applyPosition(positions[posIdx]);
+    }
+
+    // Roam every time the tip changes (every 10s), synced with auto-rotate
+    let roamTimer = setInterval(roamNext, 10000);
+
+    // Also move on click
+    avatar.addEventListener('click', () => {
+      roamNext();
+    });
+
+    // Pause roaming on hover
+    el.addEventListener('mouseenter', () => clearInterval(roamTimer));
+    el.addEventListener('mouseleave', () => {
+      roamTimer = setInterval(roamNext, 10000);
+    });
+
+    // Handle resize: reset to default if going to mobile
+    window.addEventListener('resize', () => {
+      if (!isDesktop()) {
+        el.style.transition = 'none';
+        el.style.bottom = '';
+        el.style.right  = '';
+        el.style.left   = '';
+        el.style.top    = '';
+        el.style.transform = '';
+        el.style.alignItems = '';
+        bubble.style.borderRadius = '';
+        clearInterval(roamTimer);
+      }
+    });
+  }
 }
