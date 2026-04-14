@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { id:21, nombre:'Eminiari',               logo:'logoeminiari.jpg',     url:'https://www.eminiari.com' },
     { id:22, nombre:'Giin Tours',             logo:'logogiin.png',         url:'https://www.giintours.com' },
     { id:23, nombre:'Inka Tours',             logo:'logoinka.png',         url:'https://www.inkaexpress.com/es/' },
-    { id:24, nombre:'J&M Tours',              logo:'LogoJ&M.jpg',         url:'https://www.jmtoursperu.com' },
+    { id:24, nombre:'J&M Tours',              logo:'LogoJ&M.jpg',          url:'https://www.jmtoursperu.com' },
     { id:25, nombre:'Jamuy Tours',            logo:'logojamuy.jpg',        url:'https://perujamuytravel.com/' },
     { id:26, nombre:'Jhony Tours',            logo:'logojhony.png',        url:'https://www.jhonytours.com' },
     { id:27, nombre:'Joggys Tours',           logo:'Logojoggys.jpg',       url:'https://joggystours.com.pe/' },
