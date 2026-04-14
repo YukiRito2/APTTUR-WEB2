@@ -182,6 +182,18 @@
   /* ── Servicios ──────────────────────────────────── */
   .section-servicios { padding: 80px 0; }
   .servicio-card { padding: 32px; }
+  .servicio-featured {
+    flex-direction: row;
+    align-items: center;
+    padding: 40px 36px;
+  }
+  .servicios-cta-banner {
+    flex-direction: row;
+    text-align: left;
+    padding: 40px 36px;
+  }
+  .cta-banner-content { flex: 1; }
+  .cta-banner-content p { margin: 0; }
 
   /* ── Marco Legal ─────────────────────────────────── */
   .section-leyes { padding: 80px 0; }
@@ -302,6 +314,10 @@
     gap: 28px;
   }
   .servicio-card { padding: 32px; }
+  .servicio-featured-content h3 { font-size: 1.625rem; }
+  .servicio-featured-stats { gap: 20px; }
+  .stat-item { padding: 16px 24px; }
+  .stat-item strong { font-size: 1.75rem; }
 
   /* ── Marco Legal — 2 cols stacked ───────────────── */
   .leyes-grid {
