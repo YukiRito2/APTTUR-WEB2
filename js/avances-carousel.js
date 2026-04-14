@@ -18,6 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!cards.length) return;
 
+  /* ── Clone cards for infinite loop ──────────── */
+  var originalCards = Array.from(cards);
+  var totalOriginal = originalCards.length;
+  originalCards.forEach(function(card) {
+    var clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.classList.add('is-clone');
+    track.appendChild(clone);
+  });
+  // Re-select all cards (originals + clones) for click handlers
+  var allCards = track.querySelectorAll('.avance-card');
+
   let currentX      = 0;
   let currentIdx    = 0;
   let autoTimer     = null;
@@ -39,8 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return track.scrollWidth - carousel.offsetWidth + 32;
   }
 
+  /* Width of all original cards (used for seamless loop reset) */
+  function getOriginalSetWidth() {
+    return getCardWidth() * totalOriginal;
+  }
+
   function moveTo(x, smooth) {
-    currentX = Math.max(0, Math.min(x, getMaxScroll()));
+    currentX = Math.max(0, x);
     track.style.transition = smooth !== false
       ? 'transform 400ms cubic-bezier(0.22,0.68,0.35,1)'
       : 'none';
@@ -49,16 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSpotlight();
   }
 
+  /* Seamless reset after transition ends */
+  function checkLoopReset() {
+    var setWidth = getOriginalSetWidth();
+    if (currentX >= setWidth) {
+      currentX -= setWidth;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + (-currentX) + 'px)';
+    } else if (currentX < 0) {
+      currentX += setWidth;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + (-currentX) + 'px)';
+    }
+  }
+  track.addEventListener('transitionend', checkLoopReset);
+
   function updateProgress() {
-    var max = getMaxScroll();
-    var pct = max > 0 ? (currentX / max) * 100 : 0;
+    var setWidth = getOriginalSetWidth();
+    var pct = setWidth > 0 ? ((currentX % setWidth) / setWidth) * 100 : 0;
     progressBar.style.width = pct + '%';
   }
 
   /* ── Figure out which card is closest to the viewport center ── */
   function getActiveIndex() {
     var step = getCardWidth();
-    return Math.round(currentX / step);
+    var raw = Math.round(currentX / step);
+    return ((raw % totalOriginal) + totalOriginal) % totalOriginal;
   }
 
   /* ── Spotlight: highlight the active card ──── */
@@ -66,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     var idx = getActiveIndex();
     if (idx !== currentIdx || idx === 0) {
       currentIdx = idx;
-      cards.forEach(function(c, i) {
-        c.classList.toggle('is-spotlight', i === idx);
+      allCards.forEach(function(c, i) {
+        c.classList.toggle('is-spotlight', (i % totalOriginal) === idx);
       });
       updateDots(idx);
     }
@@ -138,20 +171,31 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Arrow nav ──────────────────────────────── */
   function slideNext() {
     var step = getCardWidth();
-    if (currentX >= getMaxScroll() - 10) {
-      moveTo(0);
-    } else {
-      moveTo(currentX + step);
+    var setWidth = getOriginalSetWidth();
+    var next = currentX + step;
+    // If we'd go past the clones, reset first then move
+    if (next > setWidth + step) {
+      currentX -= setWidth;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + (-currentX) + 'px)';
+      // Force reflow before animating
+      void track.offsetWidth;
+      next = currentX + step;
     }
+    moveTo(next);
   }
 
   function slidePrev() {
     var step = getCardWidth();
-    if (currentX <= 10) {
-      moveTo(getMaxScroll());
-    } else {
-      moveTo(currentX - step);
+    var setWidth = getOriginalSetWidth();
+    if (currentX <= 0) {
+      // Jump to the clone set, then animate back
+      currentX += setWidth;
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(' + (-currentX) + 'px)';
+      void track.offsetWidth;
     }
+    moveTo(currentX - step);
   }
 
   nextBtn.addEventListener('click', function() { slideNext(); resetAuto(); });
@@ -253,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
   track.addEventListener('dragstart', function(e) { e.preventDefault(); });
 
   /* ── Card click → redirect ──────────────────── */
-  cards.forEach(function(card) {
+  allCards.forEach(function(card) {
     card.addEventListener('click', function() {
       if (Math.abs(currentX - startScroll) > 5) return;
       var id = card.dataset.newsId;
