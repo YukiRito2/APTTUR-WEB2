@@ -101,6 +101,9 @@
   display: flex;
   gap: 16px;
   width: max-content;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
 }
 
 /* ── Empresa Card ───────────────────────────────────── */

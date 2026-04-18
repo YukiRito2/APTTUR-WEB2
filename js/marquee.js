@@ -103,88 +103,220 @@ document.addEventListener('DOMContentLoaded', function () {
     html += '</div>';
     html += '</div>';
   });
-  // ── Swipe/drag soporte móvil ─────────────────────
-  if (isMobile()) {
+
+  root.innerHTML = html;
+
+  // ── Drag + hover para todas las pantallas ─────────
+  (function initInteraction() {
     var rowsEls = root.querySelectorAll('.marquee-row');
     rowsEls.forEach(function(rowEl) {
       var track = rowEl.querySelector('.marquee-track');
       if (!track) return;
-      var animClass = Array.from(track.classList).find(function(c){return c.startsWith('animate-marquee-');});
-      var isDragging = false, startX = 0, scrollLeft = 0, lastX = 0, velocity = 0, rafId = null;
 
-      // Hacer track "scrollable" manual
-      track.style.overflowX = 'auto';
-      track.style.scrollBehavior = 'auto';
-      track.style.webkitOverflowScrolling = 'touch';
+      var isDragging = false;
+      var didDrag = false;
+      var startX = 0;
+      var dragOffset = 0;
+      var lastX = 0;
+      var isHovering = false;
+      var momentumId = null;
+
+      // Historial de posiciones para calcular velocidad suavizada
+      var posHistory = [];
+      var timeHistory = [];
+
+      // Detectar dirección y nombre de la animación
+      var isLeft = track.classList.contains('animate-marquee-left');
+      var animName = isLeft ? 'marquee-left' : 'marquee-right';
+      var speed = track.style.getPropertyValue('--marquee-speed') || (isLeft ? '45s' : '50s');
+
       track.style.cursor = 'grab';
 
-      // Detener animación automática al tocar
-      function pauseAnim() {
-        if (animClass) track.classList.remove(animClass);
+      // ── Helpers ──
+      function getTranslateX() {
+        var style = window.getComputedStyle(track);
+        var matrix = style.transform || style.webkitTransform;
+        if (!matrix || matrix === 'none') return 0;
+        var vals = matrix.match(/matrix.*\((.+)\)/);
+        if (!vals) return 0;
+        return parseFloat(vals[1].split(', ')[4]) || 0;
       }
-      function resumeAnim(dir) {
-        if (animClass) track.classList.remove('animate-marquee-left','animate-marquee-right');
-        if (dir) track.classList.add('animate-marquee-' + dir);
-        else if (animClass) track.classList.add(animClass);
+
+      function getTrackHalfWidth() {
+        return track.scrollWidth / 2;
       }
 
-      // Touch events
-      track.addEventListener('touchstart', function(e) {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        scrollLeft = track.scrollLeft;
-        lastX = startX;
-        velocity = 0;
-        pauseAnim();
-      }, {passive:true});
+      function setTranslateX(tx) {
+        track.style.transform = 'translateX(' + tx + 'px)';
+      }
 
-      track.addEventListener('touchmove', function(e) {
-        if (!isDragging) return;
-        var x = e.touches[0].clientX;
-        var dx = x - lastX;
-        velocity = dx;
-        track.scrollLeft = scrollLeft - (x - startX);
-        lastX = x;
-      }, {passive:true});
+      // Calcula la velocidad promedio de los últimos ~80ms
+      function getSmoothedVelocity() {
+        var now = Date.now();
+        // Filtrar solo las muestras de los últimos 80ms
+        while (timeHistory.length > 0 && now - timeHistory[0] > 80) {
+          timeHistory.shift();
+          posHistory.shift();
+        }
+        if (posHistory.length < 2) return 0;
+        var dt = timeHistory[timeHistory.length - 1] - timeHistory[0];
+        if (dt === 0) return 0;
+        var dx = posHistory[posHistory.length - 1] - posHistory[0];
+        return dx / dt; // px por ms
+      }
 
-      track.addEventListener('touchend', function(e) {
-        isDragging = false;
-        // Detectar dirección swipe
-        var dir = (velocity < 0) ? 'left' : 'right';
-        resumeAnim(dir);
-      });
-      // Opcional: soporte mouse drag en desktop
-      var mouseDown = false, mouseStartX = 0, mouseScrollLeft = 0;
-      track.addEventListener('mousedown', function(e) {
-        mouseDown = true;
-        mouseStartX = e.clientX;
-        mouseScrollLeft = track.scrollLeft;
-        pauseAnim();
-        track.style.cursor = 'grabbing';
-      });
-      track.addEventListener('mousemove', function(e) {
-        if (!mouseDown) return;
-        var dx = e.clientX - mouseStartX;
-        track.scrollLeft = mouseScrollLeft - dx;
-      });
-      track.addEventListener('mouseup', function(e) {
-        mouseDown = false;
-        // Detectar dirección
-        var dir = (e.movementX < 0) ? 'left' : 'right';
-        resumeAnim(dir);
-        track.style.cursor = 'grab';
-      });
-      track.addEventListener('mouseleave', function(e) {
-        if (mouseDown) {
-          mouseDown = false;
-          resumeAnim();
-          track.style.cursor = 'grab';
+      function cancelMomentum() {
+        if (momentumId) {
+          cancelAnimationFrame(momentumId);
+          momentumId = null;
+        }
+      }
+
+      // Calcula el animation-delay negativo para reanudar desde una posición
+      function calcDelay(tx) {
+        var halfW = getTrackHalfWidth();
+        if (halfW === 0) return '0s';
+        var speedSec = parseFloat(speed);
+        var normalized = ((tx % halfW) + halfW) % halfW;
+        var progress;
+        if (isLeft) {
+          progress = (halfW - normalized) / halfW;
+        } else {
+          progress = normalized / halfW;
+        }
+        return '-' + (progress * speedSec).toFixed(3) + 's';
+      }
+
+      function resumeFromPosition(tx) {
+        var delay = calcDelay(tx);
+        track.style.removeProperty('transform');
+        track.style.removeProperty('transition');
+        track.style.animation = animName + ' ' + speed + ' linear infinite';
+        track.style.animationDelay = delay;
+        if (isHovering) {
+          track.style.animationPlayState = 'paused';
+        } else {
+          track.style.removeProperty('animation-play-state');
+        }
+      }
+
+      // Momentum con deceleración suave por frame
+      function startMomentum(currentTx, vel) {
+        var tx = currentTx;
+        var v = vel * 16; // convertir de px/ms a px/frame (~16ms)
+        var friction = 0.95;
+        var minV = 0.3;
+
+        function tick() {
+          v *= friction;
+          if (Math.abs(v) < minV) {
+            resumeFromPosition(tx);
+            return;
+          }
+          tx += v;
+          setTranslateX(tx);
+          momentumId = requestAnimationFrame(tick);
+        }
+        momentumId = requestAnimationFrame(tick);
+      }
+
+      // ── Hover: pause / resume ──
+      rowEl.addEventListener('mouseenter', function() {
+        isHovering = true;
+        if (!isDragging) {
+          track.style.animationPlayState = 'paused';
         }
       });
-    });
-  }
 
-  root.innerHTML = html;
+      rowEl.addEventListener('mouseleave', function() {
+        isHovering = false;
+        if (isDragging) {
+          onDragEnd();
+        } else {
+          track.style.removeProperty('animation-play-state');
+        }
+      });
+
+      // ── Drag ──
+      function onDragStart(x) {
+        cancelMomentum();
+        isDragging = true;
+        didDrag = false;
+        startX = x;
+        lastX = x;
+        posHistory = [x];
+        timeHistory = [Date.now()];
+        dragOffset = getTranslateX();
+        track.style.animation = 'none';
+        setTranslateX(dragOffset);
+        track.style.transition = 'none';
+        track.style.cursor = 'grabbing';
+      }
+
+      function onDragMove(x) {
+        if (!isDragging) return;
+        didDrag = didDrag || Math.abs(x - startX) > 3;
+        var tx = dragOffset + (x - startX);
+        setTranslateX(tx);
+        lastX = x;
+        // Guardar historial
+        posHistory.push(x);
+        timeHistory.push(Date.now());
+        // Mantener solo las últimas muestras
+        if (posHistory.length > 10) {
+          posHistory.shift();
+          timeHistory.shift();
+        }
+      }
+
+      function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        track.style.cursor = 'grab';
+
+        var finalTx = dragOffset + (lastX - startX);
+        var vel = getSmoothedVelocity();
+
+        if (Math.abs(vel) > 0.1) {
+          startMomentum(finalTx, vel);
+        } else {
+          resumeFromPosition(finalTx);
+        }
+      }
+
+      // Mouse drag
+      track.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        onDragStart(e.clientX);
+      });
+      track.addEventListener('mousemove', function(e) {
+        onDragMove(e.clientX);
+      });
+      track.addEventListener('mouseup', function() {
+        onDragEnd();
+      });
+
+      // Touch
+      track.addEventListener('touchstart', function(e) {
+        onDragStart(e.touches[0].clientX);
+      }, { passive: true });
+      track.addEventListener('touchmove', function(e) {
+        onDragMove(e.touches[0].clientX);
+      }, { passive: true });
+      track.addEventListener('touchend', function() {
+        isHovering = false; // no hay hover en touch
+        onDragEnd();
+      });
+
+      // Bloquear click si se arrastró
+      track.addEventListener('click', function(e) {
+        if (didDrag) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+    });
+  })();
 
   /* ── Fade-in-up: trigger visibility ──────────────── */
   if (root.classList.contains('fade-in-up')) {

@@ -42,10 +42,7 @@
   animation: marquee-right var(--marquee-speed, 50s) linear infinite;
 }
 
-.marquee-row:hover .animate-marquee-left,
-.marquee-row:hover .animate-marquee-right {
-  animation-play-state: paused;
-}
+/* hover pause is handled by JS for better drag compatibility */
 
 /* ── Hero slide ─────────────────────────────────────── */
 @keyframes heroFadeIn {

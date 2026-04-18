@@ -275,6 +275,33 @@
   line-height: 1.5;
 }
 
+/* ── Motivo Label ────────────────────────────────────── */
+.motivo-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--verde);
+  letter-spacing: 0.02em;
+  animation: motivo-label-pulse 2s ease-in-out infinite;
+}
+.motivo-label-icon {
+  font-size: 1.25rem;
+  animation: motivo-point 1.5s ease-in-out infinite;
+}
+@keyframes motivo-label-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+@keyframes motivo-point {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
 /* ── Motivo Chips ───────────────────────────────────── */
 .motivo-chips {
   display: flex;
@@ -282,6 +309,10 @@
   gap: 8px;
   margin-bottom: 20px;
   justify-content: center;
+  padding: 10px;
+  background: rgba(0,168,90,0.04);
+  border: 1.5px dashed rgba(0,168,90,0.3);
+  border-radius: 14px;
 }
 .motivo-chip {
   display: inline-flex;
