@@ -124,7 +124,7 @@ function injectFooter() {
       <!-- Brand -->
       <div class="footer-brand fade-in-up">
         <a href="index.html"><img src="images/logo/aptturlogo.png" alt="APTTUR" width="160" height="56" /></a>
-        <p>Asociación Peruana de Transporte Turístico. Más de 30 años fortaleciendo y modernizando el sector del transporte turístico en el Perú.</p>
+        <p>Asociación Peruana de Transporte Turístico. Desde 2019 fortaleciendo y modernizando el sector del transporte turístico en el Perú.</p>
         <div class="footer-social">
           <a href="https://www.facebook.com/profile.php?id=100047348003965" target="_blank" rel="noopener noreferrer" aria-label="Facebook">${ICONS.facebook}</a>
           <a href="https://www.instagram.com/aptturperu/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">${ICONS.instagram}</a>
