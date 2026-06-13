@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollToTop();
   initHomeNewsRedirect();
+  initHeroCounters();
 });
 
 /* ══════════════════════════════════════════════════════
@@ -303,6 +304,33 @@ function initHomeNewsRedirect() {
     e.preventDefault();
     const id = card.dataset.newsId;
     window.location.href = 'avances.html?id=' + encodeURIComponent(id);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO STAT COUNTERS
+   ══════════════════════════════════════════════════════ */
+function initHeroCounters() {
+  var nums = document.querySelectorAll('.hero-stat-num[data-target]');
+  if (!nums.length) return;
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  nums.forEach(function(el) {
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 1800;
+    var startTime = null;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var val = Math.floor(easeOutCubic(progress) * target);
+      el.textContent = val.toLocaleString('es-PE') + (progress >= 1 ? suffix : '');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    setTimeout(function() { requestAnimationFrame(step); }, 500);
   });
 }
 

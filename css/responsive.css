@@ -8,6 +8,11 @@
   .news-ticker-content {
     gap: 24px;
   }
+  /* Hero stats: hide icons, compact padding */
+  .hero-stat-icon { display: none; }
+  .hero-stat { padding: 12px 4px; gap: 0; }
+  .hero-stat-text { align-items: center; }
+  .hero-stat-sep { height: 32px; }
 }
 
 /* ═══ SM: ≥ 640px ═════════════════════════════════════ */
