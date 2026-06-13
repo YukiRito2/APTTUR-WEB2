@@ -25,7 +25,7 @@
 
 .navbar {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   gap: 10px;
   min-height: var(--navbar-h-mobile);
@@ -191,7 +191,7 @@
   top: 0;
   right: 0;
   justify-self: end;
-  grid-column: 4;
+  grid-column: 5;
 }
 .hamburger-btn:hover {
   background: var(--gris-fondo);

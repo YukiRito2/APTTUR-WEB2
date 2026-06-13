@@ -72,7 +72,7 @@ function injectNavbar() {
     { href: 'index.html', label: 'Inicio' },
     { href: 'quienes-somos.html', label: 'Quiénes Somos' },
     { href: 'asociados.html', label: 'Asociados' },
-    { href: 'servicios.html', label: 'Servicios' },
+    { href: 'servicios.html', label: 'Flota' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
   ];
@@ -95,6 +95,15 @@ function injectNavbar() {
         <img src="images/logo/aptturlogo.png" alt="APTTUR Logo" width="160" height="64" />
       </a>
       <div class="navbar-links" role="menubar">${navLinksHTML}</div>
+      <div class="navbar-live-pill" id="navbar-live-pill" aria-label="Visitas totales">
+        <span class="navbar-live-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <span class="navbar-live-copy">
+          <strong>VISITAS</strong>
+          <span id="navbar-live-count">—</span>
+        </span>
+      </div>
       <div class="navbar-cta">
         <a href="contactenos.html" class="btn-cta">Contáctanos ${ICONS.chevronRight}</a>
       </div>
@@ -379,13 +388,21 @@ async function fetchVisitorCounterValue() {
 }
 
 function updateTotalVisitsDisplay(totalVisits) {
+  const formatter = new Intl.NumberFormat('es-PE');
+
   const el = document.querySelector('[data-total-visits]');
-  if (!el) return;
-  el.dataset.end = String(totalVisits);
-  const rect = el.getBoundingClientRect();
-  const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-  if (isVisible && typeof window.animateImpactCounter === 'function') {
-    window.animateImpactCounter(el);
+  if (el) {
+    el.dataset.end = String(totalVisits);
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isVisible && typeof window.animateImpactCounter === 'function') {
+      window.animateImpactCounter(el);
+    }
+  }
+
+  const navCount = document.getElementById('navbar-live-count');
+  if (navCount) {
+    navCount.textContent = formatter.format(totalVisits);
   }
 }
 
