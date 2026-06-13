@@ -205,6 +205,24 @@
 .hamburger-btn[aria-expanded="true"] .icon-hamburger { display: none; }
 .hamburger-btn[aria-expanded="true"] .icon-close { display: block; }
 
+@media (max-width: 767px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .hamburger-btn {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 0;
+    z-index: 3;
+  }
+}
+
 /* ── Mobile Menu ────────────────────────────────────── */
 .mobile-menu {
   position: absolute;
