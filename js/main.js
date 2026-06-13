@@ -72,7 +72,7 @@ function injectNavbar() {
     { href: 'index.html', label: 'Inicio' },
     { href: 'quienes-somos.html', label: 'Quiénes Somos' },
     { href: 'asociados.html', label: 'Asociados' },
-    { href: 'servicios.html', label: 'Flota' },
+    { href: 'flota.html', label: 'Flota' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
   ];
