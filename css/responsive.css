@@ -65,7 +65,8 @@
 
   /* ── Navbar ──────────────────────────────────────── */
   .navbar {
-    height: var(--navbar-h-desktop);
+    grid-template-columns: auto 1fr auto auto;
+    min-height: var(--navbar-h-desktop);
     padding: 0 var(--px-tablet);
   }
   .navbar-logo img { height: 64px; }
@@ -73,6 +74,7 @@
     display: flex;
     gap: 4px;
   }
+  .navbar-live-pill { display: inline-flex; }
   .navbar-cta { display: block; }
   .hamburger-btn { display: none; }
   .mobile-menu { display: none !important; }

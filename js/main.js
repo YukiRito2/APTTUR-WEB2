@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollToTop();
   initHomeNewsRedirect();
+  updateTotalVisitsCounter();
 });
 
 /* ══════════════════════════════════════════════════════
@@ -33,6 +34,7 @@ const ICONS = {
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
   shieldCheck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
   users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>',
+  live: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M17 10h4l-2 4z"/><circle cx="10" cy="12" r="3"/></svg>',
   handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 00-7.65 0l-.77.78-.77-.78a5.4 5.4 0 00-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>',
   gavel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5l5 5-11 11-5-5z"/><path d="M3 21l3-3"/><path d="M19.5 2.5l2 2"/><path d="M2.5 19.5l2 2"/><line x1="18" y1="8" x2="22" y2="4"/></svg>',
   monitor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
@@ -75,7 +77,6 @@ function injectNavbar() {
     { href: 'servicios.html', label: 'Servicios' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
-    { href: 'contactenos.html', label: 'Contáctenos' },
   ];
 
   const navLinksHTML = links.map(l => {
@@ -96,8 +97,15 @@ function injectNavbar() {
         <img src="images/logo/aptturlogo.png" alt="APTTUR Logo" width="160" height="64" />
       </a>
       <div class="navbar-links" role="menubar">${navLinksHTML}</div>
+      <button type="button" class="navbar-live-pill" aria-label="Visitas totales" title="Visitas totales">
+        <span class="navbar-live-icon">${ICONS.live}</span>
+        <span class="navbar-live-copy">
+          <strong>Visitas</strong>
+          <span data-total-visits-navbar>0</span>
+        </span>
+      </button>
       <div class="navbar-cta">
-        <a href="contactenos.html" class="btn-cta">Asóciate ${ICONS.chevronRight}</a>
+        <a href="contactenos.html" class="btn-cta">Contáctenos ${ICONS.chevronRight}</a>
       </div>
       <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="icon-hamburger">${ICONS.hamburger}</span>
@@ -106,7 +114,7 @@ function injectNavbar() {
     </nav>
     <div class="mobile-menu" id="mobile-menu" role="menu">
       ${mobileLinksHTML}
-      <a href="contactenos.html" class="btn-cta-mobile">Asóciate ${ICONS.chevronRight}</a>
+      <a href="contactenos.html" class="btn-cta-mobile">Contáctenos ${ICONS.chevronRight}</a>
     </div>
   `;
 }
@@ -298,13 +306,153 @@ function initHomeNewsRedirect() {
   });
 }
 
+const VISITOR_COUNTER_ENDPOINT = '/api/visitor-counter';
+const VISITOR_COUNTER_STORAGE_KEY = 'apttur_visitor_number';
+const VISITOR_COUNTER_COOKIE_KEY = 'apttur_visitor_number';
+const ASSISTANT_INTRO_DURATION = 20000;
+const ASSISTANT_TIP_DURATION = 10000;
+
+function readStorageItem(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeStorageItem(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (error) {
+    // Ignore storage failures and keep cookie persistence as backup.
+  }
+}
+
+function getCookie(name) {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = document.cookie.match(new RegExp('(?:^|; )' + escapedName + '=([^;]*)'));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name, value, days) {
+  const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expiresAt + '; path=/; SameSite=Lax';
+}
+
+function readStoredVisitorNumber() {
+  const storageValue = readStorageItem(VISITOR_COUNTER_STORAGE_KEY);
+  if (/^\d+$/.test(storageValue || '')) {
+    return Number(storageValue);
+  }
+
+  const cookieValue = getCookie(VISITOR_COUNTER_COOKIE_KEY);
+  if (/^\d+$/.test(cookieValue || '')) {
+    writeStorageItem(VISITOR_COUNTER_STORAGE_KEY, cookieValue);
+    return Number(cookieValue);
+  }
+
+  return null;
+}
+
+function persistVisitorNumber(visitorNumber) {
+  const value = String(visitorNumber);
+  writeStorageItem(VISITOR_COUNTER_STORAGE_KEY, value);
+  setCookie(VISITOR_COUNTER_COOKIE_KEY, value, 365);
+}
+
+async function fetchVisitorCounterValue() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  try {
+    const response = await fetch(VISITOR_COUNTER_ENDPOINT, {
+      method: 'GET',
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error('No se pudo consultar el contador');
+    }
+
+    const payload = await response.json();
+
+    if (!payload || typeof payload.value !== 'number' || typeof payload.totalVisits !== 'number') {
+      throw new Error('Respuesta invalida del contador');
+    }
+
+    return payload;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+function updateTotalVisitsCounter() {
+  const totalVisitsElements = document.querySelectorAll('[data-total-visits], [data-total-visits-navbar]');
+  if (!totalVisitsElements.length) return;
+
+  const formatter = new Intl.NumberFormat('es-PE');
+
+  fetchVisitorCounterValue()
+    .then((payload) => {
+      if (typeof payload.totalVisits !== 'number') return;
+
+      totalVisitsElements.forEach((element) => {
+        element.dataset.end = String(payload.totalVisits);
+        element.textContent = '0';
+        element.classList.add('counter-value');
+
+        if (element.hasAttribute('data-total-visits-navbar')) {
+          element.textContent = formatter.format(payload.totalVisits);
+          return;
+        }
+
+        if (typeof window.animateImpactCounter === 'function') {
+          window.animateImpactCounter(element);
+        } else {
+          element.textContent = formatter.format(payload.totalVisits);
+        }
+      });
+    })
+    .catch(() => {
+      totalVisitsElements.forEach((element) => {
+        element.textContent = '—';
+      });
+    });
+}
+
+async function resolveVisitorCounterMessage() {
+  const formatter = new Intl.NumberFormat('es-PE');
+  const storedVisitorNumber = readStoredVisitorNumber();
+
+  try {
+    const payload = await fetchVisitorCounterValue();
+    persistVisitorNumber(payload.value);
+
+    if (storedVisitorNumber) {
+      return '🌟 <strong>¡Qué gusto tenerte de vuelta!</strong> Tu número de visita es el <strong>' + formatter.format(payload.value) + '</strong> y esta web ya lleva <strong>' + formatter.format(payload.totalVisits) + '</strong> visitas acumuladas. Gracias por regresar y acompañarnos una vez más.';
+    }
+
+    if (payload.isReturning) {
+      return '🤝 <strong>¡Me alegra verte otra vez!</strong> Tu número de visita es el <strong>' + formatter.format(payload.value) + '</strong>. Hasta ahora esta página ha registrado <strong>' + formatter.format(payload.totalVisits) + '</strong> visitas en total. Siéntete con total confianza de navegar por nuestra web y descubrir todo lo que APTTUR tiene para ti.';
+    }
+
+    return '🎉 <strong>¡Bienvenido a APTTUR!</strong> Nos alegra mucho recibirte. Eres la visita número <strong>' + formatter.format(payload.value) + '</strong> de <strong>' + formatter.format(payload.totalVisits) + '</strong> visitas acumuladas en esta página. Guardaré este número para recordártelo cada vez que regreses desde este navegador.';
+  } catch (error) {
+    if (storedVisitorNumber) {
+      return '🌟 <strong>¡Qué gusto tenerte de vuelta!</strong> Tu número de visita es el <strong>' + formatter.format(storedVisitorNumber) + '</strong>. Gracias por regresar y acompañarnos una vez más.';
+    }
+
+    return '💚 <strong>¡Bienvenido a APTTUR!</strong> Qué bueno tenerte aquí. En este momento no pude consultar tu número de visita, pero igual me quedaré contigo para orientarte con nuestros consejos.';
+  }
+}
+
 /* ══════════════════════════════════════════════════════
    FLOATING HELP ASSISTANT — SVG Tour Guide + Tips Legales
    ══════════════════════════════════════════════════════ */
-function injectAsistente() {
+async function injectAsistente() {
   /* ── Frases que el bot va relatando ────────────────── */
   const frases = [
-    /* Saludo inicial */
     '👋 <strong>¡Hola, conductor!</strong> Soy tu guía legal de APTTUR. ¿Sabías que tienes derechos en cada intervención policial?',
 
     /* 1. Derecho a grabar */
@@ -340,7 +488,9 @@ function injectAsistente() {
   ];
 
   let indice = 0;
-  const saludoInicial = frases[0];
+  let autoTimer = null;
+  let introActivo = false;
+  const saludoInicial = '💬 <strong>Bienvenido a APTTUR.</strong> Dame unos segundos, estoy preparando tu saludo y tu número de visita con mucho gusto...';
 
   const el = document.createElement('div');
   el.className = 'asistente';
@@ -394,39 +544,43 @@ function injectAsistente() {
   const bubble = el.querySelector('.asistente-bubble');
   const avatar = el.querySelector('.asistente-avatar');
 
+  function renderBubble(message) {
+    bubble.classList.add('asistente-bubble--switching');
+    setTimeout(() => {
+      bubble.innerHTML = message;
+      bubble.classList.remove('asistente-bubble--switching');
+    }, 250);
+  }
+
+  function renderCurrentTip() {
+    renderBubble(frases[indice]);
+  }
+
+  function renderNextTip() {
+    indice = (indice + 1) % frases.length;
+    renderCurrentTip();
+  }
+
+  function startAutoRotation() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => {
+      renderNextTip();
+    }, ASSISTANT_TIP_DURATION);
+  }
+
   /* ── Cambiar frase al hacer clic en el avatar ──── */
   avatar.addEventListener('click', () => {
-    indice = (indice + 1) % frases.length;
-
-    /* Animación de salida + entrada */
-    bubble.classList.add('asistente-bubble--switching');
-    setTimeout(() => {
-      bubble.innerHTML = frases[indice];
-      bubble.classList.remove('asistente-bubble--switching');
-    }, 250);
+    if (introActivo) return;
+    renderNextTip();
+    startAutoRotation();
   });
-
-  /* ── Auto-rotar frases cada 10s ────────────────── */
-  let autoTimer = setInterval(() => {
-    indice = (indice + 1) % frases.length;
-    bubble.classList.add('asistente-bubble--switching');
-    setTimeout(() => {
-      bubble.innerHTML = frases[indice];
-      bubble.classList.remove('asistente-bubble--switching');
-    }, 250);
-  }, 10000);
 
   /* Pausar auto-rotación al pasar el mouse */
   el.addEventListener('mouseenter', () => clearInterval(autoTimer));
   el.addEventListener('mouseleave', () => {
-    autoTimer = setInterval(() => {
-      indice = (indice + 1) % frases.length;
-      bubble.classList.add('asistente-bubble--switching');
-      setTimeout(() => {
-        bubble.innerHTML = frases[indice];
-        bubble.classList.remove('asistente-bubble--switching');
-      }, 250);
-    }, 10000);
+    if (!introActivo) {
+      startAutoRotation();
+    }
   });
 
   /* ── Partículas de colores ───────────────────────── */
@@ -454,77 +608,19 @@ function injectAsistente() {
   /* Lluvia constante de partículas cada 500ms */
   setInterval(() => spawnParticles(8), 500);
 
+  introActivo = true;
+  renderBubble(await resolveVisitorCounterMessage());
+  setTimeout(() => {
+    introActivo = false;
+    indice = 0;
+    renderCurrentTip();
+    startAutoRotation();
+  }, ASSISTANT_INTRO_DURATION);
+
   /* ── Desktop: roaming assistant with tilt ────────── */
   function isDesktop() {
     return window.matchMedia('(min-width: 768px)').matches;
   }
 
-  if (isDesktop()) {
-    // Positions around the screen (corner-ish areas)
-    const positions = [
-      { bottom: '90px',  right: '24px',  left: 'auto', top: 'auto', rotate: '0deg' },        // bottom-right (default)
-      { bottom: 'auto',  right: '32px',  left: 'auto', top: '120px', rotate: '-8deg' },       // top-right
-      { bottom: '90px',  right: 'auto',  left: '24px', top: 'auto', rotate: '8deg' },         // bottom-left
-      { bottom: 'auto',  right: 'auto',  left: '32px', top: '120px', rotate: '-6deg' },       // top-left
-      { bottom: '50%',   right: '24px',  left: 'auto', top: 'auto', rotate: '-10deg' },       // mid-right
-      { bottom: '50%',   right: 'auto',  left: '24px', top: 'auto', rotate: '10deg' },        // mid-left
-      { bottom: '160px', right: '80px',  left: 'auto', top: 'auto', rotate: '-5deg' },        // lower-right offset
-      { bottom: 'auto',  right: '100px', left: 'auto', top: '140px', rotate: '6deg' },        // upper-right offset
-    ];
-
-    let posIdx = 0;
-
-    function applyPosition(pos) {
-      el.style.transition = 'all 1.4s cubic-bezier(0.22, 1, 0.36, 1)';
-      el.style.bottom = pos.bottom;
-      el.style.right  = pos.right;
-      el.style.left   = pos.left;
-      el.style.top    = pos.top;
-      el.style.transform = 'rotate(' + pos.rotate + ')';
-
-      // Flip bubble alignment when on the left side
-      if (pos.left !== 'auto') {
-        el.style.alignItems = 'flex-start';
-        bubble.style.borderRadius = '16px 16px 16px 4px';
-      } else {
-        el.style.alignItems = 'flex-end';
-        bubble.style.borderRadius = '16px 16px 4px 16px';
-      }
-    }
-
-    function roamNext() {
-      if (!isDesktop()) return;
-      posIdx = (posIdx + 1) % positions.length;
-      applyPosition(positions[posIdx]);
-    }
-
-    // Roam every time the tip changes (every 10s), synced with auto-rotate
-    let roamTimer = setInterval(roamNext, 10000);
-
-    // Also move on click
-    avatar.addEventListener('click', () => {
-      roamNext();
-    });
-
-    // Pause roaming on hover
-    el.addEventListener('mouseenter', () => clearInterval(roamTimer));
-    el.addEventListener('mouseleave', () => {
-      roamTimer = setInterval(roamNext, 10000);
-    });
-
-    // Handle resize: reset to default if going to mobile
-    window.addEventListener('resize', () => {
-      if (!isDesktop()) {
-        el.style.transition = 'none';
-        el.style.bottom = '';
-        el.style.right  = '';
-        el.style.left   = '';
-        el.style.top    = '';
-        el.style.transform = '';
-        el.style.alignItems = '';
-        bubble.style.borderRadius = '';
-        clearInterval(roamTimer);
-      }
-    });
-  }
+  // Assistant icon stays static (no automatic roaming across the screen).
 }

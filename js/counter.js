@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(tick);
   }
 
+  window.animateImpactCounter = animateCounter;
+
   /* ── Activate rings & mini-bars inside an impact-bar ── */
   function activateVisuals(bar) {
     bar.querySelectorAll('.impact-ring-progress').forEach(ring => {
