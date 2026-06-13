@@ -146,7 +146,7 @@ function injectFooter() {
           <li><a href="index.html"><span class="bullet"></span>Inicio</a></li>
           <li><a href="quienes-somos.html"><span class="bullet"></span>Quiénes Somos</a></li>
           <li><a href="asociados.html"><span class="bullet"></span>Asociados</a></li>
-          <li><a href="servicios.html"><span class="bullet"></span>Servicios</a></li>
+          <li><a href="flota.html"><span class="bullet"></span>Flota</a></li>
           <li><a href="leyes.html"><span class="bullet"></span>Marco Legal</a></li>
           <li><a href="avances.html"><span class="bullet"></span>Avances</a></li>
           <li><a href="contactenos.html"><span class="bullet"></span>Contáctenos</a></li>
@@ -175,7 +175,7 @@ function injectFooter() {
         <h4>Contacto</h4>
         <div class="footer-contact-item">
           ${ICONS.mapPin}
-          <a href="https://maps.google.com/?q=Lima,Peru" target="_blank" rel="noopener noreferrer">Lima, Perú</a>
+          <a href="https://maps.google.com/?q=Calle+Cayetano+Heredia+400+Jesus+Maria+Lima" target="_blank" rel="noopener noreferrer">Calle Cayetano Heredia Nº 400, Jesús María</a>
         </div>
         <div class="footer-contact-item">
           ${ICONS.phone}
