@@ -75,7 +75,6 @@ function injectNavbar() {
     { href: 'servicios.html', label: 'Servicios' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
-    { href: 'contactenos.html', label: 'Contáctenos' },
   ];
 
   const navLinksHTML = links.map(l => {
@@ -97,7 +96,7 @@ function injectNavbar() {
       </a>
       <div class="navbar-links" role="menubar">${navLinksHTML}</div>
       <div class="navbar-cta">
-        <a href="contactenos.html" class="btn-cta">Asóciate ${ICONS.chevronRight}</a>
+        <a href="contactenos.html" class="btn-cta">Contáctanos ${ICONS.chevronRight}</a>
       </div>
       <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="icon-hamburger">${ICONS.hamburger}</span>
@@ -106,7 +105,7 @@ function injectNavbar() {
     </nav>
     <div class="mobile-menu" id="mobile-menu" role="menu">
       ${mobileLinksHTML}
-      <a href="contactenos.html" class="btn-cta-mobile">Asóciate ${ICONS.chevronRight}</a>
+      <a href="contactenos.html" class="btn-cta-mobile">Contáctanos ${ICONS.chevronRight}</a>
     </div>
   `;
 }
@@ -379,6 +378,17 @@ async function fetchVisitorCounterValue() {
   }
 }
 
+function updateTotalVisitsDisplay(totalVisits) {
+  const el = document.querySelector('[data-total-visits]');
+  if (!el) return;
+  el.dataset.end = String(totalVisits);
+  const rect = el.getBoundingClientRect();
+  const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+  if (isVisible && typeof window.animateImpactCounter === 'function') {
+    window.animateImpactCounter(el);
+  }
+}
+
 async function resolveVisitorCounterMessage() {
   const formatter = new Intl.NumberFormat('es-PE');
   const storedVisitorNumber = readStoredVisitorNumber();
@@ -386,6 +396,7 @@ async function resolveVisitorCounterMessage() {
   try {
     const payload = await fetchVisitorCounterValue();
     persistVisitorNumber(payload.value);
+    updateTotalVisitsDisplay(payload.totalVisits);
 
     if (storedVisitorNumber) {
       return '🌟 <strong>¡Qué gusto tenerte de vuelta!</strong> Tu número de visita es el <strong>' + formatter.format(payload.value) + '</strong> y esta web ya lleva <strong>' + formatter.format(payload.totalVisits) + '</strong> visitas acumuladas. Gracias por regresar y acompañarnos una vez más.';

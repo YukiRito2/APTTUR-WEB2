@@ -42,6 +42,12 @@ if (!metaRow) {
   db.prepare('INSERT INTO visitor_meta (meta_key, meta_value) VALUES (?, ?)').run('current_count', '0');
 }
 
+const totalVisitsRow = db.prepare('SELECT meta_value FROM visitor_meta WHERE meta_key = ?').get('total_visits');
+if (!totalVisitsRow) {
+  const seedCount = db.prepare('SELECT meta_value FROM visitor_meta WHERE meta_key = ?').get('current_count').meta_value;
+  db.prepare('INSERT INTO visitor_meta (meta_key, meta_value) VALUES (?, ?)').run('total_visits', seedCount);
+}
+
 function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
 }
@@ -93,7 +99,8 @@ const resolveVisitorNumber = db.transaction((visitorId, ipHash, fingerprintHash)
   const now = Date.now();
   const visitorKey = sha256([visitorId, ipHash, fingerprintHash, hashSalt].join('|'));
   const cutoff = now - recentFingerprintWindowHours * 60 * 60 * 1000;
-  const totalVisits = Number(db.prepare('SELECT meta_value FROM visitor_meta WHERE meta_key = ?').get('current_count').meta_value);
+  const uniqueCount = Number(db.prepare('SELECT meta_value FROM visitor_meta WHERE meta_key = ?').get('current_count').meta_value);
+  const currentTotal = Number(db.prepare('SELECT meta_value FROM visitor_meta WHERE meta_key = ?').get('total_visits').meta_value);
 
   const existing = db.prepare(`
     SELECT assigned_number
@@ -103,7 +110,7 @@ const resolveVisitorNumber = db.transaction((visitorId, ipHash, fingerprintHash)
 
   if (existing) {
     db.prepare('UPDATE visitor_registry SET last_seen = ? WHERE visitor_key = ?').run(now, visitorKey);
-    return { value: existing.assigned_number, totalVisits, isReturning: true, dedupeSource: 'visitor_key' };
+    return { value: existing.assigned_number, totalVisits: currentTotal, isReturning: true, dedupeSource: 'visitor_key' };
   }
 
   const recentMatch = db.prepare(`
@@ -129,13 +136,14 @@ const resolveVisitorNumber = db.transaction((visitorId, ipHash, fingerprintHash)
       ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(visitorKey, visitorId, ipHash, fingerprintHash, recentMatch.assigned_number, now, now);
 
-    return { value: recentMatch.assigned_number, totalVisits, isReturning: true, dedupeSource: 'fingerprint_window' };
+    return { value: recentMatch.assigned_number, totalVisits: currentTotal, isReturning: true, dedupeSource: 'fingerprint_window' };
   }
 
-  const currentCount = totalVisits;
-  const nextCount = currentCount + 1;
-
+  // Solo aquí, con un visitante genuinamente nuevo, se incrementan ambos contadores
+  const nextCount = uniqueCount + 1;
+  const nextTotal = currentTotal + 1;
   db.prepare('UPDATE visitor_meta SET meta_value = ? WHERE meta_key = ?').run(String(nextCount), 'current_count');
+  db.prepare('UPDATE visitor_meta SET meta_value = ? WHERE meta_key = ?').run(String(nextTotal), 'total_visits');
   db.prepare(`
     INSERT INTO visitor_registry (
       visitor_key,
@@ -148,7 +156,7 @@ const resolveVisitorNumber = db.transaction((visitorId, ipHash, fingerprintHash)
     ) VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(visitorKey, visitorId, ipHash, fingerprintHash, nextCount, now, now);
 
-  return { value: nextCount, totalVisits: nextCount, isReturning: false, dedupeSource: 'new_visitor' };
+  return { value: nextCount, totalVisits: nextTotal, isReturning: false, dedupeSource: 'new_visitor' };
 });
 
 app.get('/api/visitor-counter', (req, res) => {
