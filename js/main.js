@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollToTop();
   initHomeNewsRedirect();
-  updateTotalVisitsCounter();
 });
 
 /* ══════════════════════════════════════════════════════
@@ -34,7 +33,6 @@ const ICONS = {
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
   shieldCheck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
   users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>',
-  live: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M17 10h4l-2 4z"/><circle cx="10" cy="12" r="3"/></svg>',
   handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 00-7.65 0l-.77.78-.77-.78a5.4 5.4 0 00-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>',
   gavel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5l5 5-11 11-5-5z"/><path d="M3 21l3-3"/><path d="M19.5 2.5l2 2"/><path d="M2.5 19.5l2 2"/><line x1="18" y1="8" x2="22" y2="4"/></svg>',
   monitor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
@@ -77,6 +75,7 @@ function injectNavbar() {
     { href: 'servicios.html', label: 'Servicios' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
+    { href: 'contactenos.html', label: 'Contáctenos' },
   ];
 
   const navLinksHTML = links.map(l => {
@@ -97,15 +96,8 @@ function injectNavbar() {
         <img src="images/logo/aptturlogo.png" alt="APTTUR Logo" width="160" height="64" />
       </a>
       <div class="navbar-links" role="menubar">${navLinksHTML}</div>
-      <button type="button" class="navbar-live-pill" aria-label="Visitas totales" title="Visitas totales">
-        <span class="navbar-live-icon">${ICONS.live}</span>
-        <span class="navbar-live-copy">
-          <strong>Visitas</strong>
-          <span data-total-visits-navbar>0</span>
-        </span>
-      </button>
       <div class="navbar-cta">
-        <a href="contactenos.html" class="btn-cta">Contáctenos ${ICONS.chevronRight}</a>
+        <a href="contactenos.html" class="btn-cta">Asóciate ${ICONS.chevronRight}</a>
       </div>
       <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="icon-hamburger">${ICONS.hamburger}</span>
@@ -114,7 +106,7 @@ function injectNavbar() {
     </nav>
     <div class="mobile-menu" id="mobile-menu" role="menu">
       ${mobileLinksHTML}
-      <a href="contactenos.html" class="btn-cta-mobile">Contáctenos ${ICONS.chevronRight}</a>
+      <a href="contactenos.html" class="btn-cta-mobile">Asóciate ${ICONS.chevronRight}</a>
     </div>
   `;
 }
@@ -385,40 +377,6 @@ async function fetchVisitorCounterValue() {
   } finally {
     clearTimeout(timeoutId);
   }
-}
-
-function updateTotalVisitsCounter() {
-  const totalVisitsElements = document.querySelectorAll('[data-total-visits], [data-total-visits-navbar]');
-  if (!totalVisitsElements.length) return;
-
-  const formatter = new Intl.NumberFormat('es-PE');
-
-  fetchVisitorCounterValue()
-    .then((payload) => {
-      if (typeof payload.totalVisits !== 'number') return;
-
-      totalVisitsElements.forEach((element) => {
-        element.dataset.end = String(payload.totalVisits);
-        element.textContent = '0';
-        element.classList.add('counter-value');
-
-        if (element.hasAttribute('data-total-visits-navbar')) {
-          element.textContent = formatter.format(payload.totalVisits);
-          return;
-        }
-
-        if (typeof window.animateImpactCounter === 'function') {
-          window.animateImpactCounter(element);
-        } else {
-          element.textContent = formatter.format(payload.totalVisits);
-        }
-      });
-    })
-    .catch(() => {
-      totalVisitsElements.forEach((element) => {
-        element.textContent = '—';
-      });
-    });
 }
 
 async function resolveVisitorCounterMessage() {
