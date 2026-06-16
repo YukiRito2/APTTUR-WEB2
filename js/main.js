@@ -769,6 +769,27 @@ async function injectAsistente() {
   `;
   document.body.appendChild(el);
 
+  /* ── Ocultar en móvil al leer noticias ── */
+  (function () {
+    if (!window.IntersectionObserver) return;
+    var mq = window.matchMedia('(max-width: 767px)');
+    var targets = document.querySelectorAll('.section-news-featured, .section-noticias');
+    if (!targets.length) return;
+    var intersecting = new Set();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) intersecting.add(entry.target);
+        else intersecting.delete(entry.target);
+      });
+      el.classList.toggle('asistente--news-hidden', mq.matches && intersecting.size > 0);
+    }, { threshold: 0.15 });
+    targets.forEach(function (t) { io.observe(t); });
+    mq.addEventListener('change', function () {
+      if (!mq.matches) el.classList.remove('asistente--news-hidden');
+      else el.classList.toggle('asistente--news-hidden', intersecting.size > 0);
+    });
+  })();
+
   const bubble = el.querySelector('.asistente-bubble');
   const avatar = el.querySelector('.asistente-avatar');
 

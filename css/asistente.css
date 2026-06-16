@@ -213,3 +213,13 @@
     transform: translate(var(--px, 0), var(--py, -60px)) scale(0);
   }
 }
+
+/* ── Auto-hide en móvil al leer noticias ─────────── */
+@media (max-width: 767px) {
+  .asistente--news-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px) scale(0.9);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+}
