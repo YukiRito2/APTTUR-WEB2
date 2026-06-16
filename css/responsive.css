@@ -15,6 +15,26 @@
   .hero-stat-sep { height: 28px; }
   .hero-stat--featured { margin: -6px 4px; padding: 14px 10px !important; }
   .hero-stat-badge { display: none; }
+
+  /* Flota — "Empresas de la red" header box */
+  .flota-marquee-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 20px 16px;
+  }
+  .flota-marquee-header-text h3 {
+    font-size: 1.1rem;
+  }
+  .flota-search {
+    width: 100%;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .flota-search-results {
+    left: 0;
+    right: 0;
+  }
 }
 
 /* ═══ SM: ≥ 640px ═════════════════════════════════════ */
