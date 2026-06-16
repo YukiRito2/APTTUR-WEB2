@@ -769,33 +769,12 @@ async function injectAsistente() {
   `;
   document.body.appendChild(el);
 
-  /* ── Ocultar en móvil al leer noticias ── */
+  /* ── Ocultar en móvil en páginas de artículo (avances.html) ── */
   (function () {
     var mq = window.matchMedia('(max-width: 767px)');
-
-    // En páginas de artículo (avances.html) ocultar inmediatamente antes
-    // de que arranque la animación de entrada, sin esperar al observer.
     if (mq.matches && document.querySelector('.section-noticias')) {
       el.classList.add('asistente--news-hidden');
-      return; // no hace falta observer: la sección siempre ocupa toda la página
     }
-
-    if (!window.IntersectionObserver) return;
-    var targets = document.querySelectorAll('.section-news-featured');
-    if (!targets.length) return;
-    var intersecting = new Set();
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) intersecting.add(entry.target);
-        else intersecting.delete(entry.target);
-      });
-      el.classList.toggle('asistente--news-hidden', mq.matches && intersecting.size > 0);
-    }, { threshold: 0.15 });
-    targets.forEach(function (t) { io.observe(t); });
-    mq.addEventListener('change', function () {
-      if (!mq.matches) el.classList.remove('asistente--news-hidden');
-      else el.classList.toggle('asistente--news-hidden', intersecting.size > 0);
-    });
   })();
 
   const bubble = el.querySelector('.asistente-bubble');
