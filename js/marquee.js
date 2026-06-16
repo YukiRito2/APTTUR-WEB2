@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
       cardsHtml += createCard(emp);
     });
     html += '<div class="marquee-row">';
-    html += '<div class="marquee-track animate-marquee-' + row.direction + '" style="--marquee-speed:' + row.duration + '; touch-action: pan-x;">';
+    html += '<div class="marquee-track animate-marquee-' + row.direction + '" style="--marquee-speed:' + row.duration + '; touch-action: pan-y;">';
     html += cardsHtml + cardsHtml; /* duplicate for seamless loop */
     html += '</div>';
     html += '</div>';
@@ -296,16 +296,36 @@ document.addEventListener('DOMContentLoaded', function () {
         onDragEnd();
       });
 
-      // Touch
+      // Touch — detectar dirección antes de engancharse al drag
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchDir    = null; // null | 'x' | 'y'
+
       track.addEventListener('touchstart', function(e) {
-        onDragStart(e.touches[0].clientX);
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchDir    = null;
       }, { passive: true });
+
       track.addEventListener('touchmove', function(e) {
-        onDragMove(e.touches[0].clientX);
-      }, { passive: true });
+        var dx = Math.abs(e.touches[0].clientX - touchStartX);
+        var dy = Math.abs(e.touches[0].clientY - touchStartY);
+
+        if (touchDir === null && (dx > 6 || dy > 6)) {
+          touchDir = dx >= dy ? 'x' : 'y';
+          if (touchDir === 'x') onDragStart(touchStartX);
+        }
+
+        if (touchDir === 'x') {
+          e.preventDefault();
+          onDragMove(e.touches[0].clientX);
+        }
+      }, { passive: false });
+
       track.addEventListener('touchend', function() {
-        isHovering = false; // no hay hover en touch
-        onDragEnd();
+        isHovering = false;
+        if (touchDir === 'x') onDragEnd();
+        touchDir = null;
       });
 
       // Bloquear click si se arrastró
