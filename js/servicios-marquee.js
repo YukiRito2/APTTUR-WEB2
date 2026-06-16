@@ -1,6 +1,6 @@
-/* ══════════════════════════════════════════════════════
-   SERVICIOS MARQUEE — 3 rows with fleet photos + logos
-   ══════════════════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SERVICIOS MARQUEE â€” 3 rows with fleet photos + logos
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 document.addEventListener('DOMContentLoaded', function () {
   const root = document.getElementById('servicios-marquee-root');
@@ -8,15 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const exampleImages = [
     'images/noticias/evento-03-02-2026-reunion-ATU.jpg',
-    'images/noticias/evento-10-02-2026-presentación-PDTL-mml-02.jpg',
+    'images/noticias/evento-10-02-2026-presentaciÃ³n-PDTL-mml-02.jpg',
     'images/noticias/evento-10-12-2024-desayuno-de-trabajo.jpg',
     'images/noticias/evento-10-12-2025-reunion-mml.jpg',
-    'images/noticias/evento-14-07-2025-reunión-municipalidad-pueblo-libre.jpg',
+    'images/noticias/evento-14-07-2025-reuniÃ³n-municipalidad-pueblo-libre.jpg',
     'images/noticias/evento-15-07-2025-reunion-municipalidad-san-isidro.jpg',
     'images/noticias/evento-20-mayo-2024-mesa-de-trabajo-mml.jpg',
     'images/noticias/evento-22-12-2025-desayuno-de-trabajo-Apttur-2025.jpg',
     'images/noticias/evento-25-08-2025-Mesa-de-trabajo-Municipalidad-de-Miraflores.jpg',
-    'images/noticias/evento-26-01-2026-reunión-con-pnp.jpg',
+    'images/noticias/evento-26-01-2026-reuniÃ³n-con-pnp.jpg',
     'images/noticias/evento-29-05-2025-visita-nuevo-aeropuerto-Jorge-Chavez.jpg',
     'images/noticias/evento-apttur-reunion-muni-victoria-nov-23.jpg'
   ];
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const tags = ['Premium', 'Turismo', 'Movilidad', 'Confort', 'Flota', 'Andes', 'Lima', 'Expreso', 'Grupo', 'Eco'];
 
   const allCompanies = [
-    { nombre: 'Dos Más Dos',      logo: 'images/empresas/DOSMASDOS.png',        url: 'https://dosmasdosa.com/'                        },
+    { nombre: 'Dos MÃ¡s Dos',      logo: 'images/empresas/DOSMASDOS.png',        url: 'https://dosmasdosa.com/'                        },
     { nombre: 'AKI Tours',        logo: 'images/empresas/LOGOAKI.jpg',          url: 'https://akimovil.com.pe/'                       },
     { nombre: 'Alicar',           logo: 'images/empresas/logoalicar.png',       url: 'https://www.alicartours.com'                    },
     { nombre: 'Alpamayo',         logo: 'images/empresas/logoalpamayo.jpg',     url: 'https://www.alpamayotours.com'                  },
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { nombre: 'Buganvilla',       logo: 'images/empresas/logoBuganvilla.jpg',   url: 'https://buganvillatours.com/en/home/'            },
     { nombre: 'ByM Tours',        logo: 'images/empresas/LogoByM.jpg',          url: 'https://www.bymtours.com/'                      },
     { nombre: 'Chaski Tours',     logo: 'images/empresas/logochaski.png',       url: 'https://www.chaskitours.com'                    },
-    { nombre: 'Chavín Tours',     logo: 'images/empresas/logochavin.jpg',       url: 'https://www.chavintours.com'                    },
+    { nombre: 'ChavÃ­n Tours',     logo: 'images/empresas/logochavin.jpg',       url: 'https://www.chavintours.com'                    },
     { nombre: 'Connecting',       logo: 'images/empresas/logoconnecting.jpg',   url: 'https://www.connectingtours.com/'               },
     { nombre: 'Crown Tours',      logo: 'images/empresas/logocrown.jpg',        url: 'https://www.crowntours.com/'                    },
     { nombre: 'DC Tours',         logo: 'images/empresas/logodc.jpg',           url: 'https://transporteturisticoperu.com/'           },
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
   root.innerHTML = rows.map(function (row) {
     return [
       '<div class="marquee-row">',
-      '  <div class="marquee-track animate-marquee-' + row.direction + '" style="--marquee-speed:' + row.duration + '; touch-action: pan-x;">',
+      '  <div class="marquee-track animate-marquee-' + row.direction + '" style="--marquee-speed:' + row.duration + '; touch-action: pan-y;">',
       row.items.map(createCard).join('') + row.items.map(createCard).join(''),
       '  </div>',
       '</div>'
@@ -282,15 +282,35 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       track.addEventListener('mouseup', onDragEnd);
 
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchDir    = null; // null | 'x' | 'y'
+
       track.addEventListener('touchstart', function (e) {
-        onDragStart(e.touches[0].clientX);
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchDir    = null;
       }, { passive: true });
+
       track.addEventListener('touchmove', function (e) {
-        onDragMove(e.touches[0].clientX);
-      }, { passive: true });
+        var dx = Math.abs(e.touches[0].clientX - touchStartX);
+        var dy = Math.abs(e.touches[0].clientY - touchStartY);
+
+        if (touchDir === null && (dx > 6 || dy > 6)) {
+          touchDir = dx >= dy ? 'x' : 'y';
+          if (touchDir === 'x') onDragStart(touchStartX);
+        }
+
+        if (touchDir === 'x') {
+          e.preventDefault();
+          onDragMove(e.touches[0].clientX);
+        }
+      }, { passive: false });
+
       track.addEventListener('touchend', function () {
         isHovering = false;
-        onDragEnd();
+        if (touchDir === 'x') onDragEnd();
+        touchDir = null;
       });
 
       track.addEventListener('click', function (e) {
@@ -518,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.style.overflow = '';
     }
 
-    /* Click delegation on root — drag handler already blocks clicks after drag */
+    /* Click delegation on root â€” drag handler already blocks clicks after drag */
     root.addEventListener('click', function (e) {
       var card = e.target.closest('.servicio-marquee-card');
       if (card) openLightbox(card);
@@ -531,3 +551,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   })();
 });
+
+
