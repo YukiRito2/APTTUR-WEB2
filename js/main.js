@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollToTop();
   initHomeNewsRedirect();
+  initHeroIntro();
   initHeroCounters();
 });
 
@@ -305,6 +306,190 @@ function initHomeNewsRedirect() {
     const id = card.dataset.newsId;
     window.location.href = 'avances.html?id=' + encodeURIComponent(id);
   });
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO INTRO — pantalla completa 10 s → barra inferior
+   ══════════════════════════════════════════════════════ */
+function initHeroIntro() {
+  var intro = document.getElementById('hero-intro');
+  if (!intro) return;
+
+  var bar = document.querySelector('.hero-stats');
+  var collapsed = false;
+  var progressRaf = null;
+  var progressStart = null;
+  var INTRO_DURATION = 10000;
+
+  /* ── Ocultar barra sin transición (JS la controla) ─ */
+  if (bar) {
+    bar.style.transition = 'none';
+    bar.style.transform = 'translateY(14px)'; /* nudge mínimo — no 110% */
+    bar.style.opacity = '0';
+    bar.style.willChange = 'transform, opacity';
+    void bar.offsetHeight;
+  }
+  intro.style.willChange = 'opacity, transform';
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  /* ── Contador principal 0 → 2000 ───────────────── */
+  var numEl   = document.getElementById('hero-intro-num');
+  var plusEl  = document.getElementById('hero-intro-plus');
+
+  if (numEl) {
+    var mainTarget   = 2000;
+    var mainDuration = 2400;
+    var mainStart    = null;
+
+    function animateMain(ts) {
+      if (!mainStart) mainStart = ts;
+      var prog = Math.min((ts - mainStart) / mainDuration, 1);
+      var val  = Math.floor(easeOutCubic(prog) * mainTarget);
+      numEl.textContent = val.toLocaleString('es-PE');
+      if (prog < 1) {
+        requestAnimationFrame(animateMain);
+      } else {
+        numEl.textContent = mainTarget.toLocaleString('es-PE');
+        if (plusEl) plusEl.classList.add('is-visible');
+        plusEl.textContent = '+';
+      }
+    }
+
+    setTimeout(function() { requestAnimationFrame(animateMain); }, 700);
+  }
+
+  /* ── Chips secundarios 0 → target ──────────────── */
+  var chips = intro.querySelectorAll('.hi-chip-num[data-target]');
+  chips.forEach(function(chip) {
+    var chipTarget   = parseInt(chip.getAttribute('data-target'), 10);
+    var chipSuffix   = chip.getAttribute('data-suffix') || '';
+    var chipDuration = 1600;
+    var chipStart    = null;
+
+    function animateChip(ts) {
+      if (!chipStart) chipStart = ts;
+      var prog = Math.min((ts - chipStart) / chipDuration, 1);
+      var val  = Math.floor(easeOutCubic(prog) * chipTarget);
+      chip.textContent = val + (prog >= 1 ? chipSuffix : '');
+      if (prog < 1) requestAnimationFrame(animateChip);
+    }
+
+    setTimeout(function() { requestAnimationFrame(animateChip); }, 900);
+  });
+
+  /* ── fillEl: referencia a la barra de progreso ───── */
+  var fillEl = document.getElementById('hero-intro-progress-fill');
+
+  /* ── Botón skip ─────────────────────────────────── */
+  var skipBtn = document.getElementById('hero-intro-skip');
+  if (skipBtn) skipBtn.addEventListener('click', collapseWithAnimation);
+
+  /* ── Scroll-driven transition ───────────────────── */
+  /*  220 px de scroll → dos fases sin solapamiento brusco:
+      Fase 1 (0→75%):  intro se desvanece y sube.
+      Fase 2 (60→100%): barra aparece con fade + nudge mínimo.
+      El solapamiento 60-75% es intencional: cuando la barra
+      empieza a verse el intro ya está al 80% desvanecido.   */
+  var SCROLL_THRESHOLD = 220;
+  var scrollRafPending  = false;
+
+  function ss(x) { return x * x * (3 - 2 * x); } /* smoothstep */
+
+  function applyScrollProgress() {
+    scrollRafPending = false;
+    if (collapsed) return;
+
+    var rawP = Math.min(window.scrollY / SCROLL_THRESHOLD, 1);
+
+    /* ── Fase 1: intro desaparece en el 75% inicial ── */
+    var introP = ss(Math.min(rawP / 0.75, 1));
+    intro.style.opacity      = String(1 - introP);
+    intro.style.transform    = 'translateY(' + (-introP * 20) + 'px)';
+    intro.style.pointerEvents = introP > 0.5 ? 'none' : '';
+
+    /* ── Fase 2: barra aparece entre 60% y 100% ────── */
+    var barP = ss(Math.max((rawP - 0.60) / 0.40, 0));
+    if (bar) {
+      bar.style.opacity   = String(barP);
+      bar.style.transform = 'translateY(' + (1 - barP) * 14 + 'px)';
+    }
+
+    if (rawP >= 1) {
+      finalize();
+    }
+  }
+
+  function onScroll() {
+    if (!scrollRafPending && !collapsed) {
+      scrollRafPending = true;
+      requestAnimationFrame(applyScrollProgress);
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Finalizar (post-scroll) ────────────────────── */
+  function finalize() {
+    if (collapsed) return;
+    collapsed = true;
+    if (progressRaf) cancelAnimationFrame(progressRaf);
+    window.removeEventListener('scroll', onScroll);
+
+    intro.style.opacity      = '0';
+    intro.style.pointerEvents = 'none';
+    if (bar) {
+      bar.style.transform = 'translateY(0)';
+      bar.style.opacity   = '1';
+    }
+    setTimeout(function() {
+      intro.style.display    = 'none';
+      intro.style.willChange = 'auto';
+      if (bar) bar.style.willChange = 'auto';
+    }, 60);
+  }
+
+  /* ── Collapse con animación CSS (skip / timeout) ── */
+  function collapseWithAnimation() {
+    if (collapsed) return;
+    collapsed = true;
+    if (progressRaf) cancelAnimationFrame(progressRaf);
+    window.removeEventListener('scroll', onScroll);
+
+    /* Intro: fade + sube */
+    intro.style.transition    = 'opacity 0.4s ease, transform 0.4s ease';
+    intro.style.opacity       = '0';
+    intro.style.transform     = 'translateY(-18px)';
+    intro.style.pointerEvents = 'none';
+
+    /* Barra: fade + nudge suave */
+    setTimeout(function() {
+      if (bar) {
+        bar.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+        bar.style.opacity    = '1';
+        bar.style.transform  = 'translateY(0)';
+      }
+    }, 200);
+
+    setTimeout(function() {
+      intro.style.display    = 'none';
+      intro.style.willChange = 'auto';
+      if (bar) bar.style.willChange = 'auto';
+    }, 700);
+  }
+
+  /* ── Barra de progreso 10 s ─────────────────────── */
+  function tickProgress(ts) {
+    if (!progressStart) progressStart = ts;
+    var pct = Math.min((ts - progressStart) / INTRO_DURATION * 100, 100);
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (pct < 100 && !collapsed) {
+      progressRaf = requestAnimationFrame(tickProgress);
+    } else if (!collapsed) {
+      collapseWithAnimation();
+    }
+  }
+  progressRaf = requestAnimationFrame(tickProgress);
 }
 
 /* ══════════════════════════════════════════════════════
