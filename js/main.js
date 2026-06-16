@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initScrollToTop();
   initHomeNewsRedirect();
-  updateTotalVisitsCounter();
+  initHeroIntro();
+  initHeroCounters();
 });
 
 /* ══════════════════════════════════════════════════════
@@ -34,7 +35,6 @@ const ICONS = {
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
   shieldCheck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
   users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>',
-  live: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M17 10h4l-2 4z"/><circle cx="10" cy="12" r="3"/></svg>',
   handshake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 00-7.65 0l-.77.78-.77-.78a5.4 5.4 0 00-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>',
   gavel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5l5 5-11 11-5-5z"/><path d="M3 21l3-3"/><path d="M19.5 2.5l2 2"/><path d="M2.5 19.5l2 2"/><line x1="18" y1="8" x2="22" y2="4"/></svg>',
   monitor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
@@ -74,7 +74,7 @@ function injectNavbar() {
     { href: 'index.html', label: 'Inicio' },
     { href: 'quienes-somos.html', label: 'Quiénes Somos' },
     { href: 'asociados.html', label: 'Asociados' },
-    { href: 'servicios.html', label: 'Servicios' },
+    { href: 'flota.html', label: 'Flota' },
     { href: 'leyes.html', label: 'Marco Legal' },
     { href: 'avances.html', label: 'Avances' },
   ];
@@ -97,15 +97,17 @@ function injectNavbar() {
         <img src="images/logo/aptturlogo.png" alt="APTTUR Logo" width="160" height="64" />
       </a>
       <div class="navbar-links" role="menubar">${navLinksHTML}</div>
-      <button type="button" class="navbar-live-pill" aria-label="Visitas totales" title="Visitas totales">
-        <span class="navbar-live-icon">${ICONS.live}</span>
-        <span class="navbar-live-copy">
-          <strong>Visitas</strong>
-          <span data-total-visits-navbar>0</span>
+      <div class="navbar-live-pill" id="navbar-live-pill" aria-label="Visitas totales">
+        <span class="navbar-live-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
         </span>
-      </button>
+        <span class="navbar-live-copy">
+          <strong>VISITAS</strong>
+          <span id="navbar-live-count">—</span>
+        </span>
+      </div>
       <div class="navbar-cta">
-        <a href="contactenos.html" class="btn-cta">Contáctenos ${ICONS.chevronRight}</a>
+        <a href="contactenos.html" class="btn-cta">Contáctanos ${ICONS.chevronRight}</a>
       </div>
       <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <span class="icon-hamburger">${ICONS.hamburger}</span>
@@ -114,7 +116,7 @@ function injectNavbar() {
     </nav>
     <div class="mobile-menu" id="mobile-menu" role="menu">
       ${mobileLinksHTML}
-      <a href="contactenos.html" class="btn-cta-mobile">Contáctenos ${ICONS.chevronRight}</a>
+      <a href="contactenos.html" class="btn-cta-mobile">Contáctanos ${ICONS.chevronRight}</a>
     </div>
   `;
 }
@@ -146,7 +148,7 @@ function injectFooter() {
           <li><a href="index.html"><span class="bullet"></span>Inicio</a></li>
           <li><a href="quienes-somos.html"><span class="bullet"></span>Quiénes Somos</a></li>
           <li><a href="asociados.html"><span class="bullet"></span>Asociados</a></li>
-          <li><a href="servicios.html"><span class="bullet"></span>Servicios</a></li>
+          <li><a href="flota.html"><span class="bullet"></span>Flota</a></li>
           <li><a href="leyes.html"><span class="bullet"></span>Marco Legal</a></li>
           <li><a href="avances.html"><span class="bullet"></span>Avances</a></li>
           <li><a href="contactenos.html"><span class="bullet"></span>Contáctenos</a></li>
@@ -175,7 +177,7 @@ function injectFooter() {
         <h4>Contacto</h4>
         <div class="footer-contact-item">
           ${ICONS.mapPin}
-          <a href="https://maps.google.com/?q=Lima,Peru" target="_blank" rel="noopener noreferrer">Lima, Perú</a>
+          <a href="https://maps.google.com/?q=Calle+Cayetano+Heredia+400+Jesus+Maria+Lima" target="_blank" rel="noopener noreferrer">Calle Cayetano Heredia Nº 400, Jesús María</a>
         </div>
         <div class="footer-contact-item">
           ${ICONS.phone}
@@ -306,6 +308,217 @@ function initHomeNewsRedirect() {
   });
 }
 
+/* ══════════════════════════════════════════════════════
+   HERO INTRO — pantalla completa 10 s → barra inferior
+   ══════════════════════════════════════════════════════ */
+function initHeroIntro() {
+  var intro = document.getElementById('hero-intro');
+  if (!intro) return;
+
+  var bar = document.querySelector('.hero-stats');
+  var collapsed = false;
+  var progressRaf = null;
+  var progressStart = null;
+  var INTRO_DURATION = 10000;
+
+  /* ── Ocultar barra sin transición (JS la controla) ─ */
+  if (bar) {
+    bar.style.transition = 'none';
+    bar.style.transform = 'translateY(14px)'; /* nudge mínimo — no 110% */
+    bar.style.opacity = '0';
+    bar.style.willChange = 'transform, opacity';
+    void bar.offsetHeight;
+  }
+  intro.style.willChange = 'opacity, transform';
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  /* ── Contador principal 0 → 2000 ───────────────── */
+  var numEl   = document.getElementById('hero-intro-num');
+  var plusEl  = document.getElementById('hero-intro-plus');
+
+  if (numEl) {
+    var mainTarget   = 2000;
+    var mainDuration = 2400;
+    var mainStart    = null;
+
+    function animateMain(ts) {
+      if (!mainStart) mainStart = ts;
+      var prog = Math.min((ts - mainStart) / mainDuration, 1);
+      var val  = Math.floor(easeOutCubic(prog) * mainTarget);
+      numEl.textContent = val.toLocaleString('es-PE');
+      if (prog < 1) {
+        requestAnimationFrame(animateMain);
+      } else {
+        numEl.textContent = mainTarget.toLocaleString('es-PE');
+        if (plusEl) plusEl.classList.add('is-visible');
+        plusEl.textContent = '+';
+      }
+    }
+
+    setTimeout(function() { requestAnimationFrame(animateMain); }, 700);
+  }
+
+  /* ── Chips secundarios 0 → target ──────────────── */
+  var chips = intro.querySelectorAll('.hi-chip-num[data-target]');
+  chips.forEach(function(chip) {
+    var chipTarget   = parseInt(chip.getAttribute('data-target'), 10);
+    var chipSuffix   = chip.getAttribute('data-suffix') || '';
+    var chipDuration = 1600;
+    var chipStart    = null;
+
+    function animateChip(ts) {
+      if (!chipStart) chipStart = ts;
+      var prog = Math.min((ts - chipStart) / chipDuration, 1);
+      var val  = Math.floor(easeOutCubic(prog) * chipTarget);
+      chip.textContent = val + (prog >= 1 ? chipSuffix : '');
+      if (prog < 1) requestAnimationFrame(animateChip);
+    }
+
+    setTimeout(function() { requestAnimationFrame(animateChip); }, 900);
+  });
+
+  /* ── fillEl: referencia a la barra de progreso ───── */
+  var fillEl = document.getElementById('hero-intro-progress-fill');
+
+  /* ── Botón skip ─────────────────────────────────── */
+  var skipBtn = document.getElementById('hero-intro-skip');
+  if (skipBtn) skipBtn.addEventListener('click', collapseWithAnimation);
+
+  /* ── Scroll-driven transition ───────────────────── */
+  /*  220 px de scroll → dos fases sin solapamiento brusco:
+      Fase 1 (0→75%):  intro se desvanece y sube.
+      Fase 2 (60→100%): barra aparece con fade + nudge mínimo.
+      El solapamiento 60-75% es intencional: cuando la barra
+      empieza a verse el intro ya está al 80% desvanecido.   */
+  var SCROLL_THRESHOLD = 220;
+  var scrollRafPending  = false;
+
+  function ss(x) { return x * x * (3 - 2 * x); } /* smoothstep */
+
+  function applyScrollProgress() {
+    scrollRafPending = false;
+    if (collapsed) return;
+
+    var rawP = Math.min(window.scrollY / SCROLL_THRESHOLD, 1);
+
+    /* ── Fase 1: intro desaparece en el 75% inicial ── */
+    var introP = ss(Math.min(rawP / 0.75, 1));
+    intro.style.opacity      = String(1 - introP);
+    intro.style.transform    = 'translateY(' + (-introP * 20) + 'px)';
+    intro.style.pointerEvents = introP > 0.5 ? 'none' : '';
+
+    /* ── Fase 2: barra aparece entre 60% y 100% ────── */
+    var barP = ss(Math.max((rawP - 0.60) / 0.40, 0));
+    if (bar) {
+      bar.style.opacity   = String(barP);
+      bar.style.transform = 'translateY(' + (1 - barP) * 14 + 'px)';
+    }
+
+    if (rawP >= 1) {
+      finalize();
+    }
+  }
+
+  function onScroll() {
+    if (!scrollRafPending && !collapsed) {
+      scrollRafPending = true;
+      requestAnimationFrame(applyScrollProgress);
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Finalizar (post-scroll) ────────────────────── */
+  function finalize() {
+    if (collapsed) return;
+    collapsed = true;
+    if (progressRaf) cancelAnimationFrame(progressRaf);
+    window.removeEventListener('scroll', onScroll);
+
+    intro.style.opacity      = '0';
+    intro.style.pointerEvents = 'none';
+    if (bar) {
+      bar.style.transform = 'translateY(0)';
+      bar.style.opacity   = '1';
+    }
+    setTimeout(function() {
+      intro.style.display    = 'none';
+      intro.style.willChange = 'auto';
+      if (bar) bar.style.willChange = 'auto';
+    }, 60);
+  }
+
+  /* ── Collapse con animación CSS (skip / timeout) ── */
+  function collapseWithAnimation() {
+    if (collapsed) return;
+    collapsed = true;
+    if (progressRaf) cancelAnimationFrame(progressRaf);
+    window.removeEventListener('scroll', onScroll);
+
+    /* Intro: fade + sube */
+    intro.style.transition    = 'opacity 0.4s ease, transform 0.4s ease';
+    intro.style.opacity       = '0';
+    intro.style.transform     = 'translateY(-18px)';
+    intro.style.pointerEvents = 'none';
+
+    /* Barra: fade + nudge suave */
+    setTimeout(function() {
+      if (bar) {
+        bar.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+        bar.style.opacity    = '1';
+        bar.style.transform  = 'translateY(0)';
+      }
+    }, 200);
+
+    setTimeout(function() {
+      intro.style.display    = 'none';
+      intro.style.willChange = 'auto';
+      if (bar) bar.style.willChange = 'auto';
+    }, 700);
+  }
+
+  /* ── Barra de progreso 10 s ─────────────────────── */
+  function tickProgress(ts) {
+    if (!progressStart) progressStart = ts;
+    var pct = Math.min((ts - progressStart) / INTRO_DURATION * 100, 100);
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (pct < 100 && !collapsed) {
+      progressRaf = requestAnimationFrame(tickProgress);
+    } else if (!collapsed) {
+      collapseWithAnimation();
+    }
+  }
+  progressRaf = requestAnimationFrame(tickProgress);
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO STAT COUNTERS
+   ══════════════════════════════════════════════════════ */
+function initHeroCounters() {
+  var nums = document.querySelectorAll('.hero-stat-num[data-target]');
+  if (!nums.length) return;
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  nums.forEach(function(el) {
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 1800;
+    var startTime = null;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var val = Math.floor(easeOutCubic(progress) * target);
+      el.textContent = val.toLocaleString('es-PE') + (progress >= 1 ? suffix : '');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    setTimeout(function() { requestAnimationFrame(step); }, 500);
+  });
+}
+
 const VISITOR_COUNTER_ENDPOINT = '/api/visitor-counter';
 const VISITOR_COUNTER_STORAGE_KEY = 'apttur_visitor_number';
 const VISITOR_COUNTER_COOKIE_KEY = 'apttur_visitor_number';
@@ -387,38 +600,23 @@ async function fetchVisitorCounterValue() {
   }
 }
 
-function updateTotalVisitsCounter() {
-  const totalVisitsElements = document.querySelectorAll('[data-total-visits], [data-total-visits-navbar]');
-  if (!totalVisitsElements.length) return;
-
+function updateTotalVisitsDisplay(totalVisits) {
   const formatter = new Intl.NumberFormat('es-PE');
 
-  fetchVisitorCounterValue()
-    .then((payload) => {
-      if (typeof payload.totalVisits !== 'number') return;
+  const el = document.querySelector('[data-total-visits]');
+  if (el) {
+    el.dataset.end = String(totalVisits);
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isVisible && typeof window.animateImpactCounter === 'function') {
+      window.animateImpactCounter(el);
+    }
+  }
 
-      totalVisitsElements.forEach((element) => {
-        element.dataset.end = String(payload.totalVisits);
-        element.textContent = '0';
-        element.classList.add('counter-value');
-
-        if (element.hasAttribute('data-total-visits-navbar')) {
-          element.textContent = formatter.format(payload.totalVisits);
-          return;
-        }
-
-        if (typeof window.animateImpactCounter === 'function') {
-          window.animateImpactCounter(element);
-        } else {
-          element.textContent = formatter.format(payload.totalVisits);
-        }
-      });
-    })
-    .catch(() => {
-      totalVisitsElements.forEach((element) => {
-        element.textContent = '—';
-      });
-    });
+  const navCount = document.getElementById('navbar-live-count');
+  if (navCount) {
+    navCount.textContent = formatter.format(totalVisits);
+  }
 }
 
 async function resolveVisitorCounterMessage() {
@@ -428,6 +626,7 @@ async function resolveVisitorCounterMessage() {
   try {
     const payload = await fetchVisitorCounterValue();
     persistVisitorNumber(payload.value);
+    updateTotalVisitsDisplay(payload.totalVisits);
 
     if (storedVisitorNumber) {
       return '🌟 <strong>¡Qué gusto tenerte de vuelta!</strong> Tu número de visita es el <strong>' + formatter.format(payload.value) + '</strong> y esta web ya lleva <strong>' + formatter.format(payload.totalVisits) + '</strong> visitas acumuladas. Gracias por regresar y acompañarnos una vez más.';
