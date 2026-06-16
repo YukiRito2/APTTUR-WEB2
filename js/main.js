@@ -771,9 +771,17 @@ async function injectAsistente() {
 
   /* ── Ocultar en móvil al leer noticias ── */
   (function () {
-    if (!window.IntersectionObserver) return;
     var mq = window.matchMedia('(max-width: 767px)');
-    var targets = document.querySelectorAll('.section-news-featured, .section-noticias');
+
+    // En páginas de artículo (avances.html) ocultar inmediatamente antes
+    // de que arranque la animación de entrada, sin esperar al observer.
+    if (mq.matches && document.querySelector('.section-noticias')) {
+      el.classList.add('asistente--news-hidden');
+      return; // no hace falta observer: la sección siempre ocupa toda la página
+    }
+
+    if (!window.IntersectionObserver) return;
+    var targets = document.querySelectorAll('.section-news-featured');
     if (!targets.length) return;
     var intersecting = new Set();
     var io = new IntersectionObserver(function (entries) {
