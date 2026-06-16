@@ -315,6 +315,25 @@ function initHeroIntro() {
   var intro = document.getElementById('hero-intro');
   if (!intro) return;
 
+  /* ── Respeta prefers-reduced-motion ─────────────────── */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var _bar = document.querySelector('.hero-stats');
+    var _num = document.getElementById('hero-intro-num');
+    var _plus = document.getElementById('hero-intro-plus');
+    if (_num) _num.textContent = (2000).toLocaleString('es-PE');
+    if (_plus) { _plus.textContent = '+'; _plus.classList.add('is-visible'); }
+    intro.querySelectorAll('.hi-chip-num[data-target]').forEach(function(c) {
+      c.textContent = c.getAttribute('data-target') + (c.getAttribute('data-suffix') || '');
+    });
+    var _fill = document.getElementById('hero-intro-progress-fill');
+    if (_fill) _fill.style.width = '100%';
+    setTimeout(function() {
+      intro.style.display = 'none';
+      if (_bar) { _bar.style.transition = 'none'; _bar.style.transform = 'translateY(0)'; _bar.style.opacity = '1'; }
+    }, 2000);
+    return;
+  }
+
   var bar = document.querySelector('.hero-stats');
   var collapsed = false;
   var progressRaf = null;
@@ -498,6 +517,16 @@ function initHeroIntro() {
 function initHeroCounters() {
   var nums = document.querySelectorAll('.hero-stat-num[data-target]');
   if (!nums.length) return;
+
+  /* Sin animación para usuarios con prefers-reduced-motion */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    nums.forEach(function(el) {
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var suffix = el.getAttribute('data-suffix') || '';
+      el.textContent = target.toLocaleString('es-PE') + suffix;
+    });
+    return;
+  }
 
   function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
