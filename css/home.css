@@ -218,7 +218,6 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-radius: var(--radius-full);
-  backdrop-filter: blur(4px);
 }
 
 /* Card body */
@@ -299,7 +298,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-normal);
+  transition: opacity var(--transition-normal), background-color var(--transition-normal);
   opacity: 0.7;
 }
 .avances-carousel:hover .avances-arrow {
@@ -367,7 +366,7 @@
   border: none;
   background: var(--gris-fondo);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, width 0.3s ease;
   padding: 0;
 }
 .avances-dot.is-active {
@@ -648,7 +647,7 @@
   width: 6px;
   height: 5px;
   border-radius: 50%;
-  background: #00d472;
+  background: var(--verde-light);
   box-shadow: 0 0 6px rgba(0,212,114,0.8);
   opacity: 0;
   transition: opacity 0.3s ease 2.3s;

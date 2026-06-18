@@ -79,7 +79,7 @@ body {
   gap: 8px;
   font-weight: 600;
   border-radius: var(--radius-sm);
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal), box-shadow var(--transition-normal);
   cursor: pointer;
   border: none;
   text-decoration: none;

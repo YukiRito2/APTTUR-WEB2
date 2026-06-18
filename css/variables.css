@@ -44,4 +44,14 @@
   /* Navbar height */
   --navbar-h-mobile: 64px;
   --navbar-h-desktop: 80px;
+
+  /* Colores semánticos de categoría / estado */
+  --color-blue:   #2563EB;
+  --color-amber:  #D97706;
+  --color-purple: #7C3AED;
+  --color-red:    #DC2626;
+  --color-cyan:   #0891B2;
+  --color-orange: #EA580C;
+  --color-teal:   #0D9488;
+  --color-yellow: #CA8A04;
 }

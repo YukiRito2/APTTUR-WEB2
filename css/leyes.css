@@ -27,7 +27,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .leyes-filtro:hover {
@@ -57,7 +57,7 @@
   padding: 24px;
   border: 1px solid rgba(229,231,235,0.8);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .ley-card:hover {
@@ -112,6 +112,7 @@
   color: var(--gris-texto);
   line-height: 1.6;
   margin: 0;
+  max-width: 65ch;
 }
 
 /* ── Tag ────────────────────────────────────────────── */
@@ -157,7 +158,7 @@
   padding: 12px 16px;
   border-radius: var(--radius-md);
   background: rgba(220,38,38,0.06);
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 .ley-pdf:hover {

@@ -44,7 +44,7 @@
   height: 40px;
   background: rgba(255,255,255,0.1);
   border-radius: var(--radius-sm);
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal);
 }
 .footer-social a:hover {
   background: var(--verde);
@@ -175,7 +175,7 @@
   height: 40px;
   background: rgba(0,168,90,0.2);
   border-radius: 50%;
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
   border: none;
   cursor: pointer;
 }

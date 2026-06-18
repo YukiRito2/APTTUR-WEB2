@@ -164,7 +164,7 @@
   padding: 10px 20px;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 .navbar-cta .btn-cta:hover {
   background: var(--verde-dark);

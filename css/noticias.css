@@ -290,8 +290,6 @@
   background: rgba(0,0,0,0.5);
   padding: 8px 16px;
   border-radius: var(--radius-full);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   transition: opacity 300ms ease;
 }
 .noticia-card:hover .noticia-card-overlay span {
@@ -413,8 +411,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   transition: background 200ms ease;
 }
 .news-modal-close:hover { background: rgba(0,0,0,0.6); }
