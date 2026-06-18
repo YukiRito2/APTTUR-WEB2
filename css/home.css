@@ -65,7 +65,7 @@
 .news-ticker-label {
   background: var(--verde);
   color: var(--blanco);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -213,7 +213,7 @@
   padding: 4px 12px;
   background: rgba(0,168,90,0.9);
   color: var(--blanco);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -408,7 +408,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--verde);
 }
@@ -835,7 +835,7 @@
   color: var(--negro);
 }
 .alianza-card .alianza-desc {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--gris-texto);
   line-height: 1.4;
 }

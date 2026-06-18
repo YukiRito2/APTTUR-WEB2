@@ -118,7 +118,7 @@
 /* ── Tag ────────────────────────────────────────────── */
 .ley-tag {
   display: inline-block;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -169,13 +169,13 @@
 .ley-pdf svg {
   width: 32px;
   height: 32px;
-  fill: #DC2626;
+  fill: var(--color-red);
 }
 
 .ley-pdf span {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #DC2626;
+  color: var(--color-red);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

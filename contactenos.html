@@ -63,11 +63,12 @@
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
+  <a href="#main-content" class="skip-nav">Saltar al contenido principal</a>
 
   <!-- ══════ NAVBAR ══════ -->
   <header id="main-header"></header>
 
-  <main>
+  <main id="main-content">
 
     <!-- ══════════════════════════════════════════════
          PAGE HEADER
@@ -224,6 +225,7 @@
               <div class="form-fields">
                 <div class="input-wrapper">
                   <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                  <label for="field-name" class="sr-only">Nombre completo</label>
                   <input type="text" id="field-name" name="name" placeholder="Tu nombre completo" autocomplete="name" required />
                   <div class="input-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
                 </div>
@@ -231,12 +233,14 @@
 
                 <div class="input-wrapper">
                   <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div>
+                  <label for="field-phone" class="sr-only">Teléfono (opcional)</label>
                   <input type="tel" id="field-phone" name="phone" placeholder="Tu teléfono (opcional)" autocomplete="tel" />
                   <div class="input-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
                 </div>
 
                 <div class="input-wrapper">
                   <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                  <label for="field-email" class="sr-only">Correo electrónico</label>
                   <input type="email" id="field-email" name="email" placeholder="Tu email" autocomplete="email" required />
                   <div class="input-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
                 </div>
@@ -244,12 +248,14 @@
 
                 <div class="input-wrapper">
                   <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+                  <label for="field-company" class="sr-only">Empresa (opcional)</label>
                   <input type="text" id="field-company" name="company" placeholder="Nombre de tu empresa (opcional)" />
                   <div class="input-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
                 </div>
 
                 <div class="input-wrapper textarea-wrapper">
                   <div class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                  <label for="field-message" class="sr-only">Mensaje</label>
                   <textarea id="field-message" name="message" placeholder="Cuéntanos, ¿cómo podemos ayudarte? (mínimo 10 caracteres)" rows="4" required></textarea>
                 </div>
                 <div class="form-error" id="error-message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span></span></div>

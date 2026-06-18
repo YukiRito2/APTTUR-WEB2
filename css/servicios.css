@@ -862,7 +862,7 @@
   line-height: 1.1;
 }
 .flota-chip span {
-  font-size: 0.69rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--gris-texto);
   text-transform: uppercase;
