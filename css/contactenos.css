@@ -5,7 +5,7 @@
 /* ── Section: white canvas ──────────────────────────── */
 .section-contacto {
   position: relative;
-  background: #ffffff;
+  background: var(--blanco);
   padding: 80px 0 96px;
   overflow: hidden;
 }
@@ -126,22 +126,21 @@
   font-size: clamp(2rem, 3.5vw, 2.9rem);
   font-weight: 800;
   line-height: 1.12;
-  color: #0f2a1a;
+  color: var(--negro);
   margin-bottom: 14px;
   letter-spacing: -0.03em;
 }
+/* Change 1: gradient text → solid color */
 .cpanel-heading em {
   font-style: normal;
-  background: linear-gradient(90deg, #00A85A 15%, #059669 90%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--verde);
 }
 .cpanel-lead {
   font-size: 0.9375rem;
-  color: #4b7258;
+  color: var(--verde-dark);
   line-height: 1.75;
   margin-bottom: 44px;
+  max-width: 65ch;
 }
 
 /* Dividers → removed */
@@ -194,16 +193,17 @@ a.cpanel-item:hover { background: none; }
   flex-direction: column;
   gap: 2px;
 }
+/* Change 7: font-size floor — 0.68rem → 0.75rem */
 .cpanel-item-text strong {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #86a894;
+  color: var(--gris-meta);
 }
 .cpanel-item-text span {
   font-size: 0.875rem;
-  color: #1a3528;
+  color: var(--negro);
   line-height: 1.45;
   transition: color 0.2s ease;
 }
@@ -224,39 +224,40 @@ a.cpanel-item:hover { background: none; }
   gap: 8px;
   flex-wrap: wrap;
 }
+/* Change 2a: glassmorphism → solid background; Change 5a: transition:all → specific props */
 .cpanel-social-btn {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 7px 16px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.95);
   border: 1px solid rgba(0,168,90,0.2);
   border-radius: 50px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #1a3528;
+  color: var(--negro);
   text-decoration: none;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 .cpanel-social-btn svg { width: 14px; height: 14px; }
 .cpanel-social-btn:hover {
   background: var(--verde);
   border-color: var(--verde);
-  color: #fff;
+  color: var(--blanco);
 }
 
+/* Change 2b: glassmorphism → solid background */
 .cpanel-trust {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 11px 14px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.95);
   border: 1px solid rgba(0,168,90,0.15);
   border-radius: 12px;
-  backdrop-filter: blur(4px);
 }
 .cpanel-trust-avatars { display: flex; }
+/* Change 7: font-size floor — 0.65rem → 0.75rem */
 .cpanel-trust-av {
   width: 26px;
   height: 26px;
@@ -264,9 +265,9 @@ a.cpanel-item:hover { background: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--blanco);
   border: 2px solid rgba(240,253,244,0.9);
   margin-left: -6px;
 }
@@ -274,19 +275,20 @@ a.cpanel-item:hover { background: none; }
 .cpanel-trust-text strong {
   display: block;
   font-size: 0.8rem;
-  color: #0f2a1a;
+  color: var(--negro);
   font-weight: 700;
 }
+/* Change 7: font-size floor — 0.7rem → 0.75rem */
 .cpanel-trust-text span {
-  font-size: 0.7rem;
-  color: #4b7258;
+  font-size: 0.75rem;
+  color: var(--verde-dark);
 }
 
 /* ══════════════════════════════════════════════════════
    RIGHT PANEL — white card with green top accent
    ══════════════════════════════════════════════════════ */
 .contact-panel-right {
-  background: #fff;
+  background: var(--blanco);
   border-radius: 24px;
   padding: 40px 36px;
   box-shadow: 0 8px 32px rgba(0,168,90,0.08), 0 2px 8px rgba(0,0,0,0.05);
@@ -346,11 +348,12 @@ a.cpanel-item:hover { background: none; }
   text-align: center;
   margin-bottom: 20px;
 }
+/* Change 4: bounceEmoji → run once (1), ease-out */
 .form-emoji {
   font-size: 2.25rem;
   line-height: 1;
   margin-bottom: 8px;
-  animation: bounceEmoji 2s ease-in-out infinite;
+  animation: bounceEmoji 2s ease-out 1;
 }
 @keyframes bounceEmoji {
   0%,100% { transform: translateY(0); }
@@ -366,6 +369,9 @@ a.cpanel-item:hover { background: none; }
   font-size: 0.85rem;
   color: var(--gris-texto);
   line-height: 1.5;
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ── Motivo Label ────────────────────────────────────── */
@@ -406,19 +412,20 @@ a.cpanel-item:hover { background: none; }
   border: 1.5px dashed rgba(0,168,90,0.3);
   border-radius: 14px;
 }
+/* Change 5b: transition:all → specific props */
 .motivo-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
-  background: #f9fafb;
-  border: 1.5px solid #e5e7eb;
+  background: var(--gris-fondo);
+  border: 1.5px solid var(--gris-fondo);
   border-radius: var(--radius-full);
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--gris-texto);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
   white-space: nowrap;
 }
 .motivo-chip svg {
@@ -443,7 +450,7 @@ a.cpanel-item:hover { background: none; }
 /* ── Progress Bar ───────────────────────────────────── */
 .form-progress {
   height: 4px;
-  background: #e5e7eb;
+  background: var(--gris-fondo);
   border-radius: 2px;
   margin-bottom: 20px;
   overflow: hidden;
@@ -485,8 +492,8 @@ a.cpanel-item:hover { background: none; }
 .input-wrapper textarea {
   width: 100%;
   padding: 12px 42px 12px 44px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
+  border: 1px solid var(--gris-fondo);
+  background: var(--gris-fondo);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: 0.9375rem;
@@ -509,13 +516,14 @@ a.cpanel-item:hover { background: none; }
 .input-wrapper textarea { min-height: 100px; resize: vertical; }
 
 /* ── Input Check Mark ───────────────────────────────── */
+/* Change 3a + 5c: bounce/elastic easing → smooth ease; transition:all → specific props */
 .input-check {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%) scale(0);
   opacity: 0;
-  transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 .input-check svg { width: 18px; height: 18px; stroke: var(--verde); }
@@ -541,6 +549,7 @@ a.cpanel-item:hover { background: none; }
 .form-error.show { display: flex; }
 
 /* ── Submit ─────────────────────────────────────────── */
+/* Change 5d: transition:all → specific props */
 .btn-submit {
   display: flex;
   align-items: center;
@@ -555,7 +564,7 @@ a.cpanel-item:hover { background: none; }
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
   overflow: hidden;
 }
@@ -590,6 +599,7 @@ a.cpanel-item:hover { background: none; }
 }
 
 /* ── Success State ──────────────────────────────────── */
+/* Change 3b: bounce/elastic easing → smooth ease */
 .form-success {
   display: none;
   flex-direction: column;
@@ -601,7 +611,7 @@ a.cpanel-item:hover { background: none; }
 }
 .form-success.show {
   display: flex;
-  animation: fadeScaleIn 0.5s cubic-bezier(.34,1.56,.64,1);
+  animation: fadeScaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @keyframes fadeScaleIn {
   from { opacity: 0; transform: scale(0.85); }
@@ -623,6 +633,7 @@ a.cpanel-item:hover { background: none; }
 .success-animation svg { width: 40px; height: 40px; stroke: var(--verde); }
 .form-success h4 { font-size: 1.5rem; font-weight: 700; color: var(--negro); }
 .form-success p { color: var(--gris-texto); font-size: 0.9375rem; max-width: 340px; }
+/* Change 5e: transition:all → specific props */
 .btn-new-message {
   display: inline-flex;
   align-items: center;
@@ -636,7 +647,7 @@ a.cpanel-item:hover { background: none; }
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
   margin-top: 4px;
 }
 .btn-new-message:hover { background: var(--verde); color: var(--blanco); }
