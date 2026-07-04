@@ -86,14 +86,15 @@ document.addEventListener('DOMContentLoaded', function () {
     return html;
   }
 
-  /* ── 3 rows split evenly (Kimovil appears in all 3 rows) ── */
-  var kimovil = companies[companies.length - 1];
-  var realCompanies = companies.slice(0, companies.length - 1);
-  var third = Math.ceil(realCompanies.length / 3);
+  /* ── 3 rows split evenly (featured companies appear in all 3 rows) ── */
+  var featuredNames = ['6 Kimovil', 'Taruka Tours', 'DC Tours', 'Destinos'];
+  var featured = companies.filter(function (c) { return featuredNames.indexOf(c.nombre) !== -1; });
+  var restCompanies = companies.filter(function (c) { return featuredNames.indexOf(c.nombre) === -1; });
+  var third = Math.ceil(restCompanies.length / 3);
   var rows = [
-    { items: realCompanies.slice(0, third).concat([kimovil]),          duration: '45s', direction: 'left'  },
-    { items: realCompanies.slice(third, third * 2).concat([kimovil]),  duration: '50s', direction: 'right' },
-    { items: realCompanies.slice(third * 2).concat([kimovil]),         duration: '42s', direction: 'left'  }
+    { items: restCompanies.slice(0, third).concat(featured),          duration: '45s', direction: 'left'  },
+    { items: restCompanies.slice(third, third * 2).concat(featured),  duration: '50s', direction: 'right' },
+    { items: restCompanies.slice(third * 2).concat(featured),         duration: '42s', direction: 'left'  }
   ];
 
   var html = '';

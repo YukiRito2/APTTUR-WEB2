@@ -106,13 +106,14 @@ document.addEventListener('DOMContentLoaded', function () {
     ].join('');
   }
 
-  const kimovil = companies[companies.length - 1];
-  const realCompanies = companies.slice(0, companies.length - 1);
-  const third = Math.ceil(realCompanies.length / 3);
+  const featuredNames = ['6 Kimovil', 'Taruka Tours', 'DC Tours', 'Destinos'];
+  const featured = companies.filter(function (c) { return featuredNames.indexOf(c.nombre) !== -1; });
+  const restCompanies = companies.filter(function (c) { return featuredNames.indexOf(c.nombre) === -1; });
+  const third = Math.ceil(restCompanies.length / 3);
   const rows = [
-    { items: realCompanies.slice(0, third).concat([kimovil]),         duration: '62s', direction: 'left'  },
-    { items: realCompanies.slice(third, third * 2).concat([kimovil]), duration: '70s', direction: 'right' },
-    { items: realCompanies.slice(third * 2).concat([kimovil]),        duration: '65s', direction: 'left'  }
+    { items: restCompanies.slice(0, third).concat(featured),         duration: '62s', direction: 'left'  },
+    { items: restCompanies.slice(third, third * 2).concat(featured), duration: '70s', direction: 'right' },
+    { items: restCompanies.slice(third * 2).concat(featured),        duration: '65s', direction: 'left'  }
   ];
 
   root.innerHTML = rows.map(function (row) {
