@@ -156,24 +156,35 @@
 .navbar-cta .btn-cta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--verde);
   color: var(--blanco);
-  font-weight: 600;
-  font-size: 14px;
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  transition: background-color var(--transition-normal), color var(--transition-normal);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 20px rgba(0,168,90,0.35);
+  transition: background-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-fast);
+  animation: ctaPulseGlow 2.4s ease-in-out infinite;
 }
 .navbar-cta .btn-cta:hover {
   background: var(--verde-dark);
   transform: scale(1.05);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 26px rgba(0,168,90,0.5);
+  animation-play-state: paused;
+}
+@keyframes ctaPulseGlow {
+  0%, 100% { box-shadow: 0 8px 20px rgba(0,168,90,0.35); }
+  50%      { box-shadow: 0 8px 26px rgba(0,168,90,0.6); }
 }
 .navbar-cta .btn-cta svg {
   width: 16px;
   height: 16px;
+  transition: transform var(--transition-fast);
+}
+.navbar-cta .btn-cta:hover svg {
+  transform: translateX(3px);
 }
 
 /* ── Hamburger Button ───────────────────────────────── */
@@ -291,13 +302,14 @@
   gap: 6px;
   width: auto;
   margin-top: 6px;
-  padding: 8px 20px;
+  padding: 10px 22px;
   background: var(--verde);
   color: var(--blanco);
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  transition: background var(--transition-normal);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  box-shadow: 0 6px 16px rgba(0,168,90,0.3);
+  transition: background var(--transition-normal), box-shadow var(--transition-normal);
 }
 .mobile-menu .btn-cta-mobile:hover {
   background: var(--verde-dark);

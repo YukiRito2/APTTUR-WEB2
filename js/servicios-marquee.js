@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { nombre: 'Avalos Tours',     logo: 'images/empresas/LOGOAVALOS.png',       url: 'https://www.avalostours.com'                    },
     { nombre: 'AYV Transportes',  logo: 'images/empresas/logoAYV.jpg',          url: 'https://www.ayvtransportes.com'                 },
     { nombre: 'Black Tours',      logo: 'images/empresas/logoblack.jpg',        url: 'https://blacktransporte.com/'                   },
-    { nombre: 'Brazin',           logo: 'images/empresas/logobrazin.png',       url: 'https://www.brazintours.com'                    },
     { nombre: 'Buganvilla',       logo: 'images/empresas/logoBuganvilla.jpg',   url: 'https://buganvillatours.com/en/home/'            },
     { nombre: 'ByM Tours',        logo: 'images/empresas/LogoByM.jpg',          url: 'https://www.bymtours.com/'                      },
     { nombre: 'Chaski Tours',     logo: 'images/empresas/logochaski.png',       url: 'https://www.chaskitours.com'                    },
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { nombre: 'Elegance',         logo: 'images/empresas/LOGOELEGANCE.jpg',     url: 'https://www.eleganceclasstravel.com/'           },
     { nombre: 'Eminiari',         logo: 'images/empresas/logoeminiari.jpg',     url: 'https://www.eminiari.com'                       },
     { nombre: 'Giin Tours',       logo: 'images/empresas/logogiin.png',         url: 'https://www.giintours.com'                      },
-    { nombre: 'Inka Tours',       logo: 'images/empresas/logoinka.png',         url: 'https://www.inkaexpress.com/es/'                },
     { nombre: 'J&M Tours',        logo: 'images/empresas/LogoJ&M.jpg',          url: 'https://www.jmtoursperu.com'                    },
     { nombre: 'Jamuy Tours',      logo: 'images/empresas/logojamuy.jpg',        url: 'https://perujamuytravel.com/'                   },
     { nombre: 'Jhony Tours',      logo: 'images/empresas/logojhony.png',        url: 'https://www.jhonytours.com'                     },
@@ -73,7 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
     { nombre: 'Valenz Tours',     logo: 'images/empresas/logovalenz.jpg',       url: 'https://www.valenztours.com'                    },
     { nombre: 'Xpert Tours',      logo: 'images/empresas/Logoxpert.jpg',        url: 'https://www.peruexpertours.com/'                },
     { nombre: 'Yacar Tours',      logo: 'images/empresas/logoyacar.jpg',        url: 'https://www.yacartours.com'                     },
-    { nombre: 'PST Tours',        logo: 'images/empresas/PSTLOGO.png',          url: 'https://www.psttours.com'                       }
+    { nombre: 'PST Tours',        logo: 'images/empresas/PSTLOGO.png',          url: 'https://www.psttours.com'                       },
+    { nombre: '6 Kimovil',        logo: 'images/empresas/Logo6kimovil.png',     url: ''                                                }
   ];
 
   const companies = allCompanies.map(function (c, i) {
@@ -107,10 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
     ].join('');
   }
 
+  const kimovil = companies[companies.length - 1];
+  const realCompanies = companies.slice(0, companies.length - 1);
+  const third = Math.ceil(realCompanies.length / 3);
   const rows = [
-    { items: companies.slice(0, 17),  duration: '62s', direction: 'left'  },
-    { items: companies.slice(17, 34), duration: '70s', direction: 'right' },
-    { items: companies.slice(34, 50), duration: '65s', direction: 'left'  }
+    { items: realCompanies.slice(0, third).concat([kimovil]),         duration: '62s', direction: 'left'  },
+    { items: realCompanies.slice(third, third * 2).concat([kimovil]), duration: '70s', direction: 'right' },
+    { items: realCompanies.slice(third * 2).concat([kimovil]),        duration: '65s', direction: 'left'  }
   ];
 
   root.innerHTML = rows.map(function (row) {
@@ -336,6 +338,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
+    /* Ignora tambien los espacios, para que "6kimovil" encuentre "6 Kimovil" */
+    function normalizeLoose(s) {
+      return normalize(s).replace(/\s+/g, '');
+    }
+
     function escStr(s) {
       return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
     }
@@ -405,9 +412,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      var q = normalize(query.trim());
+      var q = normalizeLoose(query.trim());
       var matches = companies.filter(function (c) {
-        return normalize(c.nombre).indexOf(q) !== -1;
+        return normalizeLoose(c.nombre).indexOf(q) !== -1;
       });
 
       if (matches.length === 0) {
@@ -528,6 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
       lbLogo.alt = card.dataset.name || '';
       lbName.textContent = card.dataset.name || '';
       lbVisit.href = url;
+      lbVisit.style.display = card.dataset.url ? '' : 'none';
 
       lb.classList.add('is-open');
       document.body.style.overflow = 'hidden';

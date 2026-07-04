@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Real companies with logos and links  ─────────── */
    /* ── Los siguientes clientes potenciales ___Dos Más Dos, Alicar, Alpamay, trasnportes aranda, Transportes AyV,
 
-    Brazin,  bym tours,chavin tours, drc tours, Edu Tours, Eminiari tours, Giin travel,loretours, rubens ,Schnell Tours,Soluciones,
+    bym tours,chavin tours, drc tours, Edu Tours, Eminiari tours, Giin travel,loretours, rubens ,Schnell Tours,Soluciones,
     Tumi Tours, Valenz Tours, Yacar Tours, PST Tours─────────── */
   var companies = [
     { id:1,  nombre:'Dos Más Dos',            logo:'DOSMASDOS.png',        url:'https://dosmasdosa.com/' },
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { id:6,  nombre:'Avalos Tours',           logo:'LOGOAVALOS.png',       url:'https://www.avalostours.com' },
     { id:7,  nombre:'AYV Transportes',        logo:'logoAYV.jpg',          url:'https://www.ayvtransportes.com' },
     { id:8,  nombre:'Black Tours',            logo:'logoblack.jpg',        url:'https://blacktransporte.com/' },
-    { id:9,  nombre:'Brazin',                 logo:'logobrazin.png',       url:'https://www.brazintours.com' },
     { id:10, nombre:'Buganvilla',             logo:'logoBuganvilla.jpg',   url:'https://buganvillatours.com/en/home/' },
     { id:11, nombre:'ByM Tours',              logo:'LogoByM.jpg',          url:'https://www.bymtours.com/' },
     { id:12, nombre:'Chaski Tours',           logo:'logochaski.png',       url:'https://www.chaskitours.com' },
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
     { id:20, nombre:'Elegance',               logo:'LOGOELEGANCE.jpg',     url:'https://www.eleganceclasstravel.com/' },
     { id:21, nombre:'Eminiari',               logo:'logoeminiari.jpg',     url:'https://www.eminiari.com' },
     { id:22, nombre:'Giin Tours',             logo:'logogiin.png',         url:'https://www.giintours.com' },
-    { id:23, nombre:'Inka Tours',             logo:'logoinka.png',         url:'https://www.inkaexpress.com/es/' },
     { id:24, nombre:'J&M Tours',              logo:'LogoJ&M.jpg',          url:'https://www.jmtoursperu.com' },
     { id:25, nombre:'Jamuy Tours',            logo:'logojamuy.jpg',        url:'https://perujamuytravel.com/' },
     { id:26, nombre:'Jhony Tours',            logo:'logojhony.png',        url:'https://www.jhonytours.com' },
@@ -66,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
     { id:47, nombre:'Valenz Tours',           logo:'logovalenz.jpg',       url:'https://www.valenztours.com' },
     { id:48, nombre:'Xpert Tours',            logo:'Logoxpert.jpg',        url:'https://www.peruexpertours.com/' },
     { id:49, nombre:'Yacar Tours',            logo:'logoyacar.jpg',        url:'https://www.yacartours.com' },
-    { id:50, nombre:'PST Tours',              logo:'PSTLOGO.png',          url:'https://www.psttours.com' }
+    { id:50, nombre:'PST Tours',              logo:'PSTLOGO.png',          url:'https://www.psttours.com' },
+    { id:51, nombre:'6 Kimovil',              logo:'Logo6kimovil.png',     url:''                         }
   ];
 
   function escAttr(s) {
@@ -74,20 +73,27 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function createCard(empresa) {
-    var html = '<a class="empresa-card" href="' + escAttr(empresa.url) + '" target="_blank" rel="noopener noreferrer">';
+    var hasUrl = !!empresa.url;
+    var tag = hasUrl ? 'a' : 'div';
+    var html = '<' + tag + ' class="empresa-card"';
+    if (hasUrl) html += ' href="' + escAttr(empresa.url) + '" target="_blank" rel="noopener noreferrer"';
+    html += '>';
     html += '<img class="empresa-logo-img" src="images/empresas/' + empresa.logo + '" alt="' + escAttr(empresa.nombre) + '" loading="lazy" />';
     html += '<span class="empresa-name">' + escAttr(empresa.nombre) + '</span>';
     html += '<span class="empresa-tooltip">' + escAttr(empresa.nombre) + '</span>';
-    html += '<span class="empresa-ext-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>';
-    html += '</a>';
+    if (hasUrl) html += '<span class="empresa-ext-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>';
+    html += '</' + tag + '>';
     return html;
   }
 
-  /* ── 3 rows: 1-17, 18-34, 35-50 ─────────────────── */
+  /* ── 3 rows split evenly (Kimovil appears in all 3 rows) ── */
+  var kimovil = companies[companies.length - 1];
+  var realCompanies = companies.slice(0, companies.length - 1);
+  var third = Math.ceil(realCompanies.length / 3);
   var rows = [
-    { items: companies.slice(0, 17),  duration: '45s', direction: 'left'  },
-    { items: companies.slice(17, 34), duration: '50s', direction: 'right' },
-    { items: companies.slice(34, 50), duration: '42s', direction: 'left'  }
+    { items: realCompanies.slice(0, third).concat([kimovil]),          duration: '45s', direction: 'left'  },
+    { items: realCompanies.slice(third, third * 2).concat([kimovil]),  duration: '50s', direction: 'right' },
+    { items: realCompanies.slice(third * 2).concat([kimovil]),         duration: '42s', direction: 'left'  }
   ];
 
   var html = '';
@@ -357,6 +363,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
+    /* Ignora tambien los espacios, para que "6kimovil" encuentre "6 Kimovil" */
+    function normalizeLoose(s) {
+      return normalize(s).replace(/\s+/g, '');
+    }
+
     function highlightText(name, query) {
       var norm = normalize(name);
       var idx  = norm.indexOf(normalize(query));
@@ -376,9 +387,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      var q = normalize(query.trim());
+      var q = normalizeLoose(query.trim());
       var matches = companies.filter(function(c) {
-        return normalize(c.nombre).indexOf(q) !== -1;
+        return normalizeLoose(c.nombre).indexOf(q) !== -1;
       });
 
       if (matches.length === 0) {
