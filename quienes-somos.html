@@ -273,6 +273,47 @@
     </section>
 
     <!-- ══════════════════════════════════════════════
+         INTERNATIONAL TOURISTS
+    ══════════════════════════════════════════════ -->
+    <section class="section-tourists" aria-labelledby="tourists-title">
+      <div class="container">
+
+        <!-- Header -->
+        <div class="about-header fade-in-up">
+          <p class="about-label">ALCANCE INTERNACIONAL</p>
+          <h2 class="about-title" id="tourists-title">Turistas de <span>todo el mundo</span></h2>
+          <div class="about-line"></div>
+        </div>
+
+        <!-- Card -->
+        <div class="tourists-card fade-in-up" data-delay="1">
+
+          <p class="sr-only">Principales países de origen de nuestros turistas: Estados Unidos, España, México, Ecuador, Colombia, Brasil, Argentina y Chile.</p>
+
+          <!-- amCharts 5 rotating globe -->
+          <div id="tourists-globe" class="tourists-globe-chart" aria-hidden="true"></div>
+
+          <!-- Stats -->
+          <div class="tourists-stats">
+            <p class="tourists-stats-intro">Recibimos visitantes que llegan desde distintos puntos del planeta para descubrir el Perú junto a nuestras empresas asociadas.</p>
+            <div class="tourists-stats-grid">
+              <div class="tourists-stat">
+                <span class="impact-number" data-end="8">0</span>
+                <span class="impact-label">Países de origen</span>
+              </div>
+              <div class="tourists-stat">
+                <span class="impact-number" data-end="2">0</span>
+                <span class="impact-label">Continentes representados</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
          TESTIMONIALS (Swiper)
     ══════════════════════════════════════════════ -->
     <section class="section-testimonials" aria-labelledby="testimonials-title">
@@ -400,5 +441,12 @@
   <script src="js/counter.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="js/testimonios.js"></script>
+
+  <!-- amCharts 5 (rotating tourists globe) -->
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <script src="js/tourists-globe.js"></script>
 </body>
 </html>

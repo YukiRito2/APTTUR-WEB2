@@ -194,6 +194,16 @@
   /* Stats bar now uses impact-bar grid (inherits 2→4 col from impact-bar) */
   .stats-bar.impact-bar { padding: 40px; }
 
+  /* ── Quiénes Somos: Tourists map ─────────────────── */
+  .tourists-card {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 40px;
+  }
+  .tourists-globe-chart { height: 360px; }
+  .tourists-stats-intro { text-align: left; }
+  .tourists-stat { align-items: flex-start; text-align: left; }
+
   /* ── Quiénes Somos: Testimonials ────────────────── */
   .section-testimonials { padding: 80px 0; }
   .testimonials-header { margin-bottom: 56px; }

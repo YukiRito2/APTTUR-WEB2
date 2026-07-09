@@ -219,6 +219,60 @@
   margin-top: 0;
 }
 
+/* ── International Tourists ─────────────────────────── */
+.section-tourists {
+  position: relative;
+  background: var(--blanco);
+  padding: 0 0 64px;
+}
+
+.tourists-card {
+  background: var(--negro);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  display: grid;
+  gap: 32px;
+  overflow: hidden;
+}
+
+/* Rotating globe (amCharts 5) */
+.tourists-globe-chart {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius-md);
+  cursor: grab;
+}
+.tourists-globe-chart:active {
+  cursor: grabbing;
+}
+
+/* Stats */
+.tourists-stats-intro {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9375rem;
+  line-height: 1.625;
+  text-align: center;
+}
+.tourists-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.tourists-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.tourists-stat .impact-number {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+}
+.tourists-stat .impact-label {
+  font-size: 0.8125rem;
+}
+
 /* ── Testimonials Section ───────────────────────────── */
 .section-testimonials {
   position: relative;
