@@ -236,16 +236,77 @@
 }
 
 /* Rotating globe (amCharts 5) */
+.tourists-globe-wrap {
+  position: relative;
+}
 .tourists-globe-chart {
   position: relative;
   width: 100%;
   height: 280px;
   border-radius: var(--radius-md);
   cursor: grab;
+  touch-action: pan-y;
+}
+/* Touch devices: rotation is done via the tap buttons instead of
+   dragging, so the chart itself shouldn't intercept any touch input —
+   otherwise it still blocks native page scroll even with panning
+   disabled in amCharts. The nav buttons sit outside this element. */
+@media (pointer: coarse) {
+  .tourists-globe-chart {
+    pointer-events: none;
+  }
 }
 .tourists-globe-chart:active {
   cursor: grabbing;
 }
+
+.tourists-globe-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.55);
+  color: var(--blanco);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--transition-normal);
+  white-space: nowrap;
+}
+.tourists-globe-hint.is-hidden {
+  opacity: 0;
+}
+
+.tourists-globe-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.12);
+  color: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+.tourists-globe-nav:hover,
+.tourists-globe-nav:active {
+  background: var(--verde);
+}
+.tourists-globe-nav svg {
+  width: 20px;
+  height: 20px;
+}
+.tourists-globe-nav--prev { left: 8px; }
+.tourists-globe-nav--next { right: 8px; }
 
 /* Stats */
 .tourists-stats-intro {

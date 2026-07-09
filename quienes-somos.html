@@ -291,7 +291,16 @@
           <p class="sr-only">Principales países de origen de nuestros turistas: Estados Unidos, España, México, Ecuador, Colombia, Brasil, Argentina y Chile.</p>
 
           <!-- amCharts 5 rotating globe -->
-          <div id="tourists-globe" class="tourists-globe-chart" aria-hidden="true"></div>
+          <div class="tourists-globe-wrap">
+            <div id="tourists-globe" class="tourists-globe-chart" aria-hidden="true"></div>
+            <span class="tourists-globe-hint" id="tourists-globe-hint" aria-hidden="true">👆 Desliza para girar</span>
+            <button type="button" class="tourists-globe-nav tourists-globe-nav--prev" id="tourists-globe-prev" aria-label="Girar globo hacia la izquierda">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="tourists-globe-nav tourists-globe-nav--next" id="tourists-globe-next" aria-label="Girar globo hacia la derecha">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
 
           <!-- Stats -->
           <div class="tourists-stats">
