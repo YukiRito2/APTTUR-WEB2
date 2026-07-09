@@ -245,19 +245,23 @@
   height: 280px;
   border-radius: var(--radius-md);
   cursor: grab;
+  /* Vertical touch drags are handled by our own JS gesture detection
+     (see tourists-globe.js), which only prevents default for
+     horizontal drags — this just mirrors that intent at the CSS layer. */
   touch-action: pan-y;
-}
-/* Touch devices: rotation is done via the tap buttons instead of
-   dragging, so the chart itself shouldn't intercept any touch input —
-   otherwise it still blocks native page scroll even with panning
-   disabled in amCharts. The nav buttons sit outside this element. */
-@media (pointer: coarse) {
-  .tourists-globe-chart {
-    pointer-events: none;
-  }
 }
 .tourists-globe-chart:active {
   cursor: grabbing;
+}
+/* amCharts' own internal canvas/layers still intercept touch input and
+   block native scroll even with panX/panY set to "none". Making only
+   those inner elements non-interactive routes all touch events to our
+   own listener on .tourists-globe-chart itself (see tourists-globe.js),
+   which explicitly allows vertical drags to scroll the page. */
+@media (pointer: coarse) {
+  .tourists-globe-chart * {
+    pointer-events: none;
+  }
 }
 
 .tourists-globe-hint {
@@ -282,31 +286,6 @@
 .tourists-globe-hint.is-hidden {
   opacity: 0;
 }
-
-.tourists-globe-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: rgba(255,255,255,0.12);
-  color: var(--blanco);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background var(--transition-fast);
-}
-.tourists-globe-nav:hover,
-.tourists-globe-nav:active {
-  background: var(--verde);
-}
-.tourists-globe-nav svg {
-  width: 20px;
-  height: 20px;
-}
-.tourists-globe-nav--prev { left: 8px; }
-.tourists-globe-nav--next { right: 8px; }
 
 /* Stats */
 .tourists-stats-intro {

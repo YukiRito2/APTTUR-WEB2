@@ -2,12 +2,14 @@
    TOURISTS-GLOBE.JS — amCharts 5 rotating globe
    (geoOrthographic) highlighting our main tourist origins
 
-   On touch devices, dragging the globe is disabled entirely
-   (amCharts otherwise captures touch gestures and blocks the
-   page from scrolling over it, even with panY set to "none" —
-   it still calls preventDefault internally). Instead, mobile
-   users get two tap buttons to rotate the globe, which never
-   conflicts with page scroll.
+   amCharts' own touch panning blocks native page scroll
+   regardless of its panX/panY settings (interactive polygons
+   still capture the gesture). So amCharts panning is disabled
+   entirely and touch dragging is implemented by hand instead,
+   using the same horizontal/vertical gesture-detection pattern
+   already used for the marquee carousels (js/marquee.js):
+   a mostly-horizontal drag rotates the globe, a mostly-vertical
+   drag is left alone so the page scrolls normally.
    ══════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-  var ROTATE_STEP = 45;
-  var RESUME_DELAY = 3000;
+  var RESUME_DELAY = 2500;
+  var DRAG_SENSITIVITY = 0.35; // degrees of rotation per pixel dragged
 
   var featuredCountries = [
     { id: 'US', title: 'Estados Unidos', emoji: '🇺🇸', coordinates: [-98, 39] },
@@ -36,9 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var root = am5.Root.new('tourists-globe');
     root.setThemes([am5themes_Animated.new(root)]);
 
+    /* amCharts panning/interactivity fully off — we drive rotation
+       ourselves so it never fights the page's own touch scrolling. */
     var chart = root.container.children.push(
       am5map.MapChart.new(root, {
-        panX: isTouchDevice ? 'none' : 'rotateX',
+        panX: 'none',
         panY: 'none',
         projection: am5map.geoOrthographic(),
         paddingTop: 0,
@@ -59,9 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var polygonSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, { geoJSON: am5geodata_worldLow })
     );
-    /* Country hover tooltips only make sense (and only capture pointer
-       input) for mouse users — on touch, interactivity itself blocks
-       native page scroll over the globe, so it's disabled there. */
+    /* Country hover tooltips are mouse-only: any polygon interactivity
+       captures touch input and blocks page scroll, so it's off on touch. */
     polygonSeries.mapPolygons.template.setAll({
       tooltipText: isTouchDevice ? undefined : '{name}',
       interactive: !isTouchDevice,
@@ -126,50 +129,66 @@ document.addEventListener('DOMContentLoaded', function () {
         duration: 60000,
         loops: Infinity
       });
+    }
 
-      chart.seriesContainer.events.on('pointerdown', pauseAutoRotate);
+    /* Hint: fades out after the first interaction or a few seconds */
+    var hint = document.getElementById('tourists-globe-hint');
+    var hideHint = function () {
+      if (hint) hint.classList.add('is-hidden');
+    };
+    if (hint) setTimeout(hideHint, 4000);
+
+    if (isTouchDevice) {
+      /* Manual drag: mostly-horizontal touches rotate the globe and are
+         prevented from scrolling; mostly-vertical touches are left alone
+         so the page scrolls exactly as it would anywhere else. */
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var touchDir = null; // null | 'x' | 'y'
+      var dragStartRotation = 0;
+
+      container.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchDir = null;
+        dragStartRotation = chart.get('rotationX') || 0;
+      }, { passive: true });
+
+      container.addEventListener('touchmove', function (e) {
+        if (e.touches.length !== 1) return;
+        var dx = e.touches[0].clientX - touchStartX;
+        var dy = e.touches[0].clientY - touchStartY;
+
+        if (touchDir === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+          touchDir = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+          if (touchDir === 'x') {
+            pauseAutoRotate();
+            hideHint();
+          }
+        }
+
+        if (touchDir === 'x') {
+          e.preventDefault();
+          chart.set('rotationX', dragStartRotation + dx * DRAG_SENSITIVITY);
+        }
+        /* touchDir === 'y' (or undetermined): do nothing, let the browser scroll */
+      }, { passive: false });
+
+      container.addEventListener('touchend', function () {
+        if (touchDir === 'x') resumeAutoRotateSoon();
+        touchDir = null;
+      });
+    } else {
+      /* Desktop: amCharts' own mouse-drag panning */
+      chart.set('panX', 'rotateX');
+      chart.seriesContainer.events.on('pointerdown', function () {
+        pauseAutoRotate();
+        hideHint();
+      });
       chart.seriesContainer.events.on('globalpointerup', function () {
         if (rotationAnimation) rotationAnimation.resume();
       });
-    }
-
-    /* Tap buttons: primary rotation control on touch, extra control on desktop */
-    var prevBtn = document.getElementById('tourists-globe-prev');
-    var nextBtn = document.getElementById('tourists-globe-next');
-
-    function stepRotation(delta) {
-      var current = chart.get('rotationX') || 0;
-      pauseAutoRotate();
-      if (prefersReducedMotion) {
-        chart.set('rotationX', current + delta);
-      } else {
-        chart.animate({
-          key: 'rotationX',
-          from: current,
-          to: current + delta,
-          duration: 500,
-          easing: am5.ease.out(am5.ease.cubic)
-        });
-      }
-      resumeAutoRotateSoon();
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', function () { stepRotation(-ROTATE_STEP); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { stepRotation(ROTATE_STEP); });
-
-    /* Hint: only relevant on non-touch devices where dragging is still enabled */
-    var hint = document.getElementById('tourists-globe-hint');
-    if (hint) {
-      if (isTouchDevice) {
-        hint.remove();
-      } else {
-        var hideHint = function () {
-          hint.classList.add('is-hidden');
-          chart.seriesContainer.events.off('pointerdown', hideHint);
-        };
-        chart.seriesContainer.events.on('pointerdown', hideHint);
-        setTimeout(hideHint, 4000);
-      }
     }
   });
 });
