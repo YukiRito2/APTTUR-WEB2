@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var RESUME_DELAY = 2500;
   var DRAG_SENSITIVITY = 0.35; // degrees of rotation per pixel dragged
   var TAP_MAX_MOVEMENT = 6;    // px — below this, a touch is a tap, not a drag
+  var ZOOM_MIN = 1;
+  var ZOOM_MAX = 4;
 
   var featuredCountries = [
     { id: 'US', title: 'Estados Unidos', emoji: '🇺🇸', coordinates: [-98, 39] },
@@ -175,6 +177,22 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    function setZoom(level) {
+      chart.set('zoomLevel', Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, level)));
+    }
+
+    /* Desktop/trackpad: Ctrl/Cmd + wheel to zoom, so a plain scroll over
+       the globe still scrolls the page like everywhere else. */
+    container.addEventListener('wheel', function (e) {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      e.preventDefault();
+      pauseAutoRotate();
+      hideHint();
+      var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+      setZoom((chart.get('zoomLevel') || 1) * factor);
+      resumeAutoRotateSoon();
+    }, { passive: false });
+
     /* Hint: fades out after the first interaction or a few seconds */
     var hint = document.getElementById('tourists-globe-hint');
     var hideHint = function () {
@@ -213,12 +231,21 @@ document.addEventListener('DOMContentLoaded', function () {
       var posHistory = [];
       var timeHistory = [];
       var momentumId = null;
+      var isPinching = false;
+      var pinchStartDist = 0;
+      var pinchStartZoom = 1;
 
       function cancelMomentum() {
         if (momentumId) {
           cancelAnimationFrame(momentumId);
           momentumId = null;
         }
+      }
+
+      function touchDistance(touches) {
+        var dx = touches[0].clientX - touches[1].clientX;
+        var dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
       }
 
       function getSmoothedVelocity() {
@@ -260,7 +287,18 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       container.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 2) {
+          cancelMomentum();
+          pauseAutoRotate();
+          hideHint();
+          touchDir = null;
+          isPinching = true;
+          pinchStartDist = touchDistance(e.touches);
+          pinchStartZoom = chart.get('zoomLevel') || 1;
+          return;
+        }
         if (e.touches.length !== 1) return;
+        isPinching = false;
         cancelMomentum();
         /* Pause immediately (not just once a drag is confirmed) so a tap's
            geo lookup at touchend always matches the position captured here,
@@ -276,6 +314,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }, { passive: true });
 
       container.addEventListener('touchmove', function (e) {
+        if (isPinching && e.touches.length === 2) {
+          e.preventDefault();
+          var scale = touchDistance(e.touches) / pinchStartDist;
+          setZoom(pinchStartZoom * scale);
+          return;
+        }
         if (e.touches.length !== 1) return;
         var x = e.touches[0].clientX;
         var y = e.touches[0].clientY;
@@ -302,6 +346,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }, { passive: false });
 
       container.addEventListener('touchend', function (e) {
+        if (isPinching) {
+          if (e.touches.length < 2) {
+            isPinching = false;
+            resumeAutoRotateSoon();
+          }
+          return;
+        }
         if (touchDir === 'x') {
           var vel = getSmoothedVelocity();
           if (Math.abs(vel) > 0.03) {
