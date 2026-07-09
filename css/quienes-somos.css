@@ -287,6 +287,27 @@
   opacity: 0;
 }
 
+/* Country name shown when tapping the globe on touch devices */
+.tourists-globe-tap-label {
+  position: absolute;
+  transform: translate(-50%, -130%);
+  background: var(--verde);
+  color: var(--blanco);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity var(--transition-fast);
+  z-index: 2;
+}
+.tourists-globe-tap-label.is-visible {
+  opacity: 1;
+}
+
 /* Stats */
 .tourists-stats-intro {
   color: rgba(255,255,255,0.75);
